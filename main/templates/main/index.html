@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-</head>
-<body>
-    <p>{{content}}</p>
-</body>
-</html>
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block title %}{{title}}{% endblock title %}{{title}}
+
+{% block indexcontent %}{{content}}{% endblock indexcontent %}
+
+
+{% block content2 %}
+  <h1>Добро пожаловать на главную страницу!</h1>
+  <!-- Добавляем ссылку для перехода на страницу загрузки котировок -->
+  <a href="{% url 'load_data_view' %}">Перейти к загрузке котировок</a>
+  <!-- Добавляем ссылки для просмотра бирж, инструментов и контрактов -->
+  <ul>
+    <li><a href="{% url 'exchange_list_view' %}">Просмотр бирж</a></li>
+    <li><a href="{% url 'instrument_list_view' 'MOEX' %}">Просмотр инструментов (пример для биржи MOEX)</a></li>
+    <li><a href="{% url 'contract_list_view' 'MOEX' 'AAPL' %}">Просмотр контрактов (пример для биржи MOEX и инструмента AAPL)</a></li>
+  </ul>
+  
+{% endblock %}

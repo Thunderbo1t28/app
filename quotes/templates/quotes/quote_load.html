@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Load Data Form</title>
+</head>
+<body>
+
+{% if success_message %}
+    <p>{{ success_message }}</p>
+{% endif %}
+
+<form method="post" action="{% url 'load_data_view' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Load Data</button>
+</form>
+
+</body>
+</html>

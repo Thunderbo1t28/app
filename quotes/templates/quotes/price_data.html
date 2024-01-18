@@ -1,0 +1,36 @@
+<!-- templates/your_app/price_data.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Price Data</title>
+</head>
+<body>
+    <h2>Price Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Datetime</th>
+                <th>Carry</th>
+                <th>Carry Contract</th>
+                <th>Price</th>
+                <th>Price Contract</th>
+                <th>Forward</th>
+                <th>Forward Contract</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for price in prices %}
+                <tr>
+                    <td>{{ price.datetime }}</td>
+                    <td>{{ price.carry }}</td>
+                    <td>{{ price.carry_contract }}</td>
+                    <td>{{ price.price }}</td>
+                    <td>{{ price.price_contract }}</td>
+                    <td>{{ price.forward }}</td>
+                    <td>{{ price.forward_contract }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

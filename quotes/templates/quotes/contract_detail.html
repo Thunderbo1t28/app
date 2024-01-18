@@ -1,0 +1,35 @@
+<!-- quotes/contract_detail.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Детали контракта</title>
+</head>
+<body>
+    <h2>Детали контракта</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Open</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Close</th>
+                <th>Volume</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data_point in contract_data %}
+                <tr>
+                    <!-- Используйте фильтр date для форматирования даты -->
+                    <td>{{ data_point.timestamp|date:"Ymd" }}</td>
+                    <td>{{ data_point.open_price }}</td>
+                    <td>{{ data_point.high_price }}</td>
+                    <td>{{ data_point.low_price }}</td>
+                    <td>{{ data_point.close_price }}</td>
+                    <td>{{ data_point.volume }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!-- quotes/exchange_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Выберите биржу</title>
+</head>
+<body>
+    <h2>Выберите биржу</h2>
+    <ul>
+        {% for exchange in exchanges %}
+            <li><a href="{% url 'instrument_list_view' exchange %}">{{ exchange }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

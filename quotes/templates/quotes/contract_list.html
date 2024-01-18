@@ -1,0 +1,16 @@
+<!-- quotes/contract_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Выберите контракт</title>
+</head>
+<body>
+    <h2>Выберите контракт</h2>
+    <ul>
+        {% for contract in contracts %}
+            <li><a href="{% url 'contract_detail_view' exchange instrument contract %}">{{ contract }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+

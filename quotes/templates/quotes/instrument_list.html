@@ -1,0 +1,15 @@
+<!-- quotes/instrument_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Выберите инструмент</title>
+</head>
+<body>
+    <h2>Выберите инструмент</h2>
+    <ul>
+        {% for instrument in instruments %}
+            <li><a href="{% url 'contract_list_view' exchange=exchange instrument=instrument %}">{{ instrument }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

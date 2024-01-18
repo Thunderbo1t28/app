@@ -18,8 +18,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main import views
+from quotes.views import contract_detail_view, contract_list_view, exchange_list_view, instrument_list_view, load_data_view, price_data_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('quote_load/', load_data_view, name='load_data_view'),
+    path('exchanges/', exchange_list_view, name='exchange_list_view'),
+    path('exchanges/<str:exchange>/', instrument_list_view, name='instrument_list_view'),
+    path('exchanges/<str:exchange>/<str:instrument>/', contract_list_view, name='contract_list_view'),
+    path('exchanges/<str:exchange>/<str:instrument>/<str:contract>/', contract_detail_view, name='contract_detail_view'),
+    path('price_data/', price_data_view, name='price_data'),
 ]
