@@ -8,7 +8,13 @@
     <h2>Выберите инструмент</h2>
     <ul>
         {% for instrument in instruments %}
-            <li><a href="{% url 'contract_list_view' exchange=exchange instrument=instrument %}">{{ instrument }}</a></li>
+            <li>
+                <a href="{% url 'contract_list_view' exchange=exchange instrument=instrument %}">{{ instrument }}</a>
+                <!-- Добавляем ссылку для параметров -->
+                
+                <!-- Добавляем ссылку для роллкалендаря -->
+                <a href="{% url 'roll_calendar' exchange=exchange instrument=instrument %}">(Роллкалендарь)</a>
+            </li>
         {% endfor %}
     </ul>
 </body>

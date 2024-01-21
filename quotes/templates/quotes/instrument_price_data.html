@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instrument Price Data</title>
+</head>
+<body>
+    <h1>Instrument Price Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Datetime</th>
+                <th>Price</th>
+                <th>Price Contract</th>
+                <th>Carry</th>
+                <th>Carry Contract</th>
+                <th>Forward</th>
+                <th>Forward Contract</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in price_data %}
+            <tr>
+                <td>{{ entry.datetime }}</td>
+                <td>{{ entry.price }}</td>
+                <td>{{ entry.price_contract }}</td>
+                <td>{{ entry.carry }}</td>
+                <td>{{ entry.carry_contract }}</td>
+                <td>{{ entry.forward }}</td>
+                <td>{{ entry.forward_contract }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

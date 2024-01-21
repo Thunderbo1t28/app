@@ -14,8 +14,7 @@
   <!-- Добавляем ссылки для просмотра бирж, инструментов и контрактов -->
   <ul>
     <li><a href="{% url 'exchange_list_view' %}">Просмотр бирж</a></li>
-    <li><a href="{% url 'instrument_list_view' 'MOEX' %}">Просмотр инструментов (пример для биржи MOEX)</a></li>
-    <li><a href="{% url 'contract_list_view' 'MOEX' 'AAPL' %}">Просмотр контрактов (пример для биржи MOEX и инструмента AAPL)</a></li>
+    <li><a href="{% url 'multi_price_data' %}">multiple price data</a></li>
   </ul>
   
 {% endblock %}

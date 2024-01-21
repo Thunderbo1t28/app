@@ -7,8 +7,10 @@
 <body>
     <h2>Выберите биржу</h2>
     <ul>
+        
         {% for exchange in exchanges %}
             <li><a href="{% url 'instrument_list_view' exchange %}">{{ exchange }}</a></li>
+            
         {% endfor %}
     </ul>
 </body>

@@ -88,65 +88,117 @@ class Command(BaseCommand):
                 #month_char = last_two_chars[0]
                 #month_mapping = {'F': 1, 'G': 2, 'H': 3, 'J': 4, 'K': 5, 'M': 6, 'N': 7, 'Q': 8, 'U': 9, 'V': 10, 'X': 11, 'Z': 12}
                 #month = month_mapping.get(month_char, None)
-                last_trade_date = datetime.strptime(row.LASTTRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
+                last_trade_date = datetime.strptime(row.LASTTRADEDATE, "%Y-%m-%d")
                 #contract_date = last_trade_date[:-5]
                 #contract_time = f'{contract_date}{year_digit:d}{month:02d}00'
-                contract = f'{sectype}_{last_trade_date}'
-                if pd.notna(row.TRADEDATE) and pd.notna(row.OPEN) and pd.notna(row.LOW) and pd.notna(row.HIGH) and pd.notna(row.PREVPRICE) and pd.notna(row.VOLTODAY):
-                    existing_quotes = Quote.objects.filter(
-                        instrument=row.ASSETCODE,
-                        contract=contract,
-                        timestamp=date_str
-                    )
+                contract = last_trade_date
+                #if pd.notna(row.TRADEDATE) and pd.notna(row.OPEN) and pd.notna(row.LOW) and pd.notna(row.HIGH) and pd.notna(row.PREVPRICE) and pd.notna(row.VOLTODAY):
+                
+                if pd.notna(row.OPEN):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.OPEN = 0
+                if pd.notna(row.LOW):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.LOW = 0
+                if pd.notna(row.HIGH):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.HIGH = 0
+                if pd.notna(row.PREVPRICE):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.PREVPRICE = 0
+                if pd.notna(row.VOLTODAY):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.VOLTODAY = 0
+                existing_quotes = Quote.objects.filter(
+                    instrument=row.ASSETCODE,
+                    contract=contract,
+                    timestamp=date_str
+                )
 
-                    # Если данные уже существуют, пропускаем текущую итерацию цикла
-                    if existing_quotes.exists():
-                        continue
+                # Если данные уже существуют, пропускаем текущую итерацию цикла
+                if existing_quotes.exists():
+                    continue
 
-                    
+                
 
-                    Quote.objects.create(
-                        exchange='MOEX',
-                        instrument=row.ASSETCODE,
-                        section=row.BOARDID,
-                        contract=contract,
-                        sectype=row.SECTYPE,
-                        secid=row.SECID,
-                        open_price=row.OPEN,
-                        low_price=row.LOW,
-                        high_price=row.HIGH,
-                        close_price=row.PREVPRICE,
-                        volume=row.VOLTODAY,
-                        timestamp=date_str
-                    )
-                    print('Data loaded successfully')
+                Quote.objects.create(
+                    exchange='MOEX',
+                    instrument=row.ASSETCODE,
+                    section=row.BOARDID,
+                    contract=contract,
+                    sectype=row.SECTYPE,
+                    secid=row.SECID,
+                    open_price=row.OPEN,
+                    low_price=row.LOW,
+                    high_price=row.HIGH,
+                    close_price=row.PREVPRICE,
+                    volume=row.VOLTODAY,
+                    timestamp=date_str
+                )
+                print('Data loaded successfully')
             else:
-                if pd.notna(row.TRADEDATE) and pd.notna(row.OPEN) and pd.notna(row.LOW) and pd.notna(row.HIGH) and pd.notna(row.PREVPRICE) and pd.notna(row.VOLTODAY):
+                #if pd.notna(row.TRADEDATE) and pd.notna(row.OPEN) and pd.notna(row.LOW) and pd.notna(row.HIGH) and pd.notna(row.PREVPRICE) and pd.notna(row.VOLTODAY):
+                
 
-                    existing_quotes = Quote.objects.filter(
-                        instrument=row.ASSETCODE,
-                        contract=contract,
-                        timestamp=date_str
-                    )
+                if pd.notna(row.OPEN):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.OPEN = 0
+                if pd.notna(row.LOW):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.LOW = 0
+                if pd.notna(row.HIGH):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.HIGH = 0
+                if pd.notna(row.PREVPRICE):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.PREVPRICE = 0
+                if pd.notna(row.VOLTODAY):
+                    # Если OPEN не NaN, оставить без изменений
+                    pass
+                else:
+                    row.VOLTODAY = 0
+                existing_quotes = Quote.objects.filter(
+                    instrument=row.ASSETCODE,
+                    contract=contract,
+                    timestamp=date_str
+                )
 
-                    # Если данные уже существуют, пропускаем текущую итерацию цикла
-                    if existing_quotes.exists():
-                        continue
+                # Если данные уже существуют, пропускаем текущую итерацию цикла
+                if existing_quotes.exists():
+                    continue
 
-                    
+                
 
-                    Quote.objects.create(
-                        exchange='MOEX',
-                        instrument=row.ASSETCODE,
-                        section=row.BOARDID,
-                        contract=row.SECID,
-                        sectype=row.SECTYPE,
-                        secid=row.SECID,
-                        open_price=row.OPEN,
-                        low_price=row.LOW,
-                        high_price=row.HIGH,
-                        close_price=row.PREVPRICE,
-                        volume=row.VOLTODAY,
-                        timestamp=date_str
-                    )
-                    print('Data loaded successfully')
+                Quote.objects.create(
+                    exchange='MOEX',
+                    instrument=row.ASSETCODE,
+                    section=row.BOARDID,
+                    contract=row.SECID,
+                    sectype=row.SECTYPE,
+                    secid=row.SECID,
+                    open_price=row.OPEN,
+                    low_price=row.LOW,
+                    high_price=row.HIGH,
+                    close_price=row.PREVPRICE,
+                    volume=row.VOLTODAY,
+                    timestamp=date_str
+                )
+                print('Data loaded successfully')

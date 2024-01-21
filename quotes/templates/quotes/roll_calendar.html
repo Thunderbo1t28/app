@@ -1,0 +1,37 @@
+<!-- roll_calendar.html -->
+<!-- quotes/contract_detail.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Детали календаря</title>
+</head>
+<body>
+    <h2>Детали календаря</h2>
+    <table border="0">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>current_contract</th>
+                <th>next_contract</th>
+                <th>carry_contract</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for data_point in roll_calendar_entries %}
+                <tr>
+                    <!-- Используйте фильтр date для форматирования даты -->
+                    <td>{{ data_point.timestamp|date:"Ymd" }}</td>
+                    <td>{{ data_point.current_contract }}</td>
+                    <td>{{ data_point.next_contract }}</td>
+                    <td>{{ data_point.carry_contract }}</td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
+
+
