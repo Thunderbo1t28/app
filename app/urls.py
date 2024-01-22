@@ -18,7 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main import views
-from quotes.views import contract_detail_view, contract_list_view, exchange_list_view, instrument_list, instrument_list_view, instrument_price_data, load_data_view, multi_price_data, roll_calendar, update_multiple_price_data
+from quotes.views import adjusted_prices_view, contract_detail_view, contract_list_view, exchange_list_view, instrument_list, instrument_list_view, instrument_price_data, load_data_view, multi_price_data, roll_calendar, update_multiple_price_data
 
 
 urlpatterns = [
@@ -28,6 +28,7 @@ urlpatterns = [
     path('exchanges/', exchange_list_view, name='exchange_list_view'),
     path('exchanges/<str:exchange>/', instrument_list_view, name='instrument_list_view'),
     path('exchanges/<str:exchange>/<str:instrument>/', contract_list_view, name='contract_list_view'),
+    path('exchanges/<str:exchange>/<str:instrument>/adjusted_prices/', adjusted_prices_view, name='adjusted_prices_view'),
     path('exchanges/<str:exchange>/<str:instrument>/roll_calendar/', roll_calendar, name='roll_calendar'),
     path('exchanges/<str:exchange>/<str:instrument>/<str:contract>/', contract_detail_view, name='contract_detail_view'),
 

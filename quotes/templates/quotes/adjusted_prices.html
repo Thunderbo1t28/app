@@ -1,0 +1,27 @@
+<!-- quotes/adjusted_prices.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adjusted Prices</title>
+</head>
+<body>
+    <h2>Adjusted Prices for {{ instrument }}</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>price</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            {% for entry in adjusted_prices %}
+                <tr>
+                    <td>{{ entry.timestamp|date:"Ymd" }}</td>
+                    <td>{{ entry.price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

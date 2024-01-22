@@ -20,7 +20,7 @@
         <tbody>
             {% for entry in price_data %}
             <tr>
-                <td>{{ entry.datetime }}</td>
+                <td>{{ entry.datetime|date:"Ymd" }}</td>
                 <td>{{ entry.price }}</td>
                 <td>{{ entry.price_contract }}</td>
                 <td>{{ entry.carry }}</td>

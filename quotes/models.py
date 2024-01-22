@@ -45,3 +45,13 @@ class RollCalendar(models.Model):
 
     def __str__(self):
         return f"{self.current_contract} ({self.next_contract} - {self.carry_contract})"
+class AdjustedPrice(models.Model):
+    instrument = models.CharField(max_length=50)
+    timestamp = models.DateTimeField()
+    price = models.FloatField()
+
+    # Внешний ключ для связи с котировкой
+    price_date = models.ForeignKey(PriceData, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"AdjustedPrice for {self.instrument} - {self.timestamp}"

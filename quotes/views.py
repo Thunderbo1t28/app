@@ -2,7 +2,7 @@ from django.shortcuts import get_list_or_404, render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
-from quotes.models import PriceData, Quote, RollCalendar
+from quotes.models import AdjustedPrice, PriceData, Quote, RollCalendar
 from .forms import LoadDataForm
 from django.core.management import call_command
 
@@ -78,3 +78,16 @@ def update_multiple_price_data(request):
             return HttpResponse(status=500)
     else:
         return HttpResponse(status=405)
+
+def adjusted_prices_view(request, exchange, instrument):
+    # Получите данные о корректированных ценах для отображения
+    adjusted_prices = AdjustedPrice.objects.filter(instrument=instrument)
+
+    # Передайте данные в контексте для использования на странице
+    context = {
+        'instrument': instrument,
+        'adjusted_prices': adjusted_prices,
+    }
+
+    # Отобразите HTML-страницу с данными
+    return render(request, 'quotes/adjusted_prices.html', context)

@@ -11,7 +11,8 @@
             <li>
                 <a href="{% url 'contract_list_view' exchange=exchange instrument=instrument %}">{{ instrument }}</a>
                 <!-- Добавляем ссылку для параметров -->
-                
+                <!-- Добавляем ссылку для расчета adjusted prices -->
+                <a href="{% url 'adjusted_prices_view' exchange=exchange instrument=instrument %}">(Рассчитать корректированные цены)</a>
                 <!-- Добавляем ссылку для роллкалендаря -->
                 <a href="{% url 'roll_calendar' exchange=exchange instrument=instrument %}">(Роллкалендарь)</a>
             </li>
