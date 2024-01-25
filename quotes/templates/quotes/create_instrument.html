@@ -1,0 +1,44 @@
+<!-- templates/create_instrument.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Instrument</title>
+</head>
+<body>
+    <h2>Create Instrument</h2>
+    <form method="post" action="{% url 'create_instrument' %}">
+        {% csrf_token %}
+        <label for="instrument">Instrument:</label>
+        <input type="text" name="instrument" required><br>
+
+        <label for="description">Description:</label>
+        <input type="text" name="description" required><br>
+
+        <label for="point_size">Point Size:</label>
+        <input type="number" name="point_size" required><br>
+
+        <label for="currency">Currency:</label>
+        <input type="text" name="currency" required><br>
+
+        <label for="asset_class">Asset Class:</label>
+        <input type="text" name="asset_class" required><br>
+
+        <label for="slippage">Slippage:</label>
+        <input type="number" name="slippage" required><br>
+
+        <label for="per_block">Per Block:</label>
+        <input type="number" name="per_block" required><br>
+
+        <label for="percentage">Percentage:</label>
+        <input type="number" name="percentage" required><br>
+
+        <label for="per_trade">Per Trade:</label>
+        <input type="number" name="per_trade" required><br>
+
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>

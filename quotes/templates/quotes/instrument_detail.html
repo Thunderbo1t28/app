@@ -1,0 +1,24 @@
+<!-- templates/instrument_detail.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrument Detail {{ exchange }} - {{ instrument }}</title>
+</head>
+<body>
+    <h2>Instrument Detail {{ exchange }} - {{ instrument }}</h2>
+    {% for entry in data %}
+        <p><strong>Instrument:</strong> {{ entry.instrument }}</p>
+        <p><strong>Description:</strong> {{ entry.description }}</p>
+        <p><strong>Point Size:</strong> {{ entry.point_size }}</p>
+        <p><strong>Currency:</strong> {{ entry.currency }}</p>
+        <p><strong>Asset Class:</strong> {{ entry.asset_class }}</p>
+        <p><strong>Slippage:</strong> {{ entry.slippage }}</p>
+        <p><strong>Per Block Fee:</strong> {{ entry.per_block }}</p>
+        <p><strong>Percentage Fee:</strong> {{ entry.percentage }}</p>
+        <p><strong>Per Trade Fee:</strong> {{ entry.per_trade }}</p>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FX Price Data for {{ exchange }} - {{ instrument }}</title>
+</head>
+<body>
+    <h1>FX Price Data for {{ exchange }} - {{ instrument }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Exchange</th>
+                <th>Section</th>
+                <th>Instrument</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data %}
+                <tr>
+                    <td>{{ entry.timestamp|date:"Ymd" }}</td>
+                    <td>{{ entry.exchange }}</td>
+                    <td>{{ entry.section }}</td>
+                    <td>{{ entry.instrument }}</td>
+                    <td>{{ entry.price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

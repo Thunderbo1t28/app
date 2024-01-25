@@ -3,8 +3,36 @@
 <html>
 <head>
     <title>Выберите биржу</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#updateButton").click(function() {
+                updateMultiplePriceData();
+            });
+
+            function updateMultiplePriceData() {
+                $("#updateButton").prop("disabled", true); // Делаем кнопку неактивной во время выполнения запроса
+                $.ajax({
+                    url: '/data/multiprice/update/',  // URL для запуска команды
+                    type: 'GET',
+                    success: function() {
+                        alert('Data updated successfully!');
+                    },
+                    error: function() {
+                        alert('Error updating data!');
+                    },
+                    complete: function() {
+                        $("#updateButton").prop("disabled", false); // После завершения запроса делаем кнопку снова активной
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
+    <h3>Команды для работы с данными</h3>
+    <button id="updateButton">Multi Price Update</button>
+    <br>
     <h2>Выберите биржу</h2>
     <ul>
         

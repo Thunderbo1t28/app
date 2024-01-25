@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Exchange</title>
+</head>
+<body>
+    <h1>Select Exchange</h1>
+    <ul>
+        {% for exchange in exchanges %}
+            <li><a href="{% url 'select_instrument_view' exchange=exchange %}">{{ exchange }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

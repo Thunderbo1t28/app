@@ -1,7 +1,7 @@
 # myapp/management/commands/populate_pricedata.py
 
 from django.core.management.base import BaseCommand
-from quotes.models import Quote, RollCalendar, PriceData
+from quotes.models import Instrument, MultiplePriceData, Quote, RollCalendar
 from datetime import datetime
 
 class Command(BaseCommand):
@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Пример даты, до которой нужно собрать данные
-        end_date = datetime.strptime('2023-12-20 00:00:00', '%Y-%m-%d %H:%M:%S')
+        end_date = datetime.strptime('2024-01-18 00:00:00', '%Y-%m-%d %H:%M:%S')
 
         # Получите уникальные инструменты из модели Quote
         instruments = Quote.objects.values_list('instrument', flat=True).distinct()
@@ -17,7 +17,7 @@ class Command(BaseCommand):
         for instrument in instruments:
             # Получите релевантные записи из модели RollCalendar для текущего инструмента
             roll_data = RollCalendar.objects.filter(
-                instrument=instrument, timestamp__lte=end_date
+                instrument__instrument=instrument, timestamp__lte=end_date
             ).order_by('-timestamp')
 
             # Проход по всем записям в RollCalendar
@@ -38,17 +38,17 @@ class Command(BaseCommand):
                     forward_quote = Quote.objects.filter(
                         instrument=instrument, contract=next_contract, timestamp=quote.timestamp
                     ).first()
-
+                    instrument_obj = Instrument.objects.get(instrument=instrument)
                     # Используйте get_or_create для избежания повторных записей
-                    entry, created = PriceData.objects.get_or_create(
-                        instrument=instrument,
+                    entry, created = MultiplePriceData.objects.get_or_create(
+                        instrument=instrument_obj,
                         datetime=quote.timestamp,
                         defaults={
-                            'carry': carry_quote.close_price if carry_quote else 0,
+                            'carry': carry_quote.close_price if carry_quote else quote.close_price,
                             'carry_contract': roll_entry.carry_contract,
                             'price': quote.close_price,
                             'price_contract': current_contract,
-                            'forward': forward_quote.close_price if forward_quote else 0,
+                            'forward': forward_quote.close_price if forward_quote else quote.close_price,
                             'forward_contract': next_contract,
                             'quote': quote
                         }
@@ -56,11 +56,11 @@ class Command(BaseCommand):
 
                     if not created:
                         # Если запись уже существует, обновите ее значения
-                        entry.carry = carry_quote.close_price if carry_quote else 0
+                        entry.carry = carry_quote.close_price if carry_quote else quote.close_price
                         entry.carry_contract = roll_entry.carry_contract
                         entry.price = quote.close_price
                         entry.price_contract = current_contract
-                        entry.forward = forward_quote.close_price if forward_quote else 0
+                        entry.forward = forward_quote.close_price if forward_quote else quote.close_price
                         entry.forward_contract = next_contract
                         entry.quote = quote
                         entry.save()

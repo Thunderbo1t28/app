@@ -3,6 +3,29 @@
 <html>
 <head>
     <title>Выберите инструмент</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Используйте подходящий шрифт */
+        }
+
+        h2 {
+            margin-bottom: 20px; /* Увеличьте расстояние после заголовка */
+        }
+
+        ul {
+            list-style-type: none; /* Уберите маркеры списка */
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px; /* Увеличьте расстояние между элементами списка */
+        }
+
+        a {
+            text-decoration: none; /* Уберите подчеркивание у ссылок */
+            color: #3366cc; /* Задайте цвет текста ссылок */
+        }
+    </style>
 </head>
 <body>
     <h2>Выберите инструмент</h2>
@@ -10,11 +33,10 @@
         {% for instrument in instruments %}
             <li>
                 <a href="{% url 'contract_list_view' exchange=exchange instrument=instrument %}">{{ instrument }}</a>
-                <!-- Добавляем ссылку для параметров -->
-                <!-- Добавляем ссылку для расчета adjusted prices -->
-                <a href="{% url 'adjusted_prices_view' exchange=exchange instrument=instrument %}">(Рассчитать корректированные цены)</a>
-                <!-- Добавляем ссылку для роллкалендаря -->
-                <a href="{% url 'roll_calendar' exchange=exchange instrument=instrument %}">(Роллкалендарь)</a>
+                <a href="{% url 'roll_calendar' exchange=exchange instrument=instrument %}">  Роллкалендарь  </a>
+                <a href="{% url 'multiple_price_data' exchange=exchange instrument=instrument %}">  MultiplePriceData  </a>
+                <a href="{% url 'adjusted_prices_view' exchange=exchange instrument=instrument %}">  AdjustedPrice  </a>
+                <a href="{% url 'instrument_detail' exchange=exchange instrument=instrument %}">  InstrumentDetails  </a>
             </li>
         {% endfor %}
     </ul>

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from datetime import datetime, timedelta
 from django.db import transaction
-from quotes.models import Quote, RollCalendar
+from quotes.models import Instrument, Quote, RollCalendar
 from quotes.utils.contracts_utils import find_current_next_contracts_for_instruments
 
 class Command(BaseCommand):
@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 exchange = contracts['exchange']
                 #print(f"Instrument: {instrument}, Exchange: {exchange}, Current Contract: {current_contract}, Next Contract: {next_contract}")
                 existing_entry = RollCalendar.objects.filter(
-                    instrument=instrument,
+                    instrument__instrument=instrument,
                     current_contract=current_contract,
                     next_contract=next_contract,
                     carry_contract=next_contract
@@ -36,9 +36,13 @@ class Command(BaseCommand):
 
                 # Если запись не существует, добавляем её во временный список
                 if not existing_entry:
+                    # Получите объект Instrument для указанного инструмента
+                    instrument_obj = Instrument.objects.get(instrument=instrument)
+
+                    # Создайте объект RollCalendar с использованием объекта Instrument
                     roll_calendar_entries.append(RollCalendar(
                         exchange=exchange,
-                        instrument=instrument,
+                        instrument=instrument_obj,
                         current_contract=current_contract,
                         next_contract=next_contract,
                         carry_contract=next_contract,

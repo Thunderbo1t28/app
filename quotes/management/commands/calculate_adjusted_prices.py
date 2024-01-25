@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
-from quotes.models import Quote, AdjustedPrice, PriceData
+from quotes.models import Instrument, MultiplePriceData, Quote, AdjustedPrice
 
 class Command(BaseCommand):
     help = 'Calculate and save adjusted prices'
@@ -10,17 +10,18 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         # Получите уникальные инструменты из PriceData
-        instruments = PriceData.objects.values_list('instrument', flat=True).distinct()
+        instruments = MultiplePriceData.objects.values_list('instrument__instrument', flat=True).distinct()
 
         for instrument_code in instruments:
             self.stdout.write(f'Processing instrument: {instrument_code}')
             
             # Получите данные из вашей модели PriceData для текущего инструмента
-            multiple_prices_data = PriceData.objects.filter(instrument=instrument_code)
+            multiple_prices_data = MultiplePriceData.objects.filter(instrument__instrument=instrument_code)
             # Преобразуйте данные в pandas DataFrame
             multiple_prices_df = pd.DataFrame.from_records(
                 multiple_prices_data.values("datetime", "price", "price_contract", "forward", "forward_contract")
             )
+            #print(multiple_prices_df)
             multiple_prices_df.set_index("datetime", inplace=True)
 
             # Примените _panama_stitch для вычисления скорректированных цен
@@ -29,12 +30,12 @@ class Command(BaseCommand):
 
             # Сохраните скорректированные цены в базе данных Django
             for timestamp, price in adjusted_prices.items():
-                price_date = PriceData.objects.get(datetime=timestamp, instrument=instrument_code)
+                
         
                 # Обрабатываем все найденные объекты Quote
-                
+                instrument_obj = Instrument.objects.get(instrument=instrument_code)
                 AdjustedPrice.objects.create(
-                    instrument=instrument_code, timestamp=timestamp, price_date=price_date, price=price
+                    instrument=instrument_obj, timestamp=timestamp, price=price
                 )
 
             self.stdout.write(self.style.SUCCESS(f'Successfully processed instrument: {instrument_code}'))
