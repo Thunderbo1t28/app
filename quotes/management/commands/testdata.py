@@ -9,13 +9,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         sim_data = DjangoFuturesSimData()
         # Например:
-        instrument_code='Si'
-        start_date=''
-        price=sim_data.get_backadjusted_futures_price(instrument_code)
-        price = price.set_index('timestamp')
-        ewmac=calc_ewmac_forecast(price.price, 32, 128)
+        currency1='USD'
+        currency2='RUB'
+        start_date='2024-01-01'
+        data = sim_data.get_instrument_asset_classes()
+        #price=sim_data.get_backadjusted_futures_price(instrument_code)
+        #price = price.set_index('timestamp')
+        #ewmac=calc_ewmac_forecast(price.price, 32, 128)
         #ewmac.tail(5)
-        print(ewmac)
+
+        print(data)
         #multiple_prices = sim_data.get_multiple_prices_from_start_date(instrument_code, start_date)
         #spread_cost = sim_data.get_spread_cost(instrument_code)
         #backadjusted_prices = sim_data.get_backadjusted_futures_price(instrument_code)

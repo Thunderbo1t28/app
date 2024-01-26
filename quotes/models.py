@@ -72,6 +72,7 @@ class FxPriceData(models.Model):
     exchange = models.CharField(max_length=50)
     section = models.CharField(max_length=50)
     instrument = models.CharField(max_length=50, blank=True, null=True)
+    currency = models.CharField(max_length=50, blank=True, null=True)
     price = models.FloatField(default=0, null=True, blank=True)
 
     def __str__(self):

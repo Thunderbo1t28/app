@@ -8,13 +8,16 @@ from quotes.models import FxPriceData
 
 class Command(BaseCommand):
     help = 'Load available instruments into the database'
-
+    
+    
     def handle(self, *args, **options):
         # Базовый URL
         base_url = "https://iss.moex.com/iss/history/engines/currency/markets/index/securities.json"
-
+        fx_name = {'BYNFIXME': 'BYNRUB',
+               'CNYFIX': 'СNYRUB', 'EURFIX': 'EURRUB',
+               'EURUSDFIX': 'EURUSD', 'USDFIX': 'USDRUB'}
         # Получаем текущую дату
-        current_date =  datetime.strptime("2021-05-10", "%Y-%m-%d").date()  #datetime.now().date()
+        current_date =  datetime.strptime("2024-01-18", "%Y-%m-%d").date()  #datetime.now().date()
 
         # Задаем конечную дату (например, "2024-01-01")
         end_date = datetime.strptime("2020-01-01", "%Y-%m-%d").date()
@@ -41,29 +44,31 @@ class Command(BaseCommand):
             for item in response_df.itertuples(index=False):
                 # Ваш код обработки данных
                 sec_id = item.SECID
+                if sec_id and sec_id in fx_name:
+                    currency = fx_name[sec_id]
+                    # Проверка наличия данных
+                    if pd.notna(item.TRADEDATE) and pd.notna(item.CLOSE):
+                        existing_quotes = FxPriceData.objects.filter(
+                            instrument=sec_id,
+                            timestamp=item.TRADEDATE
+                        )
 
-                # Проверка наличия данных
-                if pd.notna(item.TRADEDATE) and pd.notna(item.CLOSE):
-                    existing_quotes = FxPriceData.objects.filter(
-                        instrument=sec_id,
-                        timestamp=item.TRADEDATE
-                    )
-
-                    # Если данные уже существуют, пропускаем текущую итерацию цикла
-                    if existing_quotes.exists():
-                        continue
-                    
+                        # Если данные уже существуют, пропускаем текущую итерацию цикла
+                        if existing_quotes.exists():
+                            continue
                         
-                    quote_data = {
-                        'timestamp': item.TRADEDATE,
-                        'exchange': 'MOEX',
-                        'instrument': sec_id,
-                        'section': item.BOARDID,
-                        'price': item.CLOSE
-                    }
-                    quotes_to_create.append(FxPriceData(**quote_data))
-                    #print(f'Data loaded successfully   {instrument}  {contract}  {item.TRADEDATE}')
-                
+                            
+                        quote_data = {
+                            'timestamp': item.TRADEDATE,
+                            'exchange': 'MOEX',
+                            'instrument': sec_id,
+                            'currency': currency,
+                            'section': item.BOARDID,
+                            'price': item.CLOSE
+                        }
+                        quotes_to_create.append(FxPriceData(**quote_data))
+                        #print(f'Data loaded successfully   {instrument}  {contract}  {item.TRADEDATE}')
+                    
 
             if quotes_to_create:
                 FxPriceData.objects.bulk_create(quotes_to_create)

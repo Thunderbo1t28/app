@@ -12,8 +12,8 @@ from typing import List, Union, Tuple
 import pandas as pd
 import numpy as np
 
-from sysdata.exceptions import missingData
-from syscore.constants import arg_not_supplied
+from quotes.sysdata.exceptions import missingData
+from quotes.syscore.constants import arg_not_supplied
 
 """
 
