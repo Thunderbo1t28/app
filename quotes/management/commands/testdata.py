@@ -1,3 +1,5 @@
+from datetime import datetime
+from tkinter import S
 from django.core.management.base import BaseCommand
 import numpy as np
 from quotes.dao import DjangoFuturesSimData
@@ -9,10 +11,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         sim_data = DjangoFuturesSimData()
         # Например:
-        currency1='USD'
-        currency2='RUB'
+        instrument_code = 'Si'
+        currency1='RUB'
+        currency2='USD'
         start_date='2024-01-01'
-        data = sim_data.get_instrument_asset_classes()
+        start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        data = sim_data.get_current_and_forward_price_data(instrument_code=instrument_code)
+        
         #price=sim_data.get_backadjusted_futures_price(instrument_code)
         #price = price.set_index('timestamp')
         #ewmac=calc_ewmac_forecast(price.price, 32, 128)

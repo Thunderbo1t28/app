@@ -48,6 +48,14 @@ class MultiplePriceData(models.Model):
     def __str__(self):
         return f"PriceData for {self.quote.instrument} - {self.datetime}"
 
+class RollParameters(models.Model):
+    exchange = models.CharField(max_length=50)
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    hold_rollcycle = models.CharField(max_length=50)
+    priced_rollcycle = models.CharField(max_length=50)
+    roll_offset_day = models.IntegerField(default=0)
+    carry_offset = models.IntegerField(default=-1)
+    approx_expiry_offset = models.IntegerField(default=0)
 
 class RollCalendar(models.Model):
     exchange = models.CharField(max_length=50)

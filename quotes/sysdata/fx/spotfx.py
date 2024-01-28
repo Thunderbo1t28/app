@@ -13,7 +13,7 @@ from quotes.syscore.pandas.merge_data_keeping_past_data import SPIKE_IN_DATA
 from quotes.sysobjects.spot_fx_prices import fxPrices, get_fx_tuple_from_code, DEFAULT_CURRENCY
 
 DEFAULT_DATES = pd.date_range(
-    start=datetime.datetime(1970, 1, 1), freq="B", end=datetime.datetime.now()
+    start=datetime.datetime(1970, 1, 1, 00,00,00), freq="B", end=datetime.datetime.now()
 )
 DEFAULT_RATE_SERIES = pd.Series(np.full(len(DEFAULT_DATES), 1.0), index=DEFAULT_DATES)
 
