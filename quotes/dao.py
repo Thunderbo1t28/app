@@ -11,7 +11,6 @@ from quotes.syscore.exceptions import missingData, missingInstrument
 from quotes.syscore.pandas.frequency import resample_prices_to_business_day_index
 from quotes.sysdata.django.django_spotfx import DjangoFxPricesData
 from quotes.sysdata.futures.instruments import futuresInstrumentData
-from quotes.sysdata.fx.spotfx import fxPricesData
 from quotes.sysobjects.adjusted_prices import futuresAdjustedPrices
 from quotes.sysobjects.instruments import assetClassesAndInstruments, futuresInstrument, futuresInstrumentWithMetaData, instrumentCosts, instrumentMetaData
 from quotes.sysobjects.multiple_prices import futuresMultiplePrices
@@ -30,6 +29,31 @@ class DjangoFuturesSimData(object):
         return "DjangoFuturesSimData object with %d instruments" % len(
             self.get_instrument_list()
         )
+    def __getitem__(self, keyname: str):
+        """
+         convenience method to get the price, make it look like a dict
+
+        :param keyname: instrument to get prices for
+        :type keyname: str
+
+        :returns: pd.DataFrame
+        """
+        price = self.get_raw_price(keyname)
+
+        return price
+
+    def keys(self) -> list:
+        """
+        list of instruments in this data set
+
+        :returns: list of str
+
+        >>> data=simData()
+        >>> data.keys()
+        []
+        """
+        return self.get_instrument_list()
+
     def get_instrument_list(self):
         instrument_list = Instrument.objects.values_list('instrument', flat=True).distinct()
         instrument_list_df = pd.DataFrame(instrument_list, columns=['instrument'])

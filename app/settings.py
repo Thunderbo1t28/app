@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'main',
     'quotes',
-    'backtest'
+    'backtest',
+    
 ]
 
 MIDDLEWARE = [

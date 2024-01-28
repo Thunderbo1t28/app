@@ -1,54 +1,18 @@
-from datetime import datetime
-from tkinter import S
-from django.core.management.base import BaseCommand
 import numpy as np
-from quotes.dao import DjangoFuturesSimData
 import pandas as pd
 
-class Command(BaseCommand):
-    help = 'Test EWMA Trading Rule using DjangoFuturesSimData'
+from quotes.syscore.dateutils import BUSINESS_DAYS_IN_YEAR
+from quotes.syscore.pandas.frequency import resample_prices_to_business_day_index
 
-    def handle(self, *args, **options):
-        sim_data = DjangoFuturesSimData()
-        # Например:
-        instrument_code = 'Si'
-        currency1='RUB'
-        currency2='USD'
-        start_date='2024-01-01'
-        start_date = datetime.strptime(start_date, "%Y-%m-%d")
-        data = sim_data['Si']
-        
-        #price=sim_data.get_backadjusted_futures_price(instrument_code)
-        #price = price.set_index('timestamp')
-        #ewmac=calc_ewmac_forecast(price.price, 32, 128)
-        #ewmac.tail(5)
 
-        print(data)
-        #multiple_prices = sim_data.get_multiple_prices_from_start_date(instrument_code, start_date)
-        #spread_cost = sim_data.get_spread_cost(instrument_code)
-        #backadjusted_prices = sim_data.get_backadjusted_futures_price(instrument_code)
-        #instrument_meta_data = sim_data.get_instrument_meta_data(instrument_code)
-        #roll_parameters = sim_data.get_roll_parameters(instrument_code)
-        #instrument_with_meta_data = sim_data.get_instrument_object_with_meta_data(instrument_code)
-        #raw_carry_data = sim_data.get_instrument_raw_carry_data(instrument_code)
-        #current_forward_price_data = sim_data.get_current_and_forward_price_data(instrument_code)
-        
-        # Выведите результаты в консоль или сделайте что-то еще
-        self.stdout.write(self.style.SUCCESS('Successfully tested EWMA Trading Rule.'))
+def robust_daily_vol_given_price(price: pd.Series, **kwargs):
+    price = resample_prices_to_business_day_index(price)
+    daily_returns = price.diff()
 
-def calc_ewmac_forecast(price, Lfast, Lslow=None):
-    
-    price = price.resample("1B").last()
-    if Lslow is None:
-        Lslow = 4 * Lfast
+    vol = robust_vol_calc(daily_returns, **kwargs)
 
-    fast_ewma = price.ewm(span=Lfast).mean()
-    slow_ewma = price.ewm(span=Lslow).mean()
-    raw_ewmac = fast_ewma - slow_ewma
+    return vol
 
-    vol = robust_vol_calc(price.diff())
-
-    return raw_ewmac / vol
 
 def robust_vol_calc(
     daily_returns: pd.Series,
@@ -116,19 +80,12 @@ def robust_vol_calc(
 
     return vol
 
-def simple_ewvol_calc(
-    daily_returns: pd.Series, days: int = 35, min_periods: int = 10, **ignored_kwargs
-) -> pd.Series:
-
-    # Standard deviation will be nan for first 10 non nan values
-    vol = daily_returns.ewm(adjust=True, span=days, min_periods=min_periods).std()
-
-    return vol
 
 def apply_min_vol(vol: pd.Series, vol_abs_min: float = 0.0000000001) -> pd.Series:
     vol[vol < vol_abs_min] = vol_abs_min
 
     return vol
+
 
 def apply_vol_floor(
     vol: pd.Series,
@@ -160,3 +117,86 @@ def backfill_vol(vol: pd.Series) -> pd.Series:
     vol_backfilled = vol_forward_fill.fillna(method="bfill")
 
     return vol_backfilled
+
+
+def mixed_vol_calc(
+    daily_returns: pd.Series,
+    days: int = 35,
+    min_periods: int = 10,
+    slow_vol_years: int = 20,
+    proportion_of_slow_vol: float = 0.3,
+    vol_abs_min: float = 0.0000000001,
+    backfill: bool = False,
+    **ignored_kwargs,
+) -> pd.Series:
+    """
+    Robust exponential volatility calculation, assuming daily series of prices
+    We apply an absolute minimum level of vol (absmin);
+    and a volfloor based on lowest vol over recent history
+
+    :param x: data
+    :type x: Tx1 pd.Series
+
+    :param days: Number of days in lookback (*default* 35)
+    :type days: int
+
+    :param min_periods: The minimum number of observations (*default* 10)
+    :type min_periods: int
+
+    :param vol_abs_min: The size of absolute minimum (*default* =0.0000000001)
+      0.0= not used
+    :type absmin: float or None
+
+    :param vol_floor Apply a floor to volatility (*default* True)
+    :type vol_floor: bool
+
+    :param floor_min_quant: The quantile to use for volatility floor (eg 0.05
+      means we use 5% vol) (*default 0.05)
+    :type floor_min_quant: float
+
+    :param floor_days: The lookback for calculating volatility floor, in days
+      (*default* 500)
+    :type floor_days: int
+
+    :param floor_min_periods: Minimum observations for floor - until reached
+      floor is zero (*default* 100)
+    :type floor_min_periods: int
+
+    :returns: pd.DataFrame -- volatility measure
+    """
+
+    # Standard deviation will be nan for first 10 non nan values
+    vol = simple_ewvol_calc(daily_returns, days=days, min_periods=min_periods)
+
+    slow_vol_days = slow_vol_years * BUSINESS_DAYS_IN_YEAR
+    long_vol = vol.ewm(slow_vol_days).mean()
+
+    vol = long_vol * proportion_of_slow_vol + vol * (1 - proportion_of_slow_vol)
+
+    vol = apply_min_vol(vol, vol_abs_min=vol_abs_min)
+
+    if backfill:
+        # use the first vol in the past, sort of cheating
+        vol = backfill_vol(vol)
+
+    return vol
+
+
+def simple_ewvol_calc(
+    daily_returns: pd.Series, days: int = 35, min_periods: int = 10, **ignored_kwargs
+) -> pd.Series:
+
+    # Standard deviation will be nan for first 10 non nan values
+    vol = daily_returns.ewm(adjust=True, span=days, min_periods=min_periods).std()
+
+    return vol
+
+
+def simple_vol_calc(
+    daily_returns: pd.Series, days: int = 25, min_periods: int = 10, **ignored_kwargs
+) -> pd.Series:
+
+    # Standard deviation will be nan for first 10 non nan values
+    vol = daily_returns.rolling(days, min_periods=min_periods).std()
+
+    return vol
