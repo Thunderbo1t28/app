@@ -190,7 +190,7 @@ class Config(object):
         """
 
         # inherit the log
-        setattr(self, "log", base_system.log.setup(stage="config"))
+        #setattr(self, "log", base_system.log.setup(stage="config"))
 
         # fill with defaults
         self.fill_with_defaults()
@@ -231,7 +231,7 @@ class Config(object):
         """
         Fills with defaults - private stuff first, then defaults
         """
-        self.log.debug("Adding config defaults")
+        #self.log.debug("Adding config defaults")
 
         self_as_dict = self.as_dict()
         defaults_dict = self.default_config_dict

@@ -75,7 +75,7 @@ class futuresSimData(simData):
         :return: price
         """
         price = self.get_backadjusted_futures_price(instrument_code)
-
+        
         return price[start_date:]
 
     def get_instrument_raw_carry_data(self, instrument_code: str) -> pd.DataFrame:
