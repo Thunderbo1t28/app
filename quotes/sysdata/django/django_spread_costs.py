@@ -3,7 +3,7 @@ import pandas as pd
 from quotes.sysdata.futures.spread_costs import spreadCostData
 from quotes.models import Instrument, SpreadCosts
 
-class DjangoSpreadCostData(spreadCostData):
+class djangoSpreadCostData(spreadCostData):
     """
     Read and write data class to get spread cost data for a given instrument using Django ORM.
 

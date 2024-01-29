@@ -3,7 +3,7 @@ from quotes.models import FxPriceData
 from quotes.sysdata.fx.spotfx import fxPricesData
 from quotes.sysobjects.spot_fx_prices import fxPrices  # Импорт модели данных Django
 
-class DjangoFxPricesData(fxPricesData):
+class djangoFxPricesData(fxPricesData):
     """
     Class to read / write fx prices using Django ORM
     """

@@ -1,32 +1,41 @@
 #from quotes.sysdata.base_data import baseData
+import pandas as pd
 from quotes.sysdata.futures.adjusted_prices import futuresAdjustedPricesData
 from quotes.sysobjects.adjusted_prices import futuresAdjustedPrices
-from quotes.models import AdjustedPrice  # Замените "your_app" на имя вашего приложения Django
+from quotes.models import AdjustedPrice, Instrument  # Замените "your_app" на имя вашего приложения Django
 
-class DjangoAdjustedPricesData(futuresAdjustedPricesData):
+class djangoFuturesAdjustedPricesData(futuresAdjustedPricesData):
     def _add_adjusted_prices_without_checking_for_existing_entry(
         self, instrument_code: str, adjusted_price_data: futuresAdjustedPrices
     ):
+        instrument = Instrument.objects.get(instrument=instrument_code)
         for timestamp, price in adjusted_price_data.items():
             AdjustedPrice.objects.create(
-                instrument_id=instrument_code,
+                instrument_id=instrument,
                 timestamp=timestamp,
                 price=price
             )
 
     def get_list_of_instruments(self) -> list:
-        return list(AdjustedPrice.objects.values_list('instrument', flat=True).distinct())
+        instrument_ids = AdjustedPrice.objects.values_list('instrument_id', flat=True).distinct()
+        instruments = Instrument.objects.filter(id__in=instrument_ids)
+        return list(instruments.values_list('instrument', flat=True))
 
     def _delete_adjusted_prices_without_any_warning_be_careful(
         self, instrument_code: str
     ):
-        AdjustedPrice.objects.filter(instrument_id=instrument_code).delete()
+        instrument = Instrument.objects.get(instrument=instrument_code)
+        AdjustedPrice.objects.filter(instrument_id=instrument).delete()
 
     def _get_adjusted_prices_without_checking(
         self, instrument_code: str
     ) -> futuresAdjustedPrices:
-        adjusted_prices = futuresAdjustedPrices()
-        prices = AdjustedPrice.objects.filter(instrument_id=instrument_code)
-        for price in prices:
-            adjusted_prices[price.timestamp] = price.price
-        return adjusted_prices
+        instrument = Instrument.objects.get(instrument=instrument_code)
+        #adjusted_prices = futuresAdjustedPrices()
+        prices = AdjustedPrice.objects.filter(instrument=instrument).order_by('timestamp')
+        adjusted_prices_df = pd.DataFrame.from_records(prices.values())
+        adjusted_prices_df.set_index("timestamp", inplace=True)
+        adjusted_prices_df.index = adjusted_prices_df.index.tz_localize(None)
+        adjusted_prices_df = adjusted_prices_df['price']
+        
+        return futuresAdjustedPrices(adjusted_prices_df)

@@ -5,7 +5,7 @@ from quotes.sysobjects.contract_dates_and_expiries import listOfContractDateStr
 from quotes.sysobjects.contracts import futuresContract, listOfFuturesContracts
 from quotes.models import Quote  # Замените "your_app" на имя вашего приложения Django
 
-class DjangoFuturesContractData(futuresContractData):
+class djangoFuturesContractData(futuresContractData):
     def get_list_of_contract_dates_for_instrument_code(
         self, instrument_code: str, allow_expired: bool = False
     ) -> listOfContractDateStr:

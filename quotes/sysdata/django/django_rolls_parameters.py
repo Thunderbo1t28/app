@@ -3,7 +3,7 @@ from quotes.sysdata.futures.rolls_parameters import rollParametersData
 from quotes.models import Instrument, RollParameters
 from quotes.sysobjects.rolls import rollParameters
 
-class DjangoRollParametersData(rollParametersData):
+class djangoRollParametersData(rollParametersData):
     """
     Read and write data class to get roll data for a given instrument using Django ORM.
 
@@ -45,7 +45,7 @@ class DjangoRollParametersData(rollParametersData):
         instrument_instance = Instrument.objects.get(instrument=instrument_code)
         roll_parameters_instance = RollParameters.objects.get(instrument=instrument_instance)
         roll_parameters = rollParameters(
-            exchange=roll_parameters_instance.exchange,
+            #exchange=roll_parameters_instance.exchange,
             hold_rollcycle=roll_parameters_instance.hold_rollcycle,
             priced_rollcycle=roll_parameters_instance.priced_rollcycle,
             roll_offset_day=roll_parameters_instance.roll_offset_day,

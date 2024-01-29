@@ -9,7 +9,7 @@ from quotes.syscore.dateutils import ARBITRARY_START
 from quotes.models import AdjustedPrice, FxPriceData, Instrument, MultiplePriceData, RollCalendar, RollParameters, SpreadCosts
 from quotes.syscore.exceptions import missingData, missingInstrument
 from quotes.syscore.pandas.frequency import resample_prices_to_business_day_index
-from quotes.sysdata.django.django_spotfx import DjangoFxPricesData
+from quotes.sysdata.django.django_spotfx import djangoFxPricesData
 from quotes.sysdata.futures.instruments import futuresInstrumentData
 from quotes.sysobjects.adjusted_prices import futuresAdjustedPrices
 from quotes.sysobjects.instruments import assetClassesAndInstruments, futuresInstrument, futuresInstrumentWithMetaData, instrumentCosts, instrumentMetaData
@@ -64,7 +64,7 @@ class DjangoFuturesSimData(object):
         fx_price_data = FxPriceData.objects.all()
 
         # Создаем экземпляр класса fxPricesData
-        fx_data = DjangoFxPricesData()
+        fx_data = djangoFxPricesData()
 
         # Проходим по каждой записи и добавляем ее в объект fxPricesData
         for entry in fx_price_data:

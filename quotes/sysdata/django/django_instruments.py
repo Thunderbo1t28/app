@@ -2,7 +2,7 @@ from quotes.sysdata.futures.instruments import futuresInstrumentData
 from quotes.models import Instrument
 from quotes.sysobjects.instruments import futuresInstrument, futuresInstrumentWithMetaData, instrumentMetaData
 
-class DjangoFuturesInstrumentData(futuresInstrumentData):
+class djangoFuturesInstrumentData(futuresInstrumentData):
     """
     Read and write data class to get instrument data using Django ORM.
 
