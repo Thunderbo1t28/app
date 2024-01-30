@@ -54,7 +54,7 @@ class djangoFuturesMultiplePricesData(futuresMultiplePricesData):
         # Convert Django QuerySet to a DataFrame
         prices_df = pd.DataFrame.from_records(prices_data.values())
         prices_df.set_index("datetime", inplace=True)
-
+        prices_df.index = prices_df.index.tz_localize(None)
         # Assuming your model fields match the expected column names
         prices_df = prices_df.rename(columns={
             'carry': carry_name,

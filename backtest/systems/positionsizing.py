@@ -72,7 +72,7 @@ class PositionSizing(SystemStage):
         position = self.get_subsystem_position(instrument_code)
 
         vol_scalar = self.get_average_position_at_subsystem_level(instrument_code)
-        log = self.log
+        #log = self.log
         config = self.config
 
         buffer = calculate_buffers(

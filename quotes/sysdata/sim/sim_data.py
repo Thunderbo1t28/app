@@ -275,7 +275,7 @@ class simData(baseData):
 
         """
         start_date = self.start_date_for_data()
-
+        #print(start_date)
         return self._get_fx_data_from_start_date(
             currency1, currency2, start_date=start_date
         )

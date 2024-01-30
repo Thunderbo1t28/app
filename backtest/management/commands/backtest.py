@@ -16,7 +16,7 @@ from backtest.systems.forecast_combine import ForecastCombine
 from backtest.systems.rawdata import RawData
 from backtest.systems.positionsizing import PositionSizing
 from backtest.systems.accounts.accounts_stage import Account
-
+from backtest.systems.portfolio import Portfolios
 
 class Command(BaseCommand):
     help = 'Test EWMA Trading Rule using DjangoFuturesSimData'
@@ -40,7 +40,7 @@ class Command(BaseCommand):
         my_config=Config()
         empty_rules=Rules()
         my_config.trading_rules=dict(ewmac8=ewmac_8, ewmac32=ewmac_32)
-        my_config.instruments=["Si", "Eu"]
+        my_config.instruments=["Si", "BR", "GOLD", "NG", "Eu", "MXI"]
         my_config.use_forecast_scale_estimates=True
         fcs=ForecastScaleCap()
         #my_system = System([fcs, empty_rules], data, my_config)
@@ -51,13 +51,22 @@ class Command(BaseCommand):
         my_account = Account()
 
         my_config.forecast_weight_estimate = dict(method="one_period")
-        my_config.use_forecast_weight_estimates = True
-        my_config.use_forecast_div_mult_estimates = True
+        
+        my_config.percentage_vol_target=25
+        my_config.notional_trading_capital=5000000
+        my_config.base_currency="RUB"
+        portfolio = Portfolios()
 
-        my_system = System([my_account, fcs, my_rules, combiner, position_size, raw_data], data, my_config)
+        ## Using shrinkage will speed things but - but I don't recommend it for actual trading...
+        my_config.use_instrument_weight_estimates = True
+        my_config.use_instrument_div_mult_estimates = True
+        my_config.instrument_weight_estimate=dict(method="shrinkage", date_method="in_sample") ## speeds things up
 
-        print(my_system.combForecast.get_forecast_weights("Si").tail(5))
-        print(my_system.combForecast.get_forecast_diversification_multiplier("Si").tail(5))
+        my_system = System([my_account, fcs, my_rules, combiner, position_size, raw_data,
+                            portfolio], data, my_config)
+
+        print(my_system.portfolio.get_instrument_weights())
+        print(my_system.portfolio.get_instrument_diversification_multiplier())
         #print(my_system.forecastScaleCap.get_forecast_scalar("Si", "ewmac32").tail(5))
         #ewmac.tail(5)
         #result.plot()

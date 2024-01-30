@@ -45,7 +45,7 @@ class fxPricesData(baseData):
         :param fx_code: currency code, in the form EURUSD
         :return: fxData object
         """
-        print(fx_code)
+        #print(fx_code)
         currency1, currency2 = get_fx_tuple_from_code(fx_code)
 
         if currency1 == currency2:
@@ -137,7 +137,7 @@ class fxPricesData(baseData):
             #log.warning("Currency %s is missing from list of FX data" % code)
             
             return fxPrices.create_empty()
-        print("1")
+        #print("1")
         data = self._get_fx_prices_without_checking(code)
 
         return data

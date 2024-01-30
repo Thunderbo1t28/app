@@ -33,27 +33,15 @@ class djangoFxPricesData(fxPricesData):
 
     def _get_fx_prices_without_checking(self, code):
         # Получение всех записей из базы данных с указанным кодом и преобразование их в объект fxPrices
-        fx_price_data = FxPriceData.objects.filter(currency=code)
-        #fx_prices_data = fxPrices.create_from_queryset(fx_price_instances)
-        #print(fx_prices_data)
-        fx_data = djangoFxPricesData()
+        fx_price_data = FxPriceData.objects.filter(currency=code).order_by("timestamp")
 
-        # Проходим по каждой записи и добавляем ее в объект fxPricesData
-        for entry in fx_price_data:
-            currency = entry.currency
-            timestamp = entry.timestamp
-            price = entry.price
+        # Создаем экземпляр класса fxPricesData
+        fx_price_df = pd.DataFrame.from_records(fx_price_data.values())
+        fx_price_df.set_index("timestamp", inplace=True)
+        fx_price_df.index = fx_price_df.index.tz_localize(None)
+        fx_price_df = fx_price_df['price']
 
-            # Создаем DataFrame с данными
-            data = pd.DataFrame({"timestamp": [timestamp], "price": [price]})
-            data.set_index("timestamp", inplace=True)
-            data.index = data.index.tz_localize(None)
-            data.index = pd.to_datetime(data.index)
-            series_from_df = data.squeeze()
-            #data = data['price']
-            # Добавляем данные в объект fxPricesData
-            fx_data.add_fx_prices(currency, series_from_df)
-        return fx_data
+        return fxPrices(fx_price_df)
 
     def get_list_of_fxcodes(self):
         # Получение списка всех кодов из базы данных
