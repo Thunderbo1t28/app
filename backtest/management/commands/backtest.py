@@ -11,6 +11,8 @@ from backtest.systems.forecasting import Rules
 from backtest.systems.basesystem import System
 from quotes.sysdata.sim.django_futures_sim_data import djangoFuturesSimData
 from quotes.sysdata.config.configdata import Config
+from backtest.systems.forecast_scale_cap import ForecastScaleCap
+from backtest.systems.forecast_combine import ForecastCombine
 
 
 class Command(BaseCommand):
@@ -35,8 +37,16 @@ class Command(BaseCommand):
         my_config=Config()
         empty_rules=Rules()
         my_config.trading_rules=dict(ewmac8=ewmac_8, ewmac32=ewmac_32)
-        my_system=System([empty_rules], data, my_config)
-        print(my_system.rules.get_raw_forecast("Si", "ewmac8"))
+        my_config.instruments=["Si", "SPYF", "GOLD", "MXI"]
+        my_config.use_forecast_scale_estimates=True
+        fcs=ForecastScaleCap()
+        #my_system = System([fcs, empty_rules], data, my_config)
+        #my_system=System([empty_rules], data, my_config)
+        combiner = ForecastCombine()
+        my_system = System([fcs, empty_rules, combiner], data, my_config)
+        print(my_system.combForecast.get_forecast_weights("Si").tail(5))
+        print(my_system.combForecast.get_forecast_diversification_multiplier("Si").tail(5))
+        #print(my_system.forecastScaleCap.get_forecast_scalar("Si", "ewmac32").tail(5))
         #ewmac.tail(5)
         #result.plot()
         #show()
