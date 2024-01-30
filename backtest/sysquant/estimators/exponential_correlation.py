@@ -154,7 +154,7 @@ class exponentialCorrelationResults(object):
 
         raw_correlations = data_for_correlation.ewm(
             span=ew_lookback, min_periods=min_periods, ignore_na=True
-        ).corr(pairwise=True, ignore_na=True)
+        ).corr(pairwise=True, ) #ignore_na=True
 
         self._raw_correlations = raw_correlations
 

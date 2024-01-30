@@ -13,6 +13,9 @@ from quotes.sysdata.sim.django_futures_sim_data import djangoFuturesSimData
 from quotes.sysdata.config.configdata import Config
 from backtest.systems.forecast_scale_cap import ForecastScaleCap
 from backtest.systems.forecast_combine import ForecastCombine
+from backtest.systems.rawdata import RawData
+from backtest.systems.positionsizing import PositionSizing
+from backtest.systems.accounts.accounts_stage import Account
 
 
 class Command(BaseCommand):
@@ -32,18 +35,27 @@ class Command(BaseCommand):
         #price = price.set_index('timestamp')
         ewmac_8=TradingRule((ewmac, [], dict(Lfast=8, Lslow=32))) ## as a tuple (function, data, other_args) notice the empty element in the middle
         ewmac_32=TradingRule(dict(function=ewmac, other_args=dict(Lfast=32, Lslow=128)))  ## as a dict
-        #my_rules=Rules(dict(ewmac8=ewmac_8, ewmac32=ewmac_32))
+        my_rules=Rules(dict(ewmac8=ewmac_8, ewmac32=ewmac_32))
         #my_system=System([my_rules], data)
         my_config=Config()
         empty_rules=Rules()
         my_config.trading_rules=dict(ewmac8=ewmac_8, ewmac32=ewmac_32)
-        my_config.instruments=["Si", "SPYF", "GOLD", "MXI"]
+        my_config.instruments=["Si", "Eu"]
         my_config.use_forecast_scale_estimates=True
         fcs=ForecastScaleCap()
         #my_system = System([fcs, empty_rules], data, my_config)
         #my_system=System([empty_rules], data, my_config)
         combiner = ForecastCombine()
-        my_system = System([fcs, empty_rules, combiner], data, my_config)
+        raw_data = RawData()
+        position_size = PositionSizing()
+        my_account = Account()
+
+        my_config.forecast_weight_estimate = dict(method="one_period")
+        my_config.use_forecast_weight_estimates = True
+        my_config.use_forecast_div_mult_estimates = True
+
+        my_system = System([my_account, fcs, my_rules, combiner, position_size, raw_data], data, my_config)
+
         print(my_system.combForecast.get_forecast_weights("Si").tail(5))
         print(my_system.combForecast.get_forecast_diversification_multiplier("Si").tail(5))
         #print(my_system.forecastScaleCap.get_forecast_scalar("Si", "ewmac32").tail(5))

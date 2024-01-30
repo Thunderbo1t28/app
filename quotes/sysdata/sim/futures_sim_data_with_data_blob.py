@@ -36,7 +36,7 @@ class genericBlobUsingFuturesSimData(futuresSimData):
     ) -> fxPrices:
         fx_code = currency1 + currency2
         data = self.db_fx_prices_data.get_fx_prices(fx_code)
-
+        print(fx_code)
         data_after_start = data[start_date:]
 
         return data_after_start

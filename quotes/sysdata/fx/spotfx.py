@@ -13,7 +13,7 @@ from quotes.syscore.pandas.merge_data_keeping_past_data import SPIKE_IN_DATA
 from quotes.sysobjects.spot_fx_prices import fxPrices, get_fx_tuple_from_code, DEFAULT_CURRENCY
 
 DEFAULT_DATES = pd.date_range(
-    start=datetime.datetime(1970, 1, 1, 00,00,00), freq="B", end=datetime.datetime.now()
+    start=datetime.datetime(1970, 1, 1), freq="B", end=datetime.datetime.now()
 )
 DEFAULT_RATE_SERIES = pd.Series(np.full(len(DEFAULT_DATES), 1.0), index=DEFAULT_DATES)
 
@@ -35,6 +35,7 @@ class fxPricesData(baseData):
         return self.get_list_of_fxcodes()
 
     def __getitem__(self, code):
+        #print(code)
         return self.get_fx_prices(code)
 
     def get_fx_prices(self, fx_code: str) -> fxPrices:
@@ -44,6 +45,7 @@ class fxPricesData(baseData):
         :param fx_code: currency code, in the form EURUSD
         :return: fxData object
         """
+        print(fx_code)
         currency1, currency2 = get_fx_tuple_from_code(fx_code)
 
         if currency1 == currency2:
@@ -52,6 +54,7 @@ class fxPricesData(baseData):
 
         elif currency2 == DEFAULT_CURRENCY:
             # We ought to have data
+            
             fx_data = self._get_standard_fx_prices(fx_code)
 
         elif currency1 == DEFAULT_CURRENCY:
@@ -122,6 +125,7 @@ class fxPricesData(baseData):
         :param code: currency code, in the form EUR
         :return: fxData object
         """
+        
         code = currency1 + DEFAULT_CURRENCY
         fx_data = self._get_fx_prices(code)
 
@@ -133,7 +137,7 @@ class fxPricesData(baseData):
             #log.warning("Currency %s is missing from list of FX data" % code)
             
             return fxPrices.create_empty()
-
+        print("1")
         data = self._get_fx_prices_without_checking(code)
 
         return data
@@ -153,6 +157,7 @@ class fxPricesData(baseData):
             #log.warning("You need to call delete_fx_prices with a flag to be sure")
 
     def is_code_in_data(self, code: str) -> bool:
+        
         if code in self.get_list_of_fxcodes():
             return True
         else:

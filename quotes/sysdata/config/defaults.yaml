@@ -205,7 +205,7 @@ forecast_weight_estimate:
 #
 percentage_vol_target: 16.0
 notional_trading_capital: 1000000
-base_currency: "USD"
+base_currency: "RUB"
 # other options are full_compounding and half_compounding, but see syscore.capital.py
 capital_multiplier:
    func: quotes.syscore.capital.fixed_capital

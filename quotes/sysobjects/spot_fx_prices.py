@@ -101,6 +101,7 @@ DEFAULT_CURRENCY = "RUB"
 
 
 def get_fx_tuple_from_code(code):
+    #print(code)
     assert len(code) == 6
 
     currency1 = code[:3]

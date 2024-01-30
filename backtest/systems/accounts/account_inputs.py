@@ -113,6 +113,7 @@ class accountInputs(SystemStage):
         return self.parent.data.get_value_of_block_price_move(instrument_code)
 
     def get_fx_rate(self, instrument_code: str) -> pd.Series:
+        print(instrument_code)
         return self.parent.positionSize.get_fx_rate(instrument_code)
 
     def get_subsystem_position(self, instrument_code: str) -> pd.Series:

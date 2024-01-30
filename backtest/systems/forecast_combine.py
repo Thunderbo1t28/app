@@ -622,7 +622,7 @@ class ForecastCombine(SystemStage):
         weight_func = weighting_func(
             returns_pre_processor,
             asset_name=instrument_code,
-            log=self.log,
+            #log=self.log,
             **weighting_params,
         )
 
@@ -653,7 +653,7 @@ class ForecastCombine(SystemStage):
         weighting_params = {**weighting_params, **cost_params}
 
         returns_pre_processor = returnsPreProcessor(
-            pandl_forecasts, turnovers=turnovers, log=self.log, **weighting_params
+            pandl_forecasts, turnovers=turnovers,  **weighting_params
         )
 
         return returns_pre_processor
