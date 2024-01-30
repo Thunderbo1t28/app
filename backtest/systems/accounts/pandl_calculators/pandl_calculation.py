@@ -72,6 +72,8 @@ class pandlCalculation(object):
         as_pd_series = self.as_pd_series(**kwargs)
 
         resample_freq = from_config_frequency_pandas_resample(frequency)
+        #print(as_pd_series)
+        as_pd_series.index = pd.to_datetime(as_pd_series.index)
         pd_series_at_frequency = as_pd_series.resample(resample_freq).sum()
 
         return pd_series_at_frequency

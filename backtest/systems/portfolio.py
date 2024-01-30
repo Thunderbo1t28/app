@@ -691,7 +691,7 @@ class Portfolios(SystemStage):
         #self.log.info("Calculating raw instrument weights")
 
         weight_func = weighting_func(
-            returns_pre_processor, log=self.log, **weighting_params
+            returns_pre_processor,  **weighting_params
         )
 
         return weight_func
