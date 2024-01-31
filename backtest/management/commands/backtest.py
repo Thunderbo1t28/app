@@ -1,9 +1,11 @@
 from datetime import datetime
+import json
 from tkinter import S
 from django.core.management.base import BaseCommand
 import numpy as np
 #from quotes.dao import DjangoFuturesSimData
 import pandas as pd
+from backtest.models import BacktestResult
 from backtest.systems.provided.rules.ewmac import ewmac_forecast_with_defaults as ewmac
 from matplotlib.pyplot import show
 from backtest.systems.trading_rules import TradingRule
@@ -65,8 +67,14 @@ class Command(BaseCommand):
         my_system = System([my_account, fcs, my_rules, combiner, position_size, raw_data,
                             portfolio], data, my_config)
 
-        print(my_system.portfolio.get_instrument_weights())
-        print(my_system.portfolio.get_instrument_diversification_multiplier())
+        profits=my_system.accounts.portfolio()
+        # Преобразование результатов в формат JSON
+        metrics_json = json.dumps(profits.percent.stats())
+        additional_info_json = json.dumps(profits.gross.percent.stats())
+
+        # Сохранение результатов в базе данных
+        backtest_result = BacktestResult(metrics=metrics_json, additional_info=additional_info_json)
+        backtest_result.save()
         #print(my_system.forecastScaleCap.get_forecast_scalar("Si", "ewmac32").tail(5))
         #ewmac.tail(5)
         #result.plot()

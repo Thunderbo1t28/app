@@ -107,7 +107,7 @@ class accountBufferingSystemLevel(accountInputs):
         roundpositions: bool = True,
     ) -> pd.Series:
 
-        self.log.debug("Calculating buffered positions")
+        #self.log.debug("Calculating buffered positions")
         trade_to_edge = self.config.buffer_trade_to_edge
 
         buffered_position = apply_buffer(

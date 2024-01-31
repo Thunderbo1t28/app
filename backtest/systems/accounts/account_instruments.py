@@ -40,10 +40,10 @@ class accountInstruments(accountCosts, accountBufferingSystemLevel):
         0.13908407620762306
         """
 
-        self.log.debug(
-            "Calculating pandl for instrument for %s" % instrument_code,
-            instrument_code=instrument_code,
-        )
+        #self.log.debug(
+            #"Calculating pandl for instrument for %s" % instrument_code,
+            #instrument_code=instrument_code,
+       # )
 
         positions = self.get_buffered_position(
             instrument_code, roundpositions=roundpositions
@@ -88,10 +88,10 @@ class accountInstruments(accountCosts, accountBufferingSystemLevel):
         0.13908407620762306
         """
 
-        self.log.debug(
-            "Calculating pandl for instrument for %s" % instrument_code,
-            instrument_code=instrument_code,
-        )
+        #self.log.debug(
+            #"Calculating pandl for instrument for %s" % instrument_code,
+            #instrument_code=instrument_code,
+        #)
 
         use_SR_costs = self.use_SR_costs
 
@@ -185,10 +185,10 @@ class accountInstruments(accountCosts, accountBufferingSystemLevel):
         roundpositions: bool = True,
     ) -> accountCurve:
 
-        if not roundpositions:
-            self.log.warning(
-                "Using roundpositions=False with cash costs may lead to inaccurate costs (fixed costs, eg commissions will be overstated!!!"
-            )
+        #if not roundpositions:
+            #self.log.warning(
+                #"Using roundpositions=False with cash costs may lead to inaccurate costs (fixed costs, eg commissions will be overstated!!!"
+            #)
 
         raw_costs = self.get_raw_cost_data(instrument_code)
 

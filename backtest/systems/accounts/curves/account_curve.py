@@ -278,7 +278,12 @@ class accountCurve(pd.Series):
         return sortino
 
     def vals(self):
-        vals = self.values[~np.isnan(self.values)]
+        numeric_values = [value for value in self.values if isinstance(value, (int, float))]
+
+        # Теперь используем функцию isnan
+        vals = np.array(numeric_values)
+        vals = vals[~np.isnan(vals)]
+        #vals = self.values[~np.isnan(self.values)]
 
         return vals
 

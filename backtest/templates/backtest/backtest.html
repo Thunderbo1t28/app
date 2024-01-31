@@ -1,0 +1,17 @@
+<form method="post">
+    {% csrf_token %}
+    <!-- Поля для ввода параметров конфигурации -->
+    <label for="trading_rules_ewmac8_Lfast">EWMAС 8 (Lfast): </label>
+    <input type="number" name="trading_rules_ewmac8_Lfast" id="trading_rules_ewmac8_Lfast"><br>
+
+    <label for="trading_rules_ewmac8_Lslow">EWMAС 8 (Lslow): </label>
+    <input type="number" name="trading_rules_ewmac8_Lslow" id="trading_rules_ewmac8_Lslow"><br>
+
+    <label for="trading_rules_ewmac32_Lfast">EWMAС 32 (Lfast): </label>
+    <input type="number" name="trading_rules_ewmac32_Lfast" id="trading_rules_ewmac32_Lfast"><br>
+
+    <label for="trading_rules_ewmac32_Lslow">EWMAС 32 (Lslow): </label>
+    <input type="number" name="trading_rules_ewmac32_Lslow" id="trading_rules_ewmac32_Lslow"><br>
+    <!-- Другие параметры конфигурации -->
+    <button type="submit">Сохранить</button>
+</form>
