@@ -20,7 +20,7 @@ def backtest_view(request):
             # Получение других значений конфигурации
             # Вызов команды backtest_test с передачей колбэка
             print(selected_rules)
-            args = [1]
+            args = selected_rules
             
             call_command('backtest_test', *args) #'--callback', backtest_callback,)
 

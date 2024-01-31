@@ -16,3 +16,12 @@ class BacktestResult(models.Model):
 
     def __str__(self):
         return f"Backtest Result {self.timestamp}"
+
+class TradingRuleModel(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    function = models.CharField(max_length=100)
+    data = models.JSONField()
+    other_args = models.JSONField()
+
+    def __str__(self):
+        return self.name

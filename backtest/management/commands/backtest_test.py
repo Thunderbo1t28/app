@@ -1,6 +1,6 @@
 import json
 from django.core.management.base import BaseCommand
-from backtest.models import BacktestResult, MyConfigModel
+from backtest.models import BacktestResult, MyConfigModel, TradingRuleModel
 from backtest.systems.provided.rules.ewmac import ewmac_forecast_with_defaults as ewmac
 from backtest.systems.trading_rules import TradingRule
 from backtest.systems.forecasting import Rules
@@ -20,7 +20,7 @@ class Command(BaseCommand):
     help = 'Test EWMA Trading Rule using DjangoFuturesSimData'
 
     def add_arguments(self, parser):
-        parser.add_argument('config_id', type=int)
+        parser.add_argument('trading_rules', nargs='+', type=str)
 
         #parser.add_argument('--callback', dest='callback', type=str, default=None, help='Specify the callback function')
 
@@ -29,16 +29,21 @@ class Command(BaseCommand):
         #logging.info("Starting backtest_test command...")
         data = djangoFuturesSimData()
         empty_rules = Rules()
-        
-        # Получение аргументов из командной строки по их именам
-        config_id = options['config_id']
-        config = MyConfigModel.objects.get(id=config_id)
-        # Создание объекта Config с полученными параметрами
         my_config = Config()
-        my_config.trading_rules = {
-            'ewmac8': TradingRule((ewmac, [], dict(Lfast=config.trading_rules_ewmac8_Lfast, Lslow=config.trading_rules_ewmac8_Lslow))),
-            'ewmac32': TradingRule((ewmac, [], dict(Lfast=config.trading_rules_ewmac32_Lfast, Lslow=config.trading_rules_ewmac32_Lslow)))
-        }
+        # Получение аргументов из командной строки по их именам
+        trading_rules_list = options['trading_rules']
+        my_config.trading_rules = {}
+        for item in trading_rules_list:
+            trading_rule = TradingRuleModel.objects.get(name=item)
+            my_config.trading_rules[item] = TradingRule(
+                dict(function=trading_rule.function,
+                data=trading_rule.data,
+                other_args=trading_rule.other_args
+            ))
+        #config = MyConfigModel.objects.get(id=config_id)
+        # Создание объекта Config с полученными параметрами
+        
+        
 
         fcs = ForecastScaleCap()
         portfolio = Portfolios()
