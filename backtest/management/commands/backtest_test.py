@@ -52,7 +52,8 @@ class Command(BaseCommand):
         position_size = PositionSizing()
         my_account = Account()
 
-        my_config.instruments = ["Si", "BR", "GOLD", "NG", "Eu", "MXI"]
+        my_config.instruments = ["Si", "BR", "GOLD", "NG", "Eu", "MXI", "MOEX", "ALRS",
+                                 "SILV", "SBRF", "GAZR", "ROSN", "MAGN", "SPYF", "NASD"]
         my_config.use_forecast_scale_estimates = True
         my_config.forecast_weight_estimate = dict(method="one_period")
         my_config.percentage_vol_target = 25

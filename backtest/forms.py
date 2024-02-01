@@ -13,6 +13,10 @@ class ConfigForm(forms.Form):
         ('relmomentum20', 'Relative Momentum 20'),
         ('relmomentum40', 'Relative Momentum 40'),
         ('relmomentum80', 'Relative Momentum 80'),
+        ('carry10', 'carry10'),
+        ('carry30', 'carry30'),
+        ('carry60', 'carry60'),
+        ('carry125', 'carry125'),
         ('mrinasset1000', 'MR In Asset 1000'),
         ('assettrend2', 'Asset Trend 2'),
         ('assettrend4', 'Asset Trend 4'),
@@ -31,6 +35,14 @@ class ConfigForm(forms.Form):
         ('momentum16', 'Momentum 16'),
         ('momentum32', 'Momentum 32'),
         ('momentum64', 'Momentum 64'),
+        ('relcarry', 'relcarry'),
+        ('skewabs365', 'skewabs365'),
+        ('skewabs180', 'skewabs180'),
+        ('skewrv365', 'skewrv365'),
+        ('skewrv180', 'skewrv180'),
+        ('accel16', 'accel16'),
+        ('accel32', 'accel32'),
+        ('accel64', 'accel64'),
     ]
     
     # Создаем поле выбора правила с помощью MultipleChoiceField

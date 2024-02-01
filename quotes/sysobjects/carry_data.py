@@ -54,6 +54,7 @@ class rawCarryData(pd.DataFrame):
 
     @property
     def price_contract(self) -> pd.Series:
+        #print(self.PRICE_CONTRACT)
         return self.PRICE_CONTRACT
 
     @property

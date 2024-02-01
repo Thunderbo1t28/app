@@ -55,6 +55,7 @@ class djangoFuturesMultiplePricesData(futuresMultiplePricesData):
         prices_df = pd.DataFrame.from_records(prices_data.values())
         prices_df.set_index("datetime", inplace=True)
         prices_df.index = prices_df.index.tz_localize(None)
+        
         # Assuming your model fields match the expected column names
         prices_df = prices_df.rename(columns={
             'carry': carry_name,
@@ -67,6 +68,8 @@ class djangoFuturesMultiplePricesData(futuresMultiplePricesData):
         prices_df = prices_df[[carry_name, contract_name_from_column_name(carry_name), 
                                 price_name, contract_name_from_column_name(price_name), 
                                 forward_name, contract_name_from_column_name(forward_name)]]
+        #prices_df.set_index("datetime", inplace=True)
+        #prices_df.index = prices_df.index.tz_localize(None)
         return futuresMultiplePrices(prices_df)
 
     def _delete_multiple_prices_without_any_warning_be_careful(

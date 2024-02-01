@@ -88,10 +88,10 @@ class Command(BaseCommand):
                 #month_char = last_two_chars[0]
                 #month_mapping = {'F': 1, 'G': 2, 'H': 3, 'J': 4, 'K': 5, 'M': 6, 'N': 7, 'Q': 8, 'U': 9, 'V': 10, 'X': 11, 'Z': 12}
                 #month = month_mapping.get(month_char, None)
-                last_trade_date = datetime.strptime(row.LASTTRADEDATE, "%Y-%m-%d")
+                last_trade_date = datetime.strptime(row.LASTTRADEDATE, "%Y%m%d")
                 #contract_date = last_trade_date[:-5]
                 #contract_time = f'{contract_date}{year_digit:d}{month:02d}00'
-                contract = last_trade_date
+                contract = f"{last_trade_date}"
                 #if pd.notna(row.TRADEDATE) and pd.notna(row.OPEN) and pd.notna(row.LOW) and pd.notna(row.HIGH) and pd.notna(row.PREVPRICE) and pd.notna(row.VOLTODAY):
                 
                 if pd.notna(row.OPEN):
