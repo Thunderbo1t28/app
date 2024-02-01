@@ -1,0 +1,12 @@
+[MASSAGES CONTROL]
+disable = missing-function-docstring,
+        pointless-string-statement,
+        broad-exception-raised,
+        missing-class-docstring,
+        too-few-public-methods,
+        invalid-name,
+        missing-module-docstring,
+        wildcard-import,
+        unused-wildcard-import,
+        consider-using-f-string,
+        no-member

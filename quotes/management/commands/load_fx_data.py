@@ -17,7 +17,7 @@ class Command(BaseCommand):
                'CNYFIX': 'СNYRUB', 'EURFIX': 'EURRUB',
                'EURUSDFIX': 'EURUSD', 'USDFIX': 'USDRUB'}
         # Получаем текущую дату
-        current_date =  datetime.strptime("2024-01-18", "%Y-%m-%d").date()  #datetime.now().date()
+        current_date =  datetime.strptime("2024-01-31", "%Y-%m-%d").date()  #datetime.now().date()
 
         # Задаем конечную дату (например, "2024-01-01")
         end_date = datetime.strptime("2020-01-01", "%Y-%m-%d").date()

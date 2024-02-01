@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Пример даты, до которой нужно собрать данные
-        end_date = datetime.strptime('2024-01-18 00:00:00', '%Y-%m-%d %H:%M:%S')
+        end_date = datetime.strptime('2024-01-31 00:00:00', '%Y-%m-%d %H:%M:%S')
 
         # Получите уникальные инструменты из модели Quote
         instruments = Quote.objects.values_list('instrument', flat=True).distinct()

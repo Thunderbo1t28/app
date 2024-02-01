@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = 'Find current and next contracts for instruments and save to RollCalendar model'
 
     def handle(self, *args, **options):
-        current_date = datetime.strptime("2024-01-18", "%Y-%m-%d").date() 
+        current_date = datetime.strptime("2024-01-31", "%Y-%m-%d").date() 
         quote_objects = Quote.objects.all()
 
         # Установите количество дней, на которое вы хотите вернуться в прошлое

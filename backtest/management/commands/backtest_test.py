@@ -1,6 +1,6 @@
 import json
 from django.core.management.base import BaseCommand
-from backtest.models import BacktestResult, MyConfigModel, TradingRuleModel
+from backtest.models import BacktestResult, TradingRuleModel
 from backtest.systems.provided.rules.ewmac import ewmac_forecast_with_defaults as ewmac
 from backtest.systems.trading_rules import TradingRule
 from backtest.systems.forecasting import Rules
