@@ -1,14 +1,6 @@
 # models.py
 from django.db import models
 
-class MyConfigModel(models.Model):
-    trading_rules_ewmac8_Lfast = models.IntegerField()
-    trading_rules_ewmac8_Lslow = models.IntegerField()
-    trading_rules_ewmac32_Lfast = models.IntegerField()
-    trading_rules_ewmac32_Lslow = models.IntegerField()
-    # Добавьте другие поля модели, если необходимо
-
-
 class BacktestResult(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     metrics = models.JSONField()
@@ -25,3 +17,19 @@ class TradingRuleModel(models.Model):
 
     def __str__(self):
         return self.name
+    
+class TradingConfiguration(models.Model):
+    config_id = models.AutoField(primary_key=True)  # Простой порядковый номер
+# Дополнительные поля, если необходимо
+
+class TradingRuleConfig(models.Model):
+    configuration = models.ForeignKey(TradingConfiguration, on_delete=models.CASCADE)
+    rule_name = models.CharField(max_length=500)  # Список имен торговых правил, разделенных запятыми
+
+    def get_rule_names_list(self):
+        return self.rule_name.split(',') if self.rule_name else []
+
+class InstrumentChoice(models.Model):
+    configuration = models.ForeignKey(TradingConfiguration, on_delete=models.CASCADE)
+    instrument_name = models.CharField(max_length=100)
+    

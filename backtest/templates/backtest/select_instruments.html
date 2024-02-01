@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Instruments</title>
+</head>
+<body>
+    <h1>Select Instruments</h1>
+    <form method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Choose instruments:</legend>
+            {% for instrument in instruments %}
+            <div>
+                <input type="checkbox" id="instrument_{{ forloop.counter }}" name="instruments" value="{{ instrument }}" class="form-check-input">
+                <label for="instrument_{{ forloop.counter }}">{{ instrument }}</label>
+            </div>
+            {% endfor %}
+        </fieldset>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

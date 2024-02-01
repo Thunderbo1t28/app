@@ -19,7 +19,7 @@ class Command(BaseCommand):
         base_url = "https://iss.moex.com/iss/history/engines/futures/markets/forts/securities.json"
 
         # Получаем текущую дату
-        current_date =  datetime.strptime("2024-01-21", "%Y-%m-%d").date()  #datetime.now().date()
+        current_date =  datetime.strptime("2022-05-11", "%Y-%m-%d").date()  #datetime.now().date()
 
         # Задаем конечную дату (например, "2024-01-01")
         end_date = datetime.strptime("2020-01-01", "%Y-%m-%d").date()
@@ -90,7 +90,7 @@ class Command(BaseCommand):
                                 if contract_try.exists():
                                     contract = contract_try.values('contract')
                                 else:
-                                    contract_date = datetime.strptime(item.TRADEDATE, "%Y%m%d")
+                                    contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
                                     #contract_time = f'{contract_date}{year_digit:d}{month:02d}00'
                                     contract = f"{contract_date}"
                                     

@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from backtest.views import backtest_view
+from backtest.views import backtest_view, select_instruments_view, select_rules_view
 from main import views
 from quotes.views import (adjusted_prices_view, 
                           contract_detail_view, 
@@ -55,4 +55,7 @@ urlpatterns = [
 
     path('create_instrument/', create_instrument, name='create_instrument'),
     
+    path('select-rules/', select_rules_view, name='select_rules'),
+    path('select-instruments/', select_instruments_view, name='select_instruments'),
+
 ]

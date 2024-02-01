@@ -88,7 +88,7 @@ class Command(BaseCommand):
                 #month_char = last_two_chars[0]
                 #month_mapping = {'F': 1, 'G': 2, 'H': 3, 'J': 4, 'K': 5, 'M': 6, 'N': 7, 'Q': 8, 'U': 9, 'V': 10, 'X': 11, 'Z': 12}
                 #month = month_mapping.get(month_char, None)
-                last_trade_date = datetime.strptime(row.LASTTRADEDATE, "%Y%m%d")
+                last_trade_date = datetime.strptime(row.LASTTRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
                 #contract_date = last_trade_date[:-5]
                 #contract_time = f'{contract_date}{year_digit:d}{month:02d}00'
                 contract = f"{last_trade_date}"
@@ -96,29 +96,30 @@ class Command(BaseCommand):
                 
                 if pd.notna(row.OPEN):
                     # Если OPEN не NaN, оставить без изменений
-                    pass
+                    open = row.OPEN
+                    
                 else:
-                    row.OPEN = 0
+                    open = 0
                 if pd.notna(row.LOW):
                     # Если OPEN не NaN, оставить без изменений
-                    pass
+                    low = row.LOW
                 else:
-                    row.LOW = 0
+                    low = 0
                 if pd.notna(row.HIGH):
                     # Если OPEN не NaN, оставить без изменений
-                    pass
+                    high = row.HIGH
                 else:
-                    row.HIGH = 0
+                    high = 0
                 if pd.notna(row.PREVPRICE):
                     # Если OPEN не NaN, оставить без изменений
-                    pass
+                    close = row.PREVPRICE
                 else:
-                    row.PREVPRICE = 0
+                    close = 0
                 if pd.notna(row.VOLTODAY):
                     # Если OPEN не NaN, оставить без изменений
-                    pass
+                    vol = row.VOLTODAY
                 else:
-                    row.VOLTODAY = 0
+                    vol = 0
                 existing_quotes = Quote.objects.filter(
                     instrument=row.ASSETCODE,
                     contract=contract,
@@ -138,11 +139,11 @@ class Command(BaseCommand):
                     contract=contract,
                     sectype=row.SECTYPE,
                     secid=row.SECID,
-                    open_price=row.OPEN,
-                    low_price=row.LOW,
-                    high_price=row.HIGH,
-                    close_price=row.PREVPRICE,
-                    volume=row.VOLTODAY,
+                    open_price=open,
+                    low_price=low,
+                    high_price=high,
+                    close_price=close,
+                    volume=vol,
                     timestamp=date_str
                 )
                 print('Data loaded successfully')

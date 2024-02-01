@@ -1,5 +1,5 @@
 from django import forms
-from .models import MyConfigModel
+
 
 class ConfigForm(forms.Form):
     TRADING_RULE_CHOICES = [
@@ -47,3 +47,13 @@ class ConfigForm(forms.Form):
     
     # Создаем поле выбора правила с помощью MultipleChoiceField
     trading_rules = forms.MultipleChoiceField(choices=TRADING_RULE_CHOICES, widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}))
+
+class InstrumentChoiceForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        instrument_choices = kwargs.pop('instrument_choices', None)
+        super(InstrumentChoiceForm, self).__init__(*args, **kwargs)
+        
+        # Создаем выбор инструментов на основе QuerySet
+        if instrument_choices:
+            choices = [(instrument.id, instrument.instrument) for instrument in instrument_choices]
+            self.fields['instruments'] = forms.MultipleChoiceField(choices=choices, widget=forms.CheckboxSelectMultiple)

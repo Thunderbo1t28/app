@@ -89,7 +89,7 @@ class Command(BaseCommand):
                                 if contract_try.exists():
                                     contract = contract_try.values('contract')
                                 else:
-                                    contract_date = datetime.strptime(item.TRADEDATE, "%Y%m%d") #.strftime("%Y%m%d")
+                                    contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
                                     #contract_time = f'{contract_date}{year_digit:d}{month:02d}00'
                                     contract = f'{contract_date}'
 
