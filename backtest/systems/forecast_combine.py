@@ -981,7 +981,7 @@ class ForecastCombine(SystemStage):
             fixed_weights = _get_fixed_weights_from_config(
                 forecast_weights_config=forecast_weights_config,
                 instrument_code=instrument_code,
-                log=self.log,
+                #log=self.log,
                 expensive_trading_rules_post_processing=expensive_trading_rules_post_processing,
             )
         return fixed_weights

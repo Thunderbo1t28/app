@@ -6,12 +6,8 @@ from django.urls import reverse
 from backtest.forms import ConfigForm, InstrumentChoiceForm
 from backtest.models import BacktestResult, InstrumentChoice, TradingConfiguration, TradingRuleConfig
 from quotes.models import Instrument
-def backtest_callback(metrics, additional_info):
-    # Сохранение результатов в базе данных
-    #metrics_json = json.dumps(metrics)
-    #additional_info_json = json.dumps(additional_info)
-    backtest_result = BacktestResult(metrics=metrics, additional_info=additional_info)
-    backtest_result.save()
+def backtest_main(request):
+    return render(request, 'backtest/main.html')
 
 def backtest_view(request):
     if request.method == 'POST':
@@ -51,7 +47,7 @@ def select_instruments_view(request):
         # Получаем доступные инструменты из базы данных или любого другого источника данных
         instruments = Instrument.objects.all  # Пример доступных инструментов
         instrument_form = InstrumentChoiceForm(instrument_choices=instruments)
-        return render(request, 'select_instruments.html', {'instrument_form': instrument_form})
+        return render(request, 'backtest/select_instruments.html', {'instrument_form': instrument_form})
     elif request.method == 'POST':
         selected_instruments = request.POST.getlist('instrument_choices')
         config_id = request.GET.get('config_id')
@@ -77,7 +73,7 @@ def select_rules_view(request):
             return redirect(reverse('select_instruments') + f'?config_id={new_configuration.config_id}')
     else:
         form = ConfigForm()
-    return render(request, 'select_rules.html', {'form': form})
+    return render(request, 'backtest/select_rules.html', {'form': form})
 
 
 

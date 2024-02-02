@@ -1,9 +1,31 @@
 # models.py
 from django.db import models
 
+
 class BacktestResult(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
-    metrics = models.JSONField()
+    min = models.FloatField(null=True, blank=True)
+    max = models.FloatField(null=True, blank=True)
+    median = models.FloatField(null=True, blank=True)
+    mean = models.FloatField(null=True, blank=True)
+    std = models.FloatField(null=True, blank=True)
+    skew = models.FloatField(null=True, blank=True)
+    ann_mean = models.FloatField(null=True, blank=True)
+    ann_std = models.FloatField(null=True, blank=True)
+    sharpe = models.FloatField(null=True, blank=True)
+    sortino = models.FloatField(null=True, blank=True)
+    avg_drawdown = models.FloatField(null=True, blank=True)
+    time_in_drawdown = models.FloatField(null=True, blank=True)
+    calmar = models.FloatField(null=True, blank=True)
+    avg_return_to_drawdown = models.FloatField(null=True, blank=True)
+    avg_loss = models.FloatField(null=True, blank=True)
+    avg_gain = models.FloatField(null=True, blank=True)
+    gaintolossratio = models.FloatField(null=True, blank=True)
+    profitfactor = models.FloatField(null=True, blank=True)
+    hitrate = models.FloatField(null=True, blank=True)
+    t_stat = models.FloatField(null=True, blank=True)
+    p_value = models.FloatField(null=True, blank=True)
+    metrics = models.JSONField(null=True, blank=True)
     additional_info = models.JSONField()
 
     def __str__(self):
@@ -18,6 +40,7 @@ class TradingRuleModel(models.Model):
     def __str__(self):
         return self.name
     
+
 class TradingConfiguration(models.Model):
     config_id = models.AutoField(primary_key=True)  # Простой порядковый номер
 # Дополнительные поля, если необходимо

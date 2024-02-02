@@ -1,0 +1,13 @@
+<form method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Выберите торговые правила:</legend>
+        {% for value, label in form.trading_rules.field.choices %}
+        <div class="form-check">
+            <input type="checkbox" id="id_{{ value }}" name="trading_rules" value="{{ value }}" class="form-check-input" {% if value in form.trading_rules.value %}checked{% endif %}>
+            <label class="form-check-label" for="id_{{ value }}">{{ value }}</label>
+        </div>
+        {% endfor %}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
