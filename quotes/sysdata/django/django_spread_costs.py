@@ -29,7 +29,7 @@ class djangoSpreadCostData(spreadCostData):
 
     def get_list_of_instruments(self) -> list:
         # Получение списка всех инструментов из базы данных
-        return list(SpreadCosts.objects.values_list('instrument__instrument', flat=True))
+        return list(Instrument.objects.values_list('instrument', flat=True))
 
     def get_spread_cost(self, instrument_code: str) -> float:
         # Получение данных из базы данных для указанного инструмента

@@ -221,7 +221,7 @@ class futuresSimData(simData):
 
     def get_multiple_prices(self, instrument_code: str) -> futuresMultiplePrices:
         start_date = self.start_date_for_data()
-
+        #print(start_date)
         return self.get_multiple_prices_from_start_date(
             instrument_code, start_date=start_date
         )

@@ -17,8 +17,9 @@ class djangoFuturesAdjustedPricesData(futuresAdjustedPricesData):
             )
 
     def get_list_of_instruments(self) -> list:
-        instrument_ids = AdjustedPrice.objects.values_list('instrument_id', flat=True).distinct()
-        instruments = Instrument.objects.filter(id__in=instrument_ids)
+        #instrument_ids = AdjustedPrice.objects.values_list('instrument_id', flat=True).distinct()
+        #instruments = Instrument.objects.filter(id__in=instrument_ids)
+        instruments = Instrument.objects.all()
         return list(instruments.values_list('instrument', flat=True))
 
     def _delete_adjusted_prices_without_any_warning_be_careful(

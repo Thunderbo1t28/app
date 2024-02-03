@@ -14,6 +14,16 @@ class pandlCalculationWithoutPositions(pandlCalculationWithGenericCosts):
 
         super().__init__(price=pd.Series(dtype="float64"), capital=capital)
 
+        if not isinstance(pandl_in_base_currency, pd.Series):
+            raise TypeError("pandl_in_base_currency must be a pd.Series")
+        if not isinstance(costs_pandl_in_base_currency, pd.Series):
+            raise TypeError("costs_pandl_in_base_currency must be a pd.Series")
+        #if not pandl_in_base_currency.index.equals(capital.index):
+            #raise ValueError("pandl_in_base_currency index must match capital index")
+        #if not costs_pandl_in_base_currency.index.equals(capital.index):
+            #raise ValueError("costs_pandl_in_base_currency index must match capital index")
+
+
         self._pandl_in_base_currency = pandl_in_base_currency
         self._costs_pandl_in_base_currency = costs_pandl_in_base_currency
 
@@ -65,7 +75,9 @@ class pandlCalculationWithoutPositions(pandlCalculationWithGenericCosts):
 
 class dictOfPandlCalculatorsWithGenericCosts(dict):
     def sum(self, capital) -> pandlCalculationWithoutPositions:
-
+        #if not isinstance(capital, pd.Series):
+            #capital = pd.Series([capital], index=['your_index_here'])
+        #print(capital)
         pandl_in_base_currency = self.sum_of_pandl_in_base_currency()
         costs_pandl_in_base_currency = self.sum_of_costs_pandl_in_base_currency()
 
@@ -78,10 +90,22 @@ class dictOfPandlCalculatorsWithGenericCosts(dict):
         return pandl_calculator
 
     def sum_of_pandl_in_base_currency(self) -> pd.Series:
-        return sum_list_of_pandl_curves(self.list_of_pandl_in_base_currency)
+        list_of_pandl_in_base_currency = self.list_of_pandl_in_base_currency
+        if not list_of_pandl_in_base_currency:
+            raise ValueError("list_of_pandl_in_base_currency is empty")
+        if not all(isinstance(x, pd.Series) for x in list_of_pandl_in_base_currency):
+            raise TypeError("All elements in list_of_pandl_in_base_currency must be pd.Series")
+
+        return sum_list_of_pandl_curves(list_of_pandl_in_base_currency)
 
     def sum_of_costs_pandl_in_base_currency(self) -> pd.Series:
-        return sum_list_of_pandl_curves(self.list_of_costs_pandl_in_base_currency)
+        list_of_costs_pandl_in_base_currency = self.list_of_costs_pandl_in_base_currency
+        if not list_of_costs_pandl_in_base_currency:
+            raise ValueError("list_of_costs_pandl_in_base_currency is empty")
+        if not all(isinstance(x, pd.Series) for x in list_of_costs_pandl_in_base_currency):
+            raise TypeError("All elements in list_of_costs_pandl_in_base_currency must be pd.Series")
+
+        return sum_list_of_pandl_curves(list_of_costs_pandl_in_base_currency)
 
     @property
     def list_of_pandl_in_base_currency(self) -> list:
@@ -92,6 +116,7 @@ class dictOfPandlCalculatorsWithGenericCosts(dict):
         return self._list_of_attr("costs_pandl_in_base_currency")
 
     def _list_of_attr(self, attr_name) -> list:
+        #print(attr_name)
         list_of_methods = [
             getattr(pandl_item, attr_name) for pandl_item in self.values()
         ]

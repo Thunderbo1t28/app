@@ -6,7 +6,7 @@ Get data from .csv files used for futures trading
 from quotes.sysdata.django.django_adjusted_prices import djangoFuturesAdjustedPricesData
 from quotes.sysdata.django.django_fx_prices import djangoFxPricesData
 from quotes.sysdata.django.django_instruments import djangoFuturesInstrumentData
-from quotes.sysdata.django.django_multiple_prices import djangoFuturesMultiplePricesData
+from quotes.sysdata.django.django_futures_multiple_prices import djangoFuturesMultiplePricesData
 from quotes.sysdata.django.django_rolls_parameters import djangoRollParametersData
 from quotes.sysdata.django.django_spread_costs import djangoSpreadCostData
 from quotes.syscore.constants import arg_not_supplied

@@ -44,7 +44,7 @@ class accountInstruments(accountCosts, accountBufferingSystemLevel):
             #"Calculating pandl for instrument for %s" % instrument_code,
             #instrument_code=instrument_code,
        # )
-
+        #print(instrument_code)
         positions = self.get_buffered_position(
             instrument_code, roundpositions=roundpositions
         )

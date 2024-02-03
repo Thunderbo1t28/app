@@ -37,8 +37,9 @@ class djangoFuturesMultiplePricesData(futuresMultiplePricesData):
             )
 
     def get_list_of_instruments(self) -> list:
-        instrument_ids = MultiplePriceData.objects.values_list('instrument_id', flat=True).distinct()
-        instruments = Instrument.objects.filter(id__in=instrument_ids)
+        #instrument_ids = MultiplePriceData.objects.values_list('instrument_id', flat=True).distinct()
+        #instruments = Instrument.objects.filter(id__in=instrument_ids)
+        instruments = Instrument.objects.all()
         return list(instruments.values_list('instrument', flat=True))
         #return list(MultiplePriceData.objects.values_list('instrument', flat=True).distinct())
 
@@ -70,6 +71,7 @@ class djangoFuturesMultiplePricesData(futuresMultiplePricesData):
                                 forward_name, contract_name_from_column_name(forward_name)]]
         #prices_df.set_index("datetime", inplace=True)
         #prices_df.index = prices_df.index.tz_localize(None)
+        #print(data)
         return futuresMultiplePrices(prices_df)
 
     def _delete_multiple_prices_without_any_warning_be_careful(

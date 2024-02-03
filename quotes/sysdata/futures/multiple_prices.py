@@ -67,6 +67,7 @@ class futuresMultiplePricesData(baseData):
 
     def is_code_in_data(self, instrument_code: str) -> bool:
         if instrument_code in self.get_list_of_instruments():
+            
             return True
         else:
             return False

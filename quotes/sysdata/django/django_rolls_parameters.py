@@ -36,7 +36,7 @@ class djangoRollParametersData(rollParametersData):
 
     def get_list_of_instruments(self) -> list:
         # Получение списка всех инструментов из базы данных
-        return list(RollParameters.objects.values_list('instrument__instrument', flat=True))
+        return list(Instrument.objects.values_list('instrument', flat=True))
 
     def _get_roll_parameters_without_checking(
         self, instrument_code: str

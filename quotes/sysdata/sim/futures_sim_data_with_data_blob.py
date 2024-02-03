@@ -72,7 +72,7 @@ class genericBlobUsingFuturesSimData(futuresSimData):
         self, instrument_code: str, start_date
     ) -> futuresMultiplePrices:
         data = self.db_futures_multiple_prices_data.get_multiple_prices(instrument_code)
-
+        #print(data)
         return data[start_date:]
 
     def get_instrument_meta_data(
@@ -116,6 +116,7 @@ class genericBlobUsingFuturesSimData(futuresSimData):
 
     @property
     def db_futures_multiple_prices_data(self) -> futuresMultiplePricesData:
+        
         return self.data.db_futures_multiple_prices
 
     @property

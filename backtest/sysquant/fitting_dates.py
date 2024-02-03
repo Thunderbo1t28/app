@@ -128,14 +128,14 @@ def generate_fitting_dates_given_start_and_end_date(
             start_date=start_date,
         )
         periods.append(fit_date)
-
+    #print(list_of_starting_dates_per_period)
     periods = _add_dummy_period_if_required(
         periods,
         date_method=date_method,
         list_of_starting_dates_per_period=list_of_starting_dates_per_period,
         start_date=start_date,
     )
-
+    
     return listOfFittingDates(periods)
 
 
@@ -213,14 +213,18 @@ def _add_dummy_period_if_required(
 ):
     if date_method in ["rolling", "expanding"]:
         # add on a dummy date for the first year, when we have no data
-        periods = [
-            fitDates(
-                start_date,
-                start_date,
-                start_date,
-                list_of_starting_dates_per_period[1],
-                no_data=True,
-            )
-        ] + periods
-
+        if len(list_of_starting_dates_per_period) >= 2:
+            # добавляем dummy-дату для первого года, когда у нас нет данных
+            periods = [
+                fitDates(
+                    start_date,
+                    start_date,
+                    start_date,
+                    list_of_starting_dates_per_period[1],
+                    no_data=True,
+                )
+            ] + periods
+        else:
+                # Если условие не выполняется, добавляем фиктивную дату по умолчанию
+                periods = [fitDates(start_date, start_date, start_date, datetime.datetime.now(), no_data=True)]
     return periods
