@@ -29,6 +29,7 @@ class accountPortfolio(accountInstruments):
         """
 
         #self.log.info("Calculating pandl for portfolio")
+        print("Calculating pandl for portfolio")
         capital = self.get_notional_capital()
         instruments = self.get_instrument_list()
         dict_of_pandl_by_instrument = dict(

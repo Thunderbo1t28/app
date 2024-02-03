@@ -247,7 +247,7 @@ class System(object):
             #"Following instruments removed entirely from sim: %s"
             #% str(list_of_instruments_to_remove)
         #)
-
+        print(f"Following instruments removed entirely from sim: {str(list_of_instruments_to_remove)}")
         instrument_list = [
             instrument
             for instrument in instrument_list
@@ -287,7 +287,7 @@ class System(object):
             #"Following instruments marked as not trading %s"
             #% str(not_trading_in_instrument_list)
         #)
-
+        print(f"Following instruments marked as not trading {str(not_trading_in_instrument_list)}")
         return not_trading_in_instrument_list
 
     def get_list_of_instruments_to_remove(
@@ -331,23 +331,23 @@ class System(object):
             self.config
         )
         duplicate_list.sort()
-        #if len(duplicate_list) > 0:
+        if len(duplicate_list) > 0:
             #self.log.debug(
                 #"Following instruments are 'duplicate_markets' %s "
                 #% str(duplicate_list)
             #)
-
+            print(f"Following instruments are 'duplicate_markets' {str(duplicate_list)} ")
         return duplicate_list
 
     def get_list_of_ignored_instruments_to_remove(self) -> list:
         ignore_instruments = get_list_of_ignored_instruments_in_config(self.config)
         ignore_instruments.sort()
-        #if len(ignore_instruments) > 0:
+        if len(ignore_instruments) > 0:
             #self.log.debug(
                 #"Following instruments are marked as 'ignore_instruments': not included: %s"
                 #% str(ignore_instruments)
             #)
-
+            print(f"Following instruments are marked as 'ignore_instruments': not included: {str(ignore_instruments)}")
         return ignore_instruments
 
     def get_list_of_markets_with_trading_restrictions(self) -> list:
@@ -355,23 +355,25 @@ class System(object):
             self.config
         )
         trading_restrictions.sort()
-        #if len(trading_restrictions) > 0:
+        if len(trading_restrictions) > 0:
             ## will only log once as cached
             #self.log.debug(
                # "Following instruments have restricted trading:  %s "
                 #% str(trading_restrictions)
             #)
+            print(f"Following instruments have restricted trading:  {str(trading_restrictions)} ")
         return trading_restrictions
 
     def get_list_of_bad_markets(self) -> list:
         bad_markets = get_list_of_bad_instruments_in_config(self.config)
         bad_markets.sort()
-        #if len(bad_markets) > 0:
+        if len(bad_markets) > 0:
             ## will only log once as cached
             #self.log.debug(
                 #"Following instruments are marked as 'bad_markets':  %s"
                 #% str(bad_markets)
             #)
+            print(f"Following instruments are marked as 'bad_markets':  {str(bad_markets)}")
 
         return bad_markets
 
@@ -387,11 +389,11 @@ class System(object):
 
         too_short.sort()
 
-        #if len(too_short) > 0:
+        if len(too_short) > 0:
             #self.log.debug(
                 #"Following instruments have insufficient history: %s" % str(too_short)
             #)
-
+            print(f"Following instruments have insufficient history: {str(too_short)}")
         return too_short
 
 

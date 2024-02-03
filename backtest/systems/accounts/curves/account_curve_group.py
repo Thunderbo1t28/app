@@ -1,4 +1,6 @@
 from copy import copy
+import datetime
+import numpy as np
 import pandas as pd
 
 from quotes.syscore.dateutils import Frequency
@@ -37,10 +39,22 @@ class accountCurveGroup(accountCurve):
 
     def to_frame(self) -> pd.DataFrame:
         asset_columns = self.asset_columns
+        #print(asset_columns)
         data_as_list = [self[asset_name] for asset_name in asset_columns]
-        data_as_pd = pd.concat(data_as_list, axis=1)
-        data_as_pd.columns = asset_columns
-
+        if data_as_list:
+            # Если список не пустой, выполняем объединение
+            data_as_pd = pd.concat(data_as_list, axis=1)
+            data_as_pd.columns = asset_columns
+        else:
+            # Если список пустой, обрабатываем эту ситуацию соответствующим образом
+            DEFAULT_DATES = pd.date_range(
+                start=datetime.datetime(2010, 1, 1), freq="B", end=datetime.datetime.now()
+            )
+            data_as_pd = pd.DataFrame(np.full(len(DEFAULT_DATES), 0.0), index=DEFAULT_DATES)
+            data_as_pd.columns = asset_columns
+        #data_as_pd = pd.concat(data_as_list, axis=1)
+        #data_as_pd.columns = asset_columns
+        #print(data_as_pd)
         return data_as_pd
 
     def get_stats(

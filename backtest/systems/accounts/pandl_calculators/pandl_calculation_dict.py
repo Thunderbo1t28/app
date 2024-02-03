@@ -1,3 +1,5 @@
+import datetime
+import numpy as np
 import pandas as pd
 from backtest.systems.accounts.pandl_calculators.pandl_generic_costs import (
     pandlCalculationWithGenericCosts,
@@ -75,8 +77,12 @@ class pandlCalculationWithoutPositions(pandlCalculationWithGenericCosts):
 
 class dictOfPandlCalculatorsWithGenericCosts(dict):
     def sum(self, capital) -> pandlCalculationWithoutPositions:
-        #if not isinstance(capital, pd.Series):
-            #capital = pd.Series([capital], index=['your_index_here'])
+        if not isinstance(capital, pd.Series):
+            
+            DEFAULT_DATES = pd.date_range(
+                start=datetime.datetime(2010, 1, 1), freq="B", end=datetime.datetime.now()
+            )
+            capital = pd.Series(np.full(len(DEFAULT_DATES), capital), index=DEFAULT_DATES)
         #print(capital)
         pandl_in_base_currency = self.sum_of_pandl_in_base_currency()
         costs_pandl_in_base_currency = self.sum_of_costs_pandl_in_base_currency()
@@ -91,19 +97,26 @@ class dictOfPandlCalculatorsWithGenericCosts(dict):
 
     def sum_of_pandl_in_base_currency(self) -> pd.Series:
         list_of_pandl_in_base_currency = self.list_of_pandl_in_base_currency
+        
         if not list_of_pandl_in_base_currency:
-            raise ValueError("list_of_pandl_in_base_currency is empty")
-        if not all(isinstance(x, pd.Series) for x in list_of_pandl_in_base_currency):
-            raise TypeError("All elements in list_of_pandl_in_base_currency must be pd.Series")
+            DEFAULT_DATES = pd.date_range(
+                start=datetime.datetime(2010, 1, 1), freq="B", end=datetime.datetime.now()
+            )
+            list_of_pandl_in_base_currency.append(pd.Series(np.full(len(DEFAULT_DATES), 0.0), index=DEFAULT_DATES))
+        #if not all(isinstance(x, pd.Series) for x in list_of_pandl_in_base_currency):
+            #raise TypeError("All elements in list_of_pandl_in_base_currency must be pd.Series")
 
         return sum_list_of_pandl_curves(list_of_pandl_in_base_currency)
 
     def sum_of_costs_pandl_in_base_currency(self) -> pd.Series:
         list_of_costs_pandl_in_base_currency = self.list_of_costs_pandl_in_base_currency
         if not list_of_costs_pandl_in_base_currency:
-            raise ValueError("list_of_costs_pandl_in_base_currency is empty")
-        if not all(isinstance(x, pd.Series) for x in list_of_costs_pandl_in_base_currency):
-            raise TypeError("All elements in list_of_costs_pandl_in_base_currency must be pd.Series")
+            DEFAULT_DATES = pd.date_range(
+                start=datetime.datetime(2010, 1, 1), freq="B", end=datetime.datetime.now()
+            )
+            list_of_costs_pandl_in_base_currency.append(pd.Series(np.full(len(DEFAULT_DATES), 0.0), index=DEFAULT_DATES))
+        #if not all(isinstance(x, pd.Series) for x in list_of_costs_pandl_in_base_currency):
+            #raise TypeError("All elements in list_of_costs_pandl_in_base_currency must be pd.Series")
 
         return sum_list_of_pandl_curves(list_of_costs_pandl_in_base_currency)
 

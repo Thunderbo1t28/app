@@ -86,7 +86,7 @@ class accountSubsystem(accountBufferingSubSystemLevel):
             #"Calculating pandl for subsystem for instrument %s" % instrument_code,
             #instrument_code=instrument_code,
         #)
-
+        print(f"Calculating pandl for subsystem for instrument {instrument_code}")
         use_SR_cost = self.use_SR_costs
 
         if use_SR_cost:

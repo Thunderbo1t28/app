@@ -19,7 +19,7 @@ class Command(BaseCommand):
         base_url = "https://iss.moex.com/iss/history/engines/futures/markets/forts/securities.json"
 
         # Получаем текущую дату
-        current_date = datetime.strptime("2015-11-20", "%Y-%m-%d").date()  #datetime.now().date()
+        current_date = datetime.strptime("2010-03-25", "%Y-%m-%d").date()  #datetime.now().date()
 
         # Задаем конечную дату (например, "2024-01-01")
         end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()

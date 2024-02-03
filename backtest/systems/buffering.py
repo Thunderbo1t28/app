@@ -54,6 +54,7 @@ def calculate_buffers(
             #"Calculating forecast method buffers for %s" % instrument_code,
             #instrument_code=instrument_code,
         #)
+        print(f"Calculating forecast method buffers for {instrument_code}")
         if instr_weights is arg_not_supplied:
             instr_weight_this_code = arg_not_supplied
         else:
@@ -72,17 +73,18 @@ def calculate_buffers(
            # "Calculating position method buffer for %s" % instrument_code,
             #instrument_code=instrument_code,
         #)
-
+        print(f"Calculating position method buffer for %{instrument_code}")
         buffer = get_position_method_buffer(config=config, position=position)
     elif buffer_method == "none":
         #log.debug(
             #"None method, no buffering for %s" % instrument_code,
             #instrument_code=instrument_code,
         #)
-
+        print(f"None method, no buffering for %{instrument_code}")
         buffer = get_buffer_if_not_buffering(position=position)
     else:
         #log.critical("Buffer method %s not recognised - not buffering" % buffer_method)
+        print(f"Buffer method {buffer_method} not recognised - not buffering")
         buffer = get_buffer_if_not_buffering(position=position)
 
     return buffer
