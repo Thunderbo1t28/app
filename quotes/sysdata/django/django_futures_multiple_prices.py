@@ -51,7 +51,8 @@ class djangoFuturesMultiplePricesData(futuresMultiplePricesData):
         instrument = Instrument.objects.get(instrument=instrument_code)
         prices_data = MultiplePriceData.objects.filter(
             instrument=instrument).order_by('datetime')
-
+        print(instrument_code)
+        print(prices_data)
         # Convert Django QuerySet to a DataFrame
         prices_df = pd.DataFrame.from_records(prices_data.values())
         prices_df.set_index("datetime", inplace=True)

@@ -1,7 +1,7 @@
 import json
 from django.core.management.base import BaseCommand
 import yaml
-from backtest.models import BacktestResult
+from backtest.models import BacktestResult, BacktestResult2
 from backtest.systems.attenuate_vol.vol_attenuation_forecast_scale_cap import volAttenForecastScaleCap
 from backtest.systems.provided.dynamic_small_system_optimise.accounts_stage import accountForOptimisedStage
 from backtest.systems.provided.dynamic_small_system_optimise.optimised_positions_stage import optimisedPositions
@@ -26,7 +26,7 @@ class Command(BaseCommand):
         #logging.info("Starting backtest_test command...")
         data = djangoFuturesSimData()
         
-        my_config = Config("/Users/kairsabiev/code/proj1/app/private/autotest/config.yaml")
+        my_config = Config("E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\config.yaml")
         # Получение аргументов из командной строки по их именам
         
         #config = MyConfigModel.objects.get(id=config_id)
@@ -66,7 +66,7 @@ class Command(BaseCommand):
             
 
             sysdiag = systemDiag(system)
-            sysdiag.yaml_config_with_estimated_parameters('/Users/kairsabiev/code/proj1/app/private/autotest/result.yaml',
+            sysdiag.yaml_config_with_estimated_parameters('E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\result2.yaml',
                                                         attr_names=['forecast_scalars',
                                                                             'forecast_weights',
                                                                             'forecast_div_multiplier',
@@ -76,21 +76,21 @@ class Command(BaseCommand):
             
 
             # Загрузка содержимого первого YAML файла
-            with open('/Users/kairsabiev/code/proj1/app/private/autotest/template.yaml', 'r') as file1:
+            with open('E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\template.yaml', 'r') as file1:
                 data1 = yaml.safe_load(file1)
 
             # Загрузка содержимого второго YAML файла
-            with open('/Users/kairsabiev/code/proj1/app/private/autotest/result.yaml', 'r') as file2:
+            with open('E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\result.yaml', 'r') as file2:
                 data2 = yaml.safe_load(file2)
 
             # Объединение данных из двух файлов
             combined_data = {**data1, **data2}
 
             # Запись объединенных данных в новый YAML файл
-            with open('/Users/kairsabiev/code/proj1/app/private/autotest/combined.yaml', 'w') as outfile:
+            with open('E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\combined2.yaml', 'w') as outfile:
                 yaml.dump(combined_data, outfile)
             
-            my_config = Config("/Users/kairsabiev/code/proj1/app/private/autotest/combined.yaml")
+            my_config = Config("E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\combined2.yaml")
             # Получение аргументов из командной строки по их именам
             
             #config = MyConfigModel.objects.get(id=config_id)
@@ -123,7 +123,8 @@ class Command(BaseCommand):
             parsed_result = profits.percent.stats()
 
 
-            backtest_result = BacktestResult(
+            backtest_result = BacktestResult2(
+                instruments = instruments,
                 min=float(parsed_result[0][0][1]),
                 max=float(parsed_result[0][1][1]),
                 median=float(parsed_result[0][2][1]),
@@ -145,8 +146,6 @@ class Command(BaseCommand):
                 hitrate=float(parsed_result[0][18][1]),
                 t_stat=float(parsed_result[0][19][1]),
                 p_value=float(parsed_result[0][20][1]),
-                metrics=metrics_json,
-                additional_info=additional_info_json,
             )
             # Сохранение экземпляра в базе данных
             backtest_result.save()
