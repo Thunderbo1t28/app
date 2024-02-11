@@ -1,5 +1,5 @@
 #YAML
-# start_date: 2000-01-19
+#start_date: 2020-01-01
 use_forecast_weight_estimates: False
 use_forecast_div_mult_estimates: False
 use_instrument_weight_estimates: False
@@ -55,6 +55,7 @@ use_attenuation:
    - 'momentum64'
 #
 trading_rules:
+
   breakout10:
      function: backtest.systems.provided.rules.breakout.breakout
      data:
@@ -85,6 +86,12 @@ trading_rules:
          - "rawdata.get_daily_prices"
      other_args:
        lookback: 160
+  breakout320:
+     function: backtest.systems.provided.rules.breakout.breakout
+     data:
+         - "rawdata.get_daily_prices"
+     other_args:
+       lookback: 320
   relmomentum10:
      function: backtest.systems.provided.rules.rel_mom.relative_momentum
      data:
@@ -113,6 +120,13 @@ trading_rules:
          - "rawdata.normalised_price_for_asset_class"
      other_args:
        horizon: 80
+  mrinasset1000:
+     function: backtest.systems.provided.rules.cs_mr.cross_sectional_mean_reversion
+     data:
+         - "rawdata.get_cumulative_daily_vol_normalised_returns"
+         - "rawdata.normalised_price_for_asset_class"
+     other_args:
+       horizon: 1000
   carry10:
      function: backtest.systems.provided.rules.carry.carry
      data:
@@ -266,6 +280,15 @@ trading_rules:
      data:
           - "rawdata.smoothed_carry"
           - "rawdata.median_carry_for_asset_class"
+  skewabs365:
+     function: backtest.systems.provided.rules.factors.factor_trading_rule
+     data:
+          - 'rawdata.get_demeanded_factor_value'
+     other_args:
+          smooth: 90
+          _factor_name: 'neg_skew'
+          _demean_method: 'historic_average_factor_value_all_assets'
+          _lookback_days: 365
   skewabs180:
      function: backtest.systems.provided.rules.factors.factor_trading_rule
      data:
@@ -275,6 +298,15 @@ trading_rules:
           _factor_name: 'neg_skew'
           _demean_method: 'historic_average_factor_value_all_assets'
           _lookback_days: 180
+  skewrv365:
+     function: backtest.systems.provided.rules.factors.factor_trading_rule
+     data:
+          - 'rawdata.get_demeanded_factor_value'
+     other_args:
+          smooth: 90
+          _factor_name: 'neg_skew'
+          _demean_method: 'average_factor_value_in_asset_class_for_instrument'
+          _lookback_days: 365
   skewrv180:
      function: backtest.systems.provided.rules.factors.factor_trading_rule
      data:
@@ -321,6 +353,7 @@ forecast_scalars:
   breakout10: 0.6031025130185256
   breakout160: 0.7388310187414805
   breakout20: 0.6742627921625178
+  breakout320: 0.7366197028421859
   breakout40: 0.7036929411910525
   breakout80: 0.726260784624834
   carry10: 27.815707053556984
@@ -332,6 +365,7 @@ forecast_scalars:
   momentum4: 8.539940954709955
   momentum64: 1.9093945630747895
   momentum8: 5.949404365193165
+  mrinasset1000: 653.253194
   normmom16: 4.116536590599602
   normmom2: 12.388305650778637
   normmom32: 2.758872936017786
@@ -344,14 +378,16 @@ forecast_scalars:
   relmomentum40: 117.77937298659975
   relmomentum80: 159.87802982511536
   skewabs180: 4.590246757939031
+  skewabs365: 2.351483885205172
   skewrv180: 5.244752769697409
+  skewrv365: 3.002222097593425
 #
 # forecast combination
 #
 # Capital correction
 #
 percentage_vol_target: 25.0
-notional_trading_capital: 5000000
+notional_trading_capital: 50000000
 base_currency: "RUB"
 #
 # Portfolio creation
