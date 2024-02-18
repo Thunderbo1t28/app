@@ -19,10 +19,11 @@ class Command(BaseCommand):
         base_url = "https://iss.moex.com/iss/history/engines/futures/markets/forts/securities.json"
 
         # Получаем текущую дату
-        current_date =  datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #datetime.now().date()
+        current_date =  datetime.now().date() #datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #
 
         # Задаем конечную дату (например, "2024-01-01")
-        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
+        #end_date = datetime.strptime("2024-01-01", "%Y-%m-%d").date()
+        end_date = Quote.objects.all().order_by('timestamp').last().timestamp.date()
         contracts_to_instruments = {'ED': 'ED', 'EG': 'EGBP', 'EJ': 'EJPY', 'Eu': 'Eu', 'EU': 'EURRUBTOM', 'FL': 'FLOT', 'FN': 'FNI', 'FS': 'FEES', 'FV': 'FIVE', 'GD': 'GOLD', 'GK': 'GMKN', 'GL': 'GLDRUBTOM', 'GU': 'GBPU', 'GZ': 'GAZR', 'HK': 'HKD', 'HO': 'HOME', 'HS': 'HANG', 'HY': 'HYDR', 'I2': 'INR', 'IM': 'IMOEX', 'IR': 'IRAO', 'IS': 'ISKJ', 'JP': 'UJPY', 'KM': 'KMAZ', 'KZ': 'KZT', 'LK': 'LKOH', 'MA': 'MMI', 'MC': 'MTLR', 'ME': 'MOEX', 'MF': '1MFR', 'MG': 'MAGN', 'MM': 'MXI', 'MN': 'MGNT', 'MT': 'MTSI', 'MV': 'MVID', 'MX': 'MIX', 'N2': 'NIKK', 'NA': 'NASD', 'NG': 'NG', 'NK': 'NOTK', 'Nl': 'Nl', 'NM': 'NLMK', 'OG': 'OGI', 'OZ': 'OZON', 'PD': 'PLD', 'PH': 'PHOR', 'PI': 'PIKK', 'PO': 'POLY', 'PS': 'POSI', 'PT': 'PLT', 'PZ': 'PLZL', 'RB': 'RGBI', 'RI': 'RTS', 'RL': 'RUAL', 'RM': 'RTSM', 'RN': 'ROSN', 'RR': 'RUON', 'RT': 'RTKM', 'S0': 'SOFL', 'SA': 'SUGR', 'SE': 'SPBE', 'SF': 'SPYF', 'SG': 'SNGP', 'Si': 'Si', 'SN': 'SNGR', 'SO': 'SIBN', 'SP': 'SBPR', 'SR': 'SBRF', 'SS': 'SMLT', 'Su': 'SUGAR', 'SV': 'SILV', 'SX': 'STOX', 'SZ': 'SGZH', 'TI': 'TCSI', 'TN': 'TRNF', 'TR': 'UTRY', 'TT': 'TATN', 'TY': 'TRY', 'UC': 'UCNY', 'US': 'USDRUBTOM', 'VB': 'VTBR', 'VI': 'RVI', 'VK': 'VKCO', 'W4': 'WHEAT', 'WU': 'WUSH', 'YN': 'YNDF', 'Zn': 'Zn', 'AE': 'AED', 'AF': 'AFLT', 'AK': 'AFKS', 'AL': 'ALRS', 'AM': 'ALMN', 'AR': 'AMD', 'AS': 'ASTR', 'AU': 'AUDU', 'BE': 'BELU', 'BN': 'BANE', 'BR': 'BR', 'BS': 'BSPB', 'CA': 'UCAD', 'CF': 'UCHF', 'CH': 'CHMF', 'CM': 'CBOM', 'CN': 'CNYRUBTOM', 'Co': 'Co', 'CR': 'CNY', 'CS': 'CNI', 'DX': 'DAX', 'EC': 'ECAD'}
         contracts_to_secid = {'CNYRUBF' : 'CNYRUBTOM', 'EURRUBF' : 'EURRUBTOM', 'GLDRUBF' : 'GLDRUBTOM', 'IMOEXF' : 'IMOEX', 'USDRUBF' : 'USDRUBTOM'}
 

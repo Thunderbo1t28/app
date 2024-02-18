@@ -90,3 +90,14 @@ class SpreadCosts(models.Model):
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
     spreadcost = models.FloatField()
 
+class LastDownloadDate(models.Model):
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    contract = models.CharField(max_length=100)  # Имя контракта - дата последнего торгового дня
+    last_download_date = models.DateTimeField()
+    is_active = models.BooleanField(default=True)  # Статус контракта (торгуется или закрыт)
+
+    class Meta:
+        unique_together = ('instrument', 'contract')
+
+    def __str__(self):
+        return f'{self.instrument} - {self.contract} ({self.last_download_date})'
