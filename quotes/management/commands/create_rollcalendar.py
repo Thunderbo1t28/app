@@ -8,12 +8,12 @@ class Command(BaseCommand):
     help = 'Find current and next contracts for instruments and save to RollCalendar model'
 
     def handle(self, *args, **options):
-        current_date = datetime.strptime("2011-09-22", "%Y-%m-%d").date() 
+        current_date = datetime.now().date()
         quote_objects = Quote.objects.all()
         
 
         # Задаем конечную дату (например, "2024-01-01")
-        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
+        end_date = Quote.objects.all().order_by('timestamp').first().timestamp.date()
         # Установите количество дней, на которое вы хотите вернуться в прошлое
         #days_to_go_back = 2000  # Например, 1 год
         date_list = []
@@ -45,7 +45,7 @@ class Command(BaseCommand):
                 if not existing_entry:
                     # Получите объект Instrument для указанного инструмента
                     instrument_obj = Instrument.objects.get(instrument=instrument)
-
+                    timestamp =  datetime.strptime(current_contract, '%Y%m%d')
                     # Создайте объект RollCalendar с использованием объекта Instrument
                     roll_calendar_entries.append(RollCalendar(
                         exchange=exchange,
@@ -53,7 +53,7 @@ class Command(BaseCommand):
                         current_contract=current_contract,
                         next_contract=next_contract,
                         carry_contract=next_contract,
-                        timestamp=query_date
+                        timestamp=timestamp
                     ))
 
             # Если есть записи, добавляем их в базу данных
