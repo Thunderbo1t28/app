@@ -18,7 +18,7 @@ def find_current_next_contracts_for_instruments(quote_objects, current_date):
     for instrument in instruments:
         instrument_quotes = quote_objects.filter(instrument=instrument)
         exchange = instrument_quotes.values('exchange').first()['exchange']
-        current_contract = current_date.strftime("%Y%m%d")
+        current_contract = None #current_date.strftime("%Y%m%d")
         next_contract = None
         next_contract_date = None  # Определяем переменную заранее
 
