@@ -1,15 +1,16 @@
 from copy import copy
 from datetime import date, time
+from quotes.models import MongoDataMultipleKeys, MongoDataSingleKey
 
-from syscore.constants import arg_not_supplied
-from syscore.exceptions import missingData, existingData
-from sysdata.mongodb.mongo_connection import (
+from quotes.syscore.constants import arg_not_supplied
+from quotes.syscore.exceptions import missingData, existingData
+from quotes.sysdata.mongodb.mongo_connection import (
     mongoConnection,
     MONGO_ID_KEY,
     mongo_clean_ints,
     clean_mongo_host,
 )
-from syslogging.logger import *
+#from syslogging.logger import *
 
 
 class mongoDataWithSingleKey(object):
@@ -27,33 +28,32 @@ class mongoDataWithSingleKey(object):
         key_name: str,
         mongo_db=arg_not_supplied,
     ):
+        # Получаем объект модели Django для коллекции данных MongoDB
+        mongo_data_model = MongoDataSingleKey.objects.get_or_create(
+            collection_name=collection_name, key_name=key_name
+        )[0]
+
+        self.collection_name = mongo_data_model.collection_name
+        self.key_name = mongo_data_model.key_name
         mongo_object = mongoConnection(collection_name, mongo_db=mongo_db)
 
         self._mongo = mongo_object
         self._key_name = key_name
-
-        # this won't create the index if it already exists
-        # if a different index exists (FIX ME WILL HAPPEN UNTIL NEW DATA READY)...
         try:
             self._mongo.create_index(self.key_name)
         except:
             pass
-            ## no big deal
 
     def __repr__(self):
         return self.name
 
     @property
-    def key_name(self) -> str:
-        return self._key_name
-
-    @property
     def name(self) -> str:
-        col = self._mongo.collection_name
-        db = self._mongo.database_name
-        host = clean_mongo_host(self._mongo.host)
+        return f"MongoData connection for {self.collection_name}, key {self.key_name}"
 
-        return f"mongoData connection for {col}/{db}, {host}"
+    '''@property
+    def key_name(self) -> str:
+        return self._key_name'''
 
     @property
     def collection(self):
@@ -173,7 +173,6 @@ class mongoDataWithMultipleKeys(object):
         mongo_db=arg_not_supplied,
         index_config: dict = None,
     ):
-        self._log = get_logger("mongoDataWithMultipleKeys")
         self.init_mongo(collection_name, mongo_db=mongo_db, index_config=index_config)
 
     def init_mongo(
@@ -182,28 +181,24 @@ class mongoDataWithMultipleKeys(object):
         mongo_db=arg_not_supplied,
         index_config=None,
     ):
-        self._mongo = mongoConnection(collection_name, mongo_db=mongo_db)
+        # Получаем объект модели Django для коллекции данных MongoDB
+        mongo_data_model = MongoDataMultipleKeys.objects.get_or_create(
+            collection_name=collection_name
+        )[0]
 
-        if index_config:
-            try:
-                self._mongo.create_compound_index(index_config)
-            except Exception as exc:
-                self._log.error(
-                    "Failed to create compound index for collection '%s', "
-                    "check config: %s" % (collection_name, exc),
-                )
+        self.collection_name = mongo_data_model.collection_name
+
+        # Здесь можно реализовать создание составного индекса, если это необходимо
+        # ...
 
     def __repr__(self):
         return self.name
 
     @property
     def name(self) -> str:
-        col = self._mongo.collection_name
-        db = self._mongo.database_name
-        host = clean_mongo_host(self._mongo.host)
+        return f"MongoData connection for {self.collection_name}"
 
-        return f"mongoData connection for {col}/{db}, {host}"
-
+    
     def get_list_of_all_dicts(self) -> list:
         cursor = self._mongo.collection.find()
         dict_list = [db_entry for db_entry in cursor]

@@ -1,16 +1,16 @@
 CONTRACT_COLLECTION = "futures_contracts"
 
-from syscore.constants import arg_not_supplied
-from sysdata.futures.contracts import futuresContractData
-from sysobjects.contracts import (
+from quotes.syscore.constants import arg_not_supplied
+from quotes.sysdata.futures.contracts import futuresContractData
+from quotes.sysobjects.contracts import (
     contract_key_from_code_and_id,
     futuresContract,
     get_code_and_id_from_contract_key,
     key_contains_instrument_code,
     listOfFuturesContracts,
 )
-from syslogging.logger import *
-from sysdata.mongodb.mongo_generic import mongoDataWithSingleKey
+#from syslogging.logger import *
+from quotes.sysdata.mongodb.mongo_generic import mongoDataWithSingleKey
 
 
 class mongoFuturesContractData(futuresContractData):
@@ -22,10 +22,10 @@ class mongoFuturesContractData(futuresContractData):
     """
 
     def __init__(
-        self, mongo_db=arg_not_supplied, log=get_logger("mongoFuturesContractData")
+        self, mongo_db=arg_not_supplied, #log=get_logger("mongoFuturesContractData")
     ):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
         mongo_data = mongoDataWithSingleKey(
             CONTRACT_COLLECTION, "contract_key", mongo_db=mongo_db
         )

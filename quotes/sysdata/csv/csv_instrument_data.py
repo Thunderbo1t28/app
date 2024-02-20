@@ -1,18 +1,18 @@
 import dataclasses
 
-from syscore.fileutils import resolve_path_and_filename_for_package
-from sysdata.futures.instruments import futuresInstrumentData
-from syscore.constants import arg_not_supplied
-from sysobjects.instruments import (
+from quotes.syscore.fileutils import resolve_path_and_filename_for_package
+from quotes.sysdata.futures.instruments import futuresInstrumentData
+from quotes.syscore.constants import arg_not_supplied
+from quotes.sysobjects.instruments import (
     futuresInstrument,
     futuresInstrumentWithMetaData,
     instrumentMetaData,
     META_FIELD_LIST,
 )
-from syslogging.logger import *
+#from syslogging.logger import *
 import pandas as pd
 
-INSTRUMENT_CONFIG_PATH = "data.futures.csvconfig"
+INSTRUMENT_CONFIG_PATH = "E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\data\\futures\\csvconfig"
 CONFIG_FILE_NAME = "instrumentconfig.csv"
 
 
@@ -25,10 +25,10 @@ class csvFuturesInstrumentData(futuresInstrumentData):
     def __init__(
         self,
         datapath=arg_not_supplied,
-        log=get_logger("csvFuturesInstrumentData"),
+        #log=get_logger("csvFuturesInstrumentData"),
     ):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
 
         if datapath is arg_not_supplied:
             datapath = INSTRUMENT_CONFIG_PATH

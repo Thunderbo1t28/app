@@ -64,12 +64,13 @@ class MongoClientFactory(object):
 
     def get_mongo_client(self, host, port):
         key = (host, port)
-        if key in self.mongo_clients:
+        '''if key in self.mongo_clients:
             return self.mongo_clients.get(key)
         else:
             client = MongoClient(host=host, port=port)
             self.mongo_clients[key] = client
-            return client
+            return client'''
+        return 1
 
 
 # Only need one of these
@@ -85,26 +86,26 @@ class mongoDb:
 
     def __init__(
         self,
-        mongo_database_name: str = arg_not_supplied,
-        mongo_host: str = arg_not_supplied,
-        mongo_port: int = arg_not_supplied,
+        #mongo_database_name: str = arg_not_supplied,
+        #mongo_host: str = arg_not_supplied,
+        #mongo_port: int = arg_not_supplied,
     ):
 
         database_name, host, port = mongo_defaults(
-            mongo_database_name=mongo_database_name,
-            mongo_host=mongo_host,
-            mongo_port=mongo_port,
+            #mongo_database_name=mongo_database_name,
+            #mongo_host=mongo_host,
+            #mongo_port=mongo_port,
         )
 
-        self.database_name = database_name
-        self.host = host
-        self.port = port
+        #self.database_name = database_name
+        #self.host = host
+        #self.port = port
 
-        client = mongo_client_factory.get_mongo_client(host, port)
-        db = client[database_name]
+        #client = mongo_client_factory.get_mongo_client(host, port)
+        #db = client[database_name]
 
-        self.client = client
-        self.db = db
+        #self.client = client
+        #self.db = db
 
     def __repr__(self):
         clean_host = clean_mongo_host(self.host)
@@ -126,28 +127,28 @@ class mongoConnection(object):
         if mongo_db is arg_not_supplied or mongo_db is None:
             mongo_db = mongoDb()
 
-        database_name = mongo_db.database_name
-        host = mongo_db.host
-        port = mongo_db.port
-        db = mongo_db.db
-        client = mongo_db.client
+        #database_name = mongo_db.database_name
+        #host = mongo_db.host
+        #port = mongo_db.port
+        #db = mongo_db.db
+        #client = mongo_db.client
 
-        collection = db[collection_name]
+        #collection = db[collection_name]
 
-        self.database_name = database_name
+        #self.database_name = database_name
         self.collection_name = collection_name
-        self.host = host
-        self.port = port
+        #self.host = host
+        #self.port = port
 
-        self.client = client
-        self.db = db
-        self.collection = collection
+        #self.client = client
+        #self.db = db
+        #self.collection = collection
 
     def __repr__(self):
         clean_host = clean_mongo_host(self.host)
         return "Mongodb connection: host %s, db name %s, collection %s" % (
             clean_host,
-            self.database_name,
+            #self.database_name,
             self.collection_name,
         )
 

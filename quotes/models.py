@@ -101,16 +101,12 @@ class LastDownloadDate(models.Model):
 
     def __str__(self):
         return f'{self.instrument} - {self.contract} ({self.last_download_date})'
-
-
     
 class ArcticDataManager(models.Manager):
-    def create_arctic_data(self, ident, data):
-        arctic_data = ArcticDataModel.objects.create(ident=ident, data=data)
+    def create_arctic_data(self, model, ident, data):
+        arctic_data = model(ident=ident, data=data)
+        arctic_data.save()
         return arctic_data
-    
-    #def create(self, **kwargs):
-        #return ArcticDataModel.objects.create(**kwargs)
     
 class ArcticDataModel(models.Model):
     ident = models.CharField(max_length=255, unique=True)
@@ -120,3 +116,40 @@ class ArcticDataModel(models.Model):
 
     def __str__(self):
         return self.ident
+    
+'''class futures_contract_pricesManager(models.Manager):
+    def create_arctic_data(self, ident, data):
+        arctic_data = ArcticDataManager().create_arctic_data(ident=ident, data=data)
+        return arctic_data'''
+
+class futures_contract_prices(models.Model):
+    ident = models.CharField(max_length=255, unique=True)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
+class futures_adjusted_prices(models.Model):
+    ident = models.CharField(max_length=255, unique=True)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
+class futures_multiple_prices(models.Model):
+    ident = models.CharField(max_length=255, unique=True)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
+class spreads(models.Model):
+    ident = models.CharField(max_length=255, unique=True)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
+class MongoDataSingleKey(models.Model):
+    collection_name = models.CharField(max_length=255)
+    key_name = models.CharField(max_length=255)
+
+class MongoDataMultipleKeys(models.Model):
+    collection_name = models.CharField(max_length=255)
+    index_config = models.JSONField(null=True, blank=True)

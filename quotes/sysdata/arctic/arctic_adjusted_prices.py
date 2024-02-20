@@ -1,9 +1,9 @@
-from sysdata.futures.adjusted_prices import (
+from quotes.sysdata.futures.adjusted_prices import (
     futuresAdjustedPricesData,
 )
-from sysobjects.adjusted_prices import futuresAdjustedPrices
-from sysdata.arctic.arctic_connection import arcticData
-from syslogging.logger import *
+from quotes.sysobjects.adjusted_prices import futuresAdjustedPrices
+from quotes.sysdata.arctic.arctic_connection import arcticData
+#from syslogging.logger import *
 import pandas as pd
 
 ADJPRICE_COLLECTION = "futures_adjusted_prices"
@@ -14,9 +14,9 @@ class arcticFuturesAdjustedPricesData(futuresAdjustedPricesData):
     Class to read / write multiple futures price data to and from arctic
     """
 
-    def __init__(self, mongo_db=None, log=get_logger("arcticFuturesAdjustedPrices")):
+    def __init__(self, mongo_db=None,): #log=get_logger("arcticFuturesAdjustedPrices")):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
 
         self._arctic = arcticData(ADJPRICE_COLLECTION, mongo_db=mongo_db)
 
@@ -43,10 +43,11 @@ class arcticFuturesAdjustedPricesData(futuresAdjustedPricesData):
         self, instrument_code: str
     ):
         self.arctic.delete(instrument_code)
-        self.log.debug(
+        '''self.log.debug(
             "Deleted adjusted prices for %s from %s" % (instrument_code, str(self)),
             instrument_code=instrument_code,
-        )
+        )'''
+        print(f"Deleted adjusted prices for {instrument_code} from {str(self)}")
 
     def _add_adjusted_prices_without_checking_for_existing_entry(
         self, instrument_code: str, adjusted_price_data: futuresAdjustedPrices
@@ -55,8 +56,9 @@ class arcticFuturesAdjustedPricesData(futuresAdjustedPricesData):
         adjusted_price_data_aspd.columns = ["price"]
         adjusted_price_data_aspd = adjusted_price_data_aspd.astype(float)
         self.arctic.write(instrument_code, adjusted_price_data_aspd)
-        self.log.debug(
+        '''self.log.debug(
             "Wrote %s lines of prices for %s to %s"
             % (len(adjusted_price_data), instrument_code, str(self)),
             instrument_code=instrument_code,
-        )
+        )'''
+        print(f"Wrote {len(adjusted_price_data)} lines of prices for {instrument_code} to {str(self)}")

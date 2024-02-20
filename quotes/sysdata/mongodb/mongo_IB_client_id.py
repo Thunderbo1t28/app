@@ -1,7 +1,7 @@
-from sysbrokers.IB.client.ib_client_id import ibBrokerClientIdData
-from syscore.constants import arg_not_supplied
-from sysdata.mongodb.mongo_generic import mongoDataWithSingleKey
-from syslogging.logger import *
+from backtest.sysbrokers.IB.client.ib_client_id import ibBrokerClientIdData
+from quotes.syscore.constants import arg_not_supplied
+from quotes.sysdata.mongodb.mongo_generic import mongoDataWithSingleKey
+#from syslogging.logger import *
 
 IB_CLIENT_COLLECTION = "IBClientTracker"
 IB_ID_REF = "client_id"
@@ -16,10 +16,10 @@ class mongoIbBrokerClientIdData(ibBrokerClientIdData):
         self,
         mongo_db=arg_not_supplied,
         idoffset=arg_not_supplied,
-        log=get_logger("mongoIDTracker"),
+        #log=get_logger("mongoIDTracker"),
     ):
 
-        super().__init__(log=log, idoffset=idoffset)
+        super().__init__( idoffset=idoffset) #log=log,
         self._mongo_data = mongoDataWithSingleKey(
             IB_CLIENT_COLLECTION, IB_ID_REF, mongo_db
         )
@@ -36,7 +36,8 @@ class mongoIbBrokerClientIdData(ibBrokerClientIdData):
 
     def _lock_clientid(self, next_id: int):
         self.mongo_data.add_data(next_id, {})
-        self.log.debug("Locked IB client ID %d" % next_id)
+        #self.log.debug("Locked IB client ID %d" % next_id)
+        print(f"Locked IB client ID {next_id}")
 
     def release_clientid(self, clientid: int):
         """
@@ -45,4 +46,5 @@ class mongoIbBrokerClientIdData(ibBrokerClientIdData):
         :return: None
         """
         self.mongo_data.delete_data_without_any_warning(clientid)
-        self.log.debug("Released IB client ID %d" % clientid)
+        #self.log.debug("Released IB client ID %d" % clientid)
+        print(f"Released IB client ID {clientid}")

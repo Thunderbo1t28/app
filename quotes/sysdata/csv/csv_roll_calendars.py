@@ -1,14 +1,14 @@
-from sysobjects.roll_calendars import rollCalendar
-from sysdata.futures.roll_calendars import rollCalendarData
-from syscore.fileutils import (
+from quotes.sysobjects.roll_calendars import rollCalendar
+from quotes.sysdata.futures.roll_calendars import rollCalendarData
+from quotes.syscore.fileutils import (
     resolve_path_and_filename_for_package,
     files_with_extension_in_pathname,
 )
-from syscore.pandas.pdutils import pd_readcsv
-from syscore.constants import arg_not_supplied
-from syslogging.logger import *
+from quotes.syscore.pandas.pdutils import pd_readcsv
+from quotes.syscore.constants import arg_not_supplied
+#from syslogging.logger import *
 
-CSV_ROLL_CALENDAR_DIRECTORY = "data.futures.roll_calendars_csv"
+CSV_ROLL_CALENDAR_DIRECTORY = "E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\data\\futures\\roll_calendars_csv"
 DATE_INDEX_NAME = "DATE_TIME"
 
 # NOTE: can't change calendars here - do we need init?
@@ -22,10 +22,10 @@ class csvRollCalendarData(rollCalendarData):
     """
 
     def __init__(
-        self, datapath=arg_not_supplied, log=get_logger("csvRollCalendarData")
+        self, datapath=arg_not_supplied, #log=get_logger("csvRollCalendarData")
     ):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
 
         if datapath is arg_not_supplied:
             datapath = CSV_ROLL_CALENDAR_DIRECTORY
@@ -48,7 +48,8 @@ class csvRollCalendarData(rollCalendarData):
 
             roll_calendar = pd_readcsv(filename, date_index_name=DATE_INDEX_NAME)
         except OSError:
-            self.log.warning("Can't find roll calendar file %s" % filename)
+            #self.log.warning("Can't find roll calendar file %s" % filename)
+            print(f"Can't find roll calendar file {filename}")
             return rollCalendar.create_empty()
 
         roll_calendar = rollCalendar(roll_calendar)
@@ -67,7 +68,8 @@ class csvRollCalendarData(rollCalendarData):
     ):
         filename = self._filename_given_instrument_code(instrument_code)
         roll_calendar.to_csv(filename, index_label=DATE_INDEX_NAME)
-        self.log.debug("Wrote calendar for %s to %s" % (instrument_code, str(filename)))
+        #self.log.debug("Wrote calendar for %s to %s" % (instrument_code, str(filename)))
+        print(f"Wrote calendar for {instrument_code} to {str(filename)}")
 
     def _filename_given_instrument_code(self, instrument_code: str):
         return resolve_path_and_filename_for_package(

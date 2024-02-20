@@ -1,12 +1,12 @@
-from syscore.constants import arg_not_supplied
-from syscore.fileutils import resolve_path_and_filename_for_package
-from sysdata.futures.rolls_parameters import rollParametersData
-from sysobjects.rolls import rollParameters
-from syslogging.logger import *
+from quotes.syscore.constants import arg_not_supplied
+from quotes.syscore.fileutils import resolve_path_and_filename_for_package
+from quotes.sysdata.futures.rolls_parameters import rollParametersData
+from quotes.sysobjects.rolls import rollParameters
+#from syslogging.logger import *
 
 import pandas as pd
 
-ROLLS_DATAPATH = "data.futures.csvconfig"
+ROLLS_DATAPATH = "E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\data\\futures\\csvconfig"
 ROLLS_CONFIG_FILE = "rollconfig.csv"
 
 
@@ -64,10 +64,10 @@ class csvRollParametersData(rollParametersData):
     """
 
     def __init__(
-        self, log=get_logger("csvRollParametersData"), datapath=arg_not_supplied
+        self, datapath=arg_not_supplied #log=get_logger("csvRollParametersData"),
     ):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
         if datapath is arg_not_supplied:
             datapath = ROLLS_DATAPATH
         config_file = resolve_path_and_filename_for_package(datapath, ROLLS_CONFIG_FILE)
@@ -103,10 +103,11 @@ class csvRollParametersData(rollParametersData):
         )
         all_parameters.write_to_file(self.config_file)
 
-        self.log.warning(
+        '''self.log.warning(
             "*** WRITTEN NEW ROLL PARAMETERS TO %s - copy to /data/futures/csvconfig/rollconfig.csv NOW ***"
             % self.config_file
-        )
+        )'''
+        print(f"*** WRITTEN NEW ROLL PARAMETERS TO {self.config_file} - copy to /data/futures/csvconfig/rollconfig.csv NOW ***")
 
     def write_all_roll_parameters_data(self, roll_parameters_df: pd.DataFrame):
         all_roll_parameters = allRollParameters(roll_parameters_df)
