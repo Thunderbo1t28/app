@@ -106,11 +106,11 @@ class LastDownloadDate(models.Model):
     
 class ArcticDataManager(models.Manager):
     def create_arctic_data(self, ident, data):
-        arctic_data = self.create(ident=ident, data=data)
+        arctic_data = ArcticDataModel.objects.create(ident=ident, data=data)
         return arctic_data
     
-    def create(self, **kwargs):
-        return self.model.objects.create(**kwargs)
+    #def create(self, **kwargs):
+        #return ArcticDataModel.objects.create(**kwargs)
     
 class ArcticDataModel(models.Model):
     ident = models.CharField(max_length=255, unique=True)

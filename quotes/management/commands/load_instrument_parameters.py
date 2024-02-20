@@ -67,7 +67,7 @@ class Command(BaseCommand):
 
             Instrument.objects.create(
                 instrument=row.ASSETCODE,
-                description=row.SECNAME,
+                description="",
                 point_size=row.LOTVOLUME,
                 currency="RUB",
                 asset_class="",
