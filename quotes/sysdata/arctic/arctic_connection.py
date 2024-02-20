@@ -1,17 +1,11 @@
 from django.db import models
 import pandas as pd
 
-class ArcticDataModel(models.Model):
-    ident = models.CharField(max_length=255, unique=True)
-    data = models.JSONField()
+from quotes.models import ArcticDataManager, ArcticDataModel
 
-    def __str__(self):
-        return self.ident
 
-class ArcticDataManager(models.Manager):
-    def create_arctic_data(self, ident, data):
-        arctic_data = self.create(ident=ident, data=data)
-        return arctic_data
+
+
 
 class arcticData(object):
     def __init__(self, collection_name, mongo_db=None):
@@ -27,6 +21,7 @@ class arcticData(object):
 
     def write(self, ident: str, data: pd.DataFrame):
         data_dict = data.to_dict(orient='records')
+        print(data_dict)
         self.manager.create_arctic_data(ident=ident, data=data_dict)
 
     def delete(self, ident: str):

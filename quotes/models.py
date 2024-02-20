@@ -101,3 +101,22 @@ class LastDownloadDate(models.Model):
 
     def __str__(self):
         return f'{self.instrument} - {self.contract} ({self.last_download_date})'
+
+
+    
+class ArcticDataManager(models.Manager):
+    def create_arctic_data(self, ident, data):
+        arctic_data = self.create(ident=ident, data=data)
+        return arctic_data
+    
+    def create(self, **kwargs):
+        return self.model.objects.create(**kwargs)
+    
+class ArcticDataModel(models.Model):
+    ident = models.CharField(max_length=255, unique=True)
+    data = models.JSONField()
+
+    objects = ArcticDataManager()
+
+    def __str__(self):
+        return self.ident
