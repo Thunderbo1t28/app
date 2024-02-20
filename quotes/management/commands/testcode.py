@@ -1,5 +1,7 @@
+import os
 from django.core.management.base import BaseCommand
 from backtest.sysproduction.data.prices import get_valid_instrument_code_from_user
+from quotes.sysdata.arctic.arctic_futures_per_contract_prices import arcticFuturesContractPriceData
 from quotes.sysdata.csv.csv_futures_contract_prices import ConfigCsvFuturesPrices
 
 from quotes.sysinit.futures.contract_prices_from_csv_to_arctic import init_arctic_with_csv_futures_contract_prices
@@ -21,14 +23,18 @@ class Command(BaseCommand):
                 OPEN="<OPEN>", HIGH="<HIGH>", LOW="<LOW>", FINAL="<CLOSE>", VOLUME="<VOL>"
             ),
         )
-        datapath = "E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\downloadData"
+        BASEDIR = os.getcwd()
+        print(BASEDIR)
+        datapath = BASEDIR + "/downloadData"
         data = init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)
         #ewmac.tail(5)
         '''instrument_code = get_valid_instrument_code_from_user(source="single")
         ## MODIFY DATAPATH IF REQUIRED
         # build_and_write_roll_calendar(instrument_code, output_datapath=arg_not_supplied)
-        build_and_write_roll_calendar(instrument_code, output_datapath="E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\data\\futures\\roll_calendars_csv")'''
+        build_and_write_roll_calendar(instrument_code, output_datapath="BASEDIR\\data\\futures\\roll_calendars_csv")'''
         #print(data)
+        '''sim_data = arcticFuturesContractPriceData()
+        print(sim_data.get_merged_prices_for_instrument(instrument_code="AFKS"))'''
         #multiple_prices = sim_data.get_multiple_prices_from_start_date(instrument_code, start_date)
         #spread_cost = sim_data.get_spread_cost(instrument_code)
         #backadjusted_prices = sim_data.get_backadjusted_futures_price(instrument_code)
