@@ -44,7 +44,7 @@ class Command(BaseCommand):
                 # Если запись не существует, добавляем её во временный список
                 if not existing_entry and current_contract:
                     # Получите объект Instrument для указанного инструмента
-                    #print(instrument)
+                    print(instrument)
                     instrument_obj = Instrument.objects.get(instrument=instrument)
                     timestamp =  datetime.strptime(current_contract, '%Y%m%d')
                     # Создайте объект RollCalendar с использованием объекта Instrument
