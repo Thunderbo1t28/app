@@ -24,15 +24,25 @@ class Command(BaseCommand):
             ),
         )
         BASEDIR = os.getcwd()
+
+
+
         print(BASEDIR)
         datapath = BASEDIR + "/downloadData"
         data = init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)
-        #ewmac.tail(5)
-        '''instrument_code = get_valid_instrument_code_from_user(source="single")
+
+
+
+        '''
+        instrument_code = get_valid_instrument_code_from_user(source="single")
         ## MODIFY DATAPATH IF REQUIRED
         # build_and_write_roll_calendar(instrument_code, output_datapath=arg_not_supplied)
-        build_and_write_roll_calendar(instrument_code, output_datapath="BASEDIR\\data\\futures\\roll_calendars_csv")'''
-        #print(data)
+        build_and_write_roll_calendar(instrument_code, output_datapath="BASEDIR\\data\\futures\\roll_calendars_csv")
+'''
+
+
+
+
         '''sim_data = arcticFuturesContractPriceData()
         print(sim_data.get_merged_prices_for_instrument(instrument_code="AFKS"))'''
         #multiple_prices = sim_data.get_multiple_prices_from_start_date(instrument_code, start_date)

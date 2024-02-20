@@ -224,7 +224,7 @@ class futuresContractFinalPrices(pd.Series):
 
 def _validate_price_data(data: pd.DataFrame):
     data_present = sorted(data.columns)
-
+    #print(data_present)
     try:
         assert data_present == PRICE_DATA_COLUMNS
     except AssertionError:

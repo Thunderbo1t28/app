@@ -98,8 +98,9 @@ class arcticFuturesContractPriceData(futuresContractPriceData):
         ident = from_contract_and_freq_to_key(
             futures_contract_object, frequency=frequency
         )
+        #print(futures_price_data)
         futures_price_data_as_pd = pd.DataFrame(futures_price_data)
-
+        #print(futures_price_data_as_pd)
         self.arctic_connection.write(ident, futures_price_data_as_pd)
 
         '''log.debug(

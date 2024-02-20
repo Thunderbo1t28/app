@@ -497,7 +497,7 @@ def _valid_dates_from_matching_prices(paired_prices_matching, avoid_date):
 
 
 def _find_closest_valid_date_to_approx_roll_date(valid_dates, roll_date):
-
+    print(valid_dates)
     distance_to_roll = valid_dates - roll_date
     distance_to_roll_days = [
         abs(distance_item.days) for distance_item in distance_to_roll

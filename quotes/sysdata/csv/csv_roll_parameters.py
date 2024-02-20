@@ -1,3 +1,4 @@
+import os
 from quotes.syscore.constants import arg_not_supplied
 from quotes.syscore.fileutils import resolve_path_and_filename_for_package
 from quotes.sysdata.futures.rolls_parameters import rollParametersData
@@ -5,8 +6,8 @@ from quotes.sysobjects.rolls import rollParameters
 #from syslogging.logger import *
 
 import pandas as pd
-
-ROLLS_DATAPATH = "E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\data\\futures\\csvconfig"
+BASEDIR = os.getcwd()
+ROLLS_DATAPATH = BASEDIR + "\\data\\futures\\csvconfig"
 ROLLS_CONFIG_FILE = "rollconfig.csv"
 
 

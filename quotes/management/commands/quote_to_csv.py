@@ -53,15 +53,16 @@ class Command(BaseCommand):
                 # Создание каталога, если его нет
                 directory = f'downloadData/'
                 os.makedirs(directory, exist_ok=True)
+                contract = contract[:-2]
 
                 # Сохранение в CSV-файл только если есть данные
                 if not df.empty:
-                    df.to_csv(f'{directory}/{instrument}_{contract}.csv')
+                    df.to_csv(f'{directory}/{instrument}_{contract}00.csv')
 
                     # Обновление или создание записи о последней загрузке
                     last_date = df.index.max()
                     LastDownloadDate.objects.update_or_create(
                         instrument=instrument,
-                        contract=contract,
+                        contract=f"{contract}00",
                         defaults={'last_download_date': last_date}
                     )
