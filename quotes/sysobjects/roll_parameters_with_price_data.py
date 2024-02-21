@@ -234,6 +234,7 @@ def find_earliest_held_contract_with_price_data(
 
     :return: contract with roll parameters, or None
     """
+    #print(price_dict)
     list_of_contract_dates = price_dict.sorted_contract_date_str()
 
     earliest_contract = _find_earliest_held_contract_with_data(
@@ -273,7 +274,7 @@ def _initial_contract_to_try_with(
     roll_parameters_object: rollParameters,
     price_dict: dictFuturesContractFinalPrices,
 ) -> contractWithRollParametersAndPrices:
-
+    #print(list_of_contract_dates)
     plausible_earliest_contract_date = list_of_contract_dates[0]
     plausible_earliest_contract = contractDateWithRollParameters(
         contractDate(

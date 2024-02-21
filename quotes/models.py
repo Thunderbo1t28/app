@@ -105,6 +105,7 @@ class LastDownloadDate(models.Model):
     
 class ArcticDataManager(models.Manager):
     def create_arctic_data(self, model, ident, data):
+        #print(data)
         arctic_data = model.objects.update_or_create(ident=ident, data=data)
         #arctic_data.save()
         

@@ -9,3 +9,4 @@ media/
 downloadData
 quotes/migrations
 db.sqlite3-journal
+data

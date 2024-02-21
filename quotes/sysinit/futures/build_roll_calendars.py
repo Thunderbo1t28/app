@@ -33,6 +33,7 @@ def generate_approximate_calendar(
     :return: data frame ready to be rollCalendar
     """
     try:
+        #print(dict_of_futures_contract_prices)
         earliest_contract_with_roll_data = find_earliest_held_contract_with_price_data(
             roll_parameters_object, dict_of_futures_contract_prices
         )

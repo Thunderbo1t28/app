@@ -45,14 +45,16 @@ def build_and_write_roll_calendar(
         roll_parameters = roll_parameters_data.get_roll_parameters(instrument_code)
 
     csv_roll_calendars = csvRollCalendarData(output_datapath)
-
+    #print(prices)
     dict_of_all_futures_contract_prices = prices.get_merged_prices_for_instrument(
         instrument_code
     )
+    #print(dict_of_all_futures_contract_prices)
     dict_of_futures_contract_prices = dict_of_all_futures_contract_prices.final_prices()
 
     # might take a few seconds
     print("Prepping roll calendar... might take a few seconds")
+    #print(dict_of_futures_contract_prices)
     roll_calendar = rollCalendar.create_from_prices(
         dict_of_futures_contract_prices, roll_parameters
     )
