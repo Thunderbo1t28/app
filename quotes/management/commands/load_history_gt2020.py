@@ -45,7 +45,7 @@ class Command(BaseCommand):
                                           'AK': 'AFKS', 'AL': 'ALRS', 'AM': 'ALMN', 'AR': 'AMD', 'AS': 'ASTR', 
                                           'AU': 'AUDU', 'BE': 'BELU', 'BN': 'BANE', 'BR': 'BR', 'BS': 'BSPB', 
                                           'CA': 'UCAD', 'CF': 'UCHF', 'CH': 'CHMF', 'CM': 'CBOM', #'CN': 'CNYRUBTOM', 
-                                          'Co': 'Co', 'CR': 'CNY', 'CS': 'CNI', 'DX': 'DAX', } #'Zn': 'Zn', 'US': 'USDRUBTOM', 'VB': 'VTBR','IR': 'IRAO','IM': 'IMOEX','GL': 'GLDRUBTOM','FS': 'FEES', 'EG': 'EGBP','EC': 'ECAD', 'EU': 'EURRUBTOM',
+                                          'Co': 'Co', 'CR': 'CNY', 'CS': 'CNI', 'DX': 'DAX', 'VB': 'VTBR','EG': 'EGBP','EC': 'ECAD','IR': 'IRAO','FS': 'FEES','Zn': 'Zn',} # 'US': 'USDRUBTOM', 'IM': 'IMOEX','GL': 'GLDRUBTOM',  'EU': 'EURRUBTOM',
         contracts_to_secid = {'CNYRUBF' : 'CNYRUBTOM', 'EURRUBF' : 'EURRUBTOM', 'GLDRUBF' : 'GLDRUBTOM', 'IMOEXF' : 'IMOEX', 'USDRUBF' : 'USDRUBTOM'}
 
         # Инициализируем список дат, начиная от текущей и идя к заданной конечной дате
