@@ -38,31 +38,34 @@ class Command(BaseCommand):
             contract_list = list(set(contract_list))
             for contract in contract_list:
                 quotes_contract = quotes.filter(contract=contract)
+                timestamp_dates = quotes_contract.values_list('timestamp', flat=True)
+                
 
+                # Преобразуете значения в формат datetime
+                #timestamp_dates = [datetime.strptime(str(date), '%Y-%m-%d %H:%M:%S') for date in timestamp_dates]
                 df = pd.DataFrame({
-                    '<DATE>': quotes_contract.values_list('timestamp__date', flat=True),
-                    '<TIME>': '00:00:00',
+                    '<DATE>': timestamp_dates,
                     '<OPEN>': quotes_contract.values_list('open_price', flat=True),
                     '<HIGH>': quotes_contract.values_list('high_price', flat=True),
                     '<LOW>': quotes_contract.values_list('low_price', flat=True),
                     '<CLOSE>': quotes_contract.values_list('close_price', flat=True),
                     '<VOL>': quotes_contract.values_list('volume', flat=True),
                 }).set_index('<DATE>')
+                df.index = df.index.tz_localize(None)
                 print(f"{instrument}")
                 print(df)
                 # Создание каталога, если его нет
                 directory = f'downloadData/'
                 os.makedirs(directory, exist_ok=True)
-                contract = contract[:-2]
 
                 # Сохранение в CSV-файл только если есть данные
                 if not df.empty:
-                    df.to_csv(f'{directory}/{instrument}_{contract}00.csv')
+                    df.to_csv(f'{directory}/{instrument}_{contract}.csv')
 
                     # Обновление или создание записи о последней загрузке
                     last_date = df.index.max()
                     LastDownloadDate.objects.update_or_create(
                         instrument=instrument,
-                        contract=f"{contract}00",
+                        contract=contract,
                         defaults={'last_download_date': last_date}
                     )

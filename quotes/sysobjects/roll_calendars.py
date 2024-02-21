@@ -52,11 +52,11 @@ class rollCalendar(pd.DataFrame):
         approx_calendar = generate_approximate_calendar(
             roll_parameters_object, dict_of_futures_contract_prices
         )
-
+        #print(approx_calendar)
         adjusted_calendar = adjust_to_price_series(
             approx_calendar, dict_of_futures_contract_prices
         )
-
+        #print(adjusted_calendar)
         roll_calendar = rollCalendar(adjusted_calendar)
 
         return roll_calendar

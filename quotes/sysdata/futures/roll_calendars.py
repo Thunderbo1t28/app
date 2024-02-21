@@ -73,7 +73,7 @@ class rollCalendarData(baseData):
                     "There is already %s in the data, you have to delete it first"
                     % instrument_code
                 )
-
+        #print(roll_calendar)
         self._add_roll_calendar_without_checking_for_existing_entry(
             instrument_code, roll_calendar
         )

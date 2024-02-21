@@ -1,18 +1,18 @@
 import pandas as pd
-from sysdata.futures.multiple_prices import futuresMultiplePricesData
-from sysobjects.multiple_prices import (
+from quotes.sysdata.futures.multiple_prices import futuresMultiplePricesData
+from quotes.sysobjects.multiple_prices import (
     futuresMultiplePrices,
     list_of_contract_column_names,
 )
 
-from syscore.fileutils import (
+from quotes.syscore.fileutils import (
     resolve_path_and_filename_for_package,
     files_with_extension_in_pathname,
 )
-from syscore.pandas.pdutils import pd_readcsv
-from syscore.genutils import str_of_int
-from syscore.constants import arg_not_supplied
-from syslogging.logger import *
+from quotes.syscore.pandas.pdutils import pd_readcsv
+from quotes.syscore.genutils import str_of_int
+from quotes.syscore.constants import arg_not_supplied
+#from syslogging.logger import *
 
 CSV_MULTIPLE_PRICE_DIRECTORY = "data.futures.multiple_prices_csv"
 DATE_INDEX_NAME = "DATETIME"
@@ -27,10 +27,10 @@ class csvFuturesMultiplePricesData(futuresMultiplePricesData):
     def __init__(
         self,
         datapath: str = arg_not_supplied,
-        log=get_logger("csvFuturesMultiplePricesData"),
+        #log=get_logger("csvFuturesMultiplePricesData"),
     ):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
 
         if datapath is arg_not_supplied:
             datapath = CSV_MULTIPLE_PRICE_DIRECTORY
@@ -73,10 +73,11 @@ class csvFuturesMultiplePricesData(futuresMultiplePricesData):
         filename = self._filename_given_instrument_code(instrument_code)
         multiple_price_data.to_csv(filename, index_label=DATE_INDEX_NAME)
 
-        self.log.debug(
+        '''self.log.debug(
             "Written multiple prices for %s to %s" % (instrument_code, filename),
             instrument_code=instrument_code,
-        )
+        )'''
+        print(f"Written multiple prices for {instrument_code} to {filename}")
 
     def _read_instrument_prices(self, instrument_code: str) -> pd.DataFrame:
         filename = self._filename_given_instrument_code(instrument_code)
@@ -84,10 +85,11 @@ class csvFuturesMultiplePricesData(futuresMultiplePricesData):
         try:
             instr_all_price_data = pd_readcsv(filename, date_index_name=DATE_INDEX_NAME)
         except OSError:
-            self.log.warning(
+            '''self.log.warning(
                 "Can't find multiple price file %s or error reading" % filename,
                 instrument_code=instrument_code,
-            )
+            )'''
+            print(f"Can't find multiple price file {filename} or error reading")
             return futuresMultiplePrices.create_empty()
 
         return instr_all_price_data

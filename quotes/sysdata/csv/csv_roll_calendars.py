@@ -67,6 +67,7 @@ class csvRollCalendarData(rollCalendarData):
         self, instrument_code: str, roll_calendar: rollCalendar
     ):
         filename = self._filename_given_instrument_code(instrument_code)
+        #print(roll_calendar)
         roll_calendar.to_csv(filename, index_label=DATE_INDEX_NAME)
         #self.log.debug("Wrote calendar for %s to %s" % (instrument_code, str(filename)))
         print(f"Wrote calendar for {instrument_code} to {str(filename)}")

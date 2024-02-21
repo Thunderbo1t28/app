@@ -229,9 +229,24 @@ def adjust_to_price_series(
         raise Exception(
             "Error! Empty roll calendar after adjustment! Most likely corrupted roll calendar or maybe using old roll calendar .csv files with new price data?"
         )
-
-    new_calendar = adjusted_roll_calendar_as_list.to_pd_df()
-
+    #print(adjusted_roll_calendar_as_list)
+    '''new_calendar = adjusted_roll_calendar_as_list.to_pd_df()'''
+    '''for item in adjusted_roll_calendar_as_list:
+        item['current_roll_date'] = item['current_roll_date'].strftime('%Y-%m-%d %H:%M:%S')'''
+    # Преобразовать словарь в DataFrame
+    new_calendar = pd.DataFrame(adjusted_roll_calendar_as_list)
+    # Добавление времени в конец каждой строки
+    # Преобразование столбца в формат datetime с сохранением времени
+    #new_calendar['current_roll_date'] = pd.to_datetime(new_calendar['current_roll_date']) + pd.Timedelta('00:00:00')
+    #new_calendar['current_roll_date'] = new_calendar['current_roll_date'].dt.to_pydatetime()#pd.to_datetime(new_calendar['current_roll_date'])
+    '''new_calendar['current_roll_date'] = pd.to_datetime(new_calendar['current_roll_date'], format="%Y-%m-%d %H:%M:%S")'''
+    new_calendar.set_index('current_roll_date', inplace=True)
+    '''new_calendar.index = pd.to_datetime(new_calendar['current_roll_date'], format="%Y-%m-%d %H:%M:%S").values
+    del new_calendar['current_roll_date']
+    new_calendar.index.name = None'''
+    # Преобразовать тип данных поля current_roll_date обратно в Timestamp
+    #new_calendar['current_roll_date'] = pd.to_datetime(new_calendar['current_roll_date'])
+    print(new_calendar)
     return new_calendar
 
 

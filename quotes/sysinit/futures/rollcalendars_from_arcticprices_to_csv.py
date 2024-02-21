@@ -56,7 +56,7 @@ def build_and_write_roll_calendar(
     roll_calendar = rollCalendar.create_from_prices(
         dict_of_futures_contract_prices, roll_parameters
     )
-
+    #print(roll_calendar)
     # checks - this might fail
     roll_calendar.check_if_date_index_monotonic()
 
@@ -76,6 +76,7 @@ def build_and_write_roll_calendar(
 
         if check_happy_to_write:
             print("Adding roll calendar")
+            #print(roll_calendar)
             csv_roll_calendars.add_roll_calendar(
                 instrument_code, roll_calendar, ignore_duplication=True
             )
