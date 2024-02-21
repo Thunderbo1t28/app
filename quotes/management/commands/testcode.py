@@ -28,17 +28,20 @@ class Command(BaseCommand):
 
 
         print(BASEDIR)
-        datapath = BASEDIR + "/downloadData"
-        data = init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)
+        '''datapath = BASEDIR + "/downloadData"
+        data = init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)'''
 
 
-
-        '''
-        instrument_code = get_valid_instrument_code_from_user(source="single")
+        # '1MFR', 'AED', 'AFKS', 'AFLT', 'ALRS', 'AUDU', 'BANE', 'BELU', 'BR', 'BSPB', 'CBOM', 'CHMF', 'CNI', 'CNY', 'Co', 'DAX', 'ED', 'EJPY', 'Eu', 'FIVE', 'FLOT', 'FNI', 'GAZR', 'GBPU', 'GMKN', 'GOLD', 'HANG', 'HKD','HOME', 'HYDR', 'INR', 'ISKJ', 'KMAZ', 'KZT', 'LKOH', 'MAGN', 'MGNT', 'MIX', 'MMI', 'MOEX', 'MTLR', 'MTSI', 'MVID', 'MXI', 'NASD', 'NG', 'NIKK', 'NLMK', 'NOTK','OGI', 'OZON', 'PHOR', 'PIKK', 'PLD', 'PLT', 'PLZL', 'POLY', 'POSI', 'RGBI', 'ROSN', 'RTKM', 'RTS', 'RTSM', 'RUAL','RUON', 'SBPR', 'SBRF', 'SGZH', 'SIBN', 'SILV', 'SMLT', 'SNGP', 'SNGR','SPBE', 'SPYF', 'STOX', 'SUGAR',
+        # 'ALMN','AMD', 'ASTR','Nl','RVI', 'SOFL','SUGR',
+        #instrument_code = get_valid_instrument_code_from_user(source="single")
         ## MODIFY DATAPATH IF REQUIRED
         # build_and_write_roll_calendar(instrument_code, output_datapath=arg_not_supplied)
-        build_and_write_roll_calendar(instrument_code, output_datapath="BASEDIR\\data\\futures\\roll_calendars_csv")
-'''
+        instruments_list = ['Si', 'TATN', 'TCSI', 'TRNF', 'TRY', 'UCAD', 'UCHF', 'UCNY', 'UJPY', 'UTRY', 'VKCO', 'WHEAT', 'WUSH', 'YNDF']
+        for instrument in instruments_list:
+            build_and_write_roll_calendar(instrument, output_datapath=f"{BASEDIR}\\data\\futures\\roll_calendars_csv")
+        
+
 
 
 

@@ -1,5 +1,6 @@
 from email.policy import default
 from django.db import models
+import pandas as pd
 
 class Instrument(models.Model):
     instrument = models.CharField(max_length=50, unique=True)
@@ -106,6 +107,10 @@ class ArcticDataManager(models.Manager):
     def create_arctic_data(self, model, ident, data):
         arctic_data = model.objects.update_or_create(ident=ident, data=data)
         #arctic_data.save()
+        
+        # Вернуться к предыдущему порядку столбцов, если необходимо
+        #data_copy = data_copy[data_present]
+        #print(arctic_data)
         return arctic_data
     
 class ArcticDataModel(models.Model):

@@ -304,6 +304,7 @@ class futuresContractPriceData(baseData):
                    # "There is already existing data for %s"
                    # % futures_contract_object.key
                 #)
+                print(f"There is already existing data for {futures_contract_object.key}")
                 return None
 
         self._write_merged_prices_for_contract_object_no_checking(

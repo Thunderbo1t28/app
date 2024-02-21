@@ -33,24 +33,32 @@ class arcticData(object):
     def read(self, ident):
         try:
             arctic_data = self.model.objects.get(ident=ident)
-            return pd.DataFrame(arctic_data.data)
+            
+            # Преобразовать данные обратно в DataFrame
+            data_copy = pd.DataFrame(arctic_data.data)
+            # Преобразовать столбец 'index' обратно в формат Timestamp
+            data_copy['index'] = pd.to_datetime(data_copy['index'])
+            # Установить столбец 'index' в качестве индекса
+            data_copy.set_index('index', inplace=True)
+            
+            return data_copy
         except self.model.DoesNotExist:
             return pd.DataFrame()
 
     def write(self, ident: str, data: pd.DataFrame):
 
-        '''# Создать копию данных
+        # Создать копию данных
         data_copy = data.copy()
         # Добавить индексы как столбец в данные
         data_copy.reset_index(inplace=True)
         # Преобразовать Timestamp в строковый формат
         data_copy['index'] = data_copy['index'].dt.strftime('%Y-%m-%d %H:%M:%S')
         # Преобразовать данные в словарь
-        '''
+        
         data_present = sorted(data.columns)
         #print(data_present)
         #print(data)
-        data_dict = data.to_dict(orient='records')
+        data_dict = data_copy.to_dict(orient='records')
         self.manager.create_arctic_data(model=self.model, ident=ident, data=data_dict)
 
     def delete(self, ident: str):

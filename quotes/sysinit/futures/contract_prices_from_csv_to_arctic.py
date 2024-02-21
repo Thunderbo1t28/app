@@ -42,10 +42,13 @@ def init_arctic_with_csv_futures_contract_prices_for_code(
         contract = futuresContract(instrument_code, contract_date_str)
         print("Contract object is %s" % str(contract))
         print("Writing to arctic")
+        print(prices_for_contract)
         arctic_prices.write_merged_prices_for_contract_object(
             contract, prices_for_contract, ignore_duplication=True
         )
+        
         print("Reading back prices from arctic to check")
+        
         written_prices = arctic_prices.get_merged_prices_for_contract_object(contract)
         print("Read back prices are \n %s" % str(written_prices))
 
