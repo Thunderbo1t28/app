@@ -38,34 +38,38 @@ class Command(BaseCommand):
             contract_list = list(set(contract_list))
             for contract in contract_list:
                 quotes_contract = quotes.filter(contract=contract)
-                timestamp_dates = quotes_contract.values_list('timestamp', flat=True)
+                #timestamp_dates = quotes_contract.values_list('timestamp__date', flat=True)
                 
 
                 # Преобразуете значения в формат datetime
                 #timestamp_dates = [datetime.strptime(str(date), '%Y-%m-%d %H:%M:%S') for date in timestamp_dates]
                 df = pd.DataFrame({
-                    '<DATE>': timestamp_dates,
+                    '<DATE>': quotes_contract.values_list('timestamp__date', flat=True),
                     '<OPEN>': quotes_contract.values_list('open_price', flat=True),
                     '<HIGH>': quotes_contract.values_list('high_price', flat=True),
                     '<LOW>': quotes_contract.values_list('low_price', flat=True),
                     '<CLOSE>': quotes_contract.values_list('close_price', flat=True),
                     '<VOL>': quotes_contract.values_list('volume', flat=True),
-                }).set_index('<DATE>')
-                df.index = df.index.tz_localize(None)
+                })#.set_index('<DATE>')
+                df['<DATE>'] = pd.to_datetime(df['<DATE>']) + pd.Timedelta('23:00:00')
+                #df.index = pd.to_datetime(df['<DATE>'], format='%Y-%m-%d %H:%M:%S').values
+                #del df['<DATE>']
+                df = df.set_index('<DATE>')
                 print(f"{instrument}")
                 print(df)
                 # Создание каталога, если его нет
                 directory = f'downloadData/'
                 os.makedirs(directory, exist_ok=True)
+                contract = contract[:-2]
 
                 # Сохранение в CSV-файл только если есть данные
                 if not df.empty:
-                    df.to_csv(f'{directory}/{instrument}_{contract}.csv')
+                    df.to_csv(f'{directory}/{instrument}_{contract}00.csv')
 
                     # Обновление или создание записи о последней загрузке
-                    last_date = df.index.max()
+                    '''last_date = df.index.max()
                     LastDownloadDate.objects.update_or_create(
                         instrument=instrument,
                         contract=contract,
                         defaults={'last_download_date': last_date}
-                    )
+                    )'''
