@@ -22,8 +22,8 @@ class Command(BaseCommand):
         current_date =  datetime.now().date() #datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #
 
         # Задаем конечную дату (например, "2024-01-01")
-        #end_date = datetime.strptime("2024-01-01", "%Y-%m-%d").date()
-        end_date = Quote.objects.all().order_by('timestamp').last().timestamp.date()
+        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
+        #end_date = Quote.objects.all().order_by('timestamp').last().timestamp.date()
         contracts_to_instruments = {'ED': 'ED',  'EJ': 'EJPY', 'Eu': 'Eu', 
                                      'FL': 'FLOT', 'FN': 'FNI',  'FV': 'FIVE',
                                       'GD': 'GOLD', 'GK': 'GMKN',  'GU': 'GBPU', 'GZ': 'GAZR',
