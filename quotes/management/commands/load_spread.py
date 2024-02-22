@@ -34,7 +34,7 @@ class Command(BaseCommand):
             # Находим ближайший current_contract на последнюю дату
             last_roll_calendar_entry = RollCalendar.objects.filter(
                 instrument__instrument=instrument_row.ASSETCODE,
-                timestamp__lte="2024-01-18 00:00:00",
+                timestamp__lte="2024-02-21 00:00:00",
             ).order_by('-timestamp').first()
             #print(last_roll_calendar_entry.current_contract)
             if last_roll_calendar_entry:
@@ -49,9 +49,10 @@ class Command(BaseCommand):
 
                     if not existing_spread_costs.exists():
                         instrument_obj = Instrument.objects.get(instrument=instrument_row.ASSETCODE)
-
-                        SpreadCosts.objects.create(
-                            instrument=instrument_obj,
-                            spreadcost=instrument_row.SPREAD,
-                        )
+                        if instrument_obj:
+                            SpreadCosts.objects.create(
+                                instrument=instrument_obj,
+                                spreadcost=instrument_row.SPREAD,
+                            )
+                        
                         print('Data loaded successfully')

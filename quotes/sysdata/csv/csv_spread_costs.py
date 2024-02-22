@@ -1,11 +1,11 @@
 import dataclasses
 
-from syscore.fileutils import resolve_path_and_filename_for_package
-from sysdata.futures.spread_costs import spreadCostData
-from sysdata.csv.csv_instrument_data import INSTRUMENT_CONFIG_PATH
-from syscore.constants import arg_not_supplied
+from quotes.syscore.fileutils import resolve_path_and_filename_for_package
+from quotes.sysdata.futures.spread_costs import spreadCostData
+from quotes.sysdata.csv.csv_instrument_data import INSTRUMENT_CONFIG_PATH
+from quotes.syscore.constants import arg_not_supplied
 
-from syslogging.logger import *
+#from syslogging.logger import *
 import pandas as pd
 
 
@@ -23,10 +23,10 @@ class csvSpreadCostData(spreadCostData):
     def __init__(
         self,
         datapath=arg_not_supplied,
-        log=get_logger("csvSpreadCostData"),
+        #log=get_logger("csvSpreadCostData"),
     ):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
 
         if datapath is arg_not_supplied:
             datapath = INSTRUMENT_CONFIG_PATH

@@ -3,10 +3,12 @@ from django.core.management.base import BaseCommand
 from backtest.sysproduction.data.prices import get_valid_instrument_code_from_user
 from quotes.sysdata.arctic.arctic_futures_per_contract_prices import arcticFuturesContractPriceData
 from quotes.sysdata.csv.csv_futures_contract_prices import ConfigCsvFuturesPrices
+from quotes.sysdata.data_blob import dataBlob
 from quotes.sysinit.futures.adjustedprices_from_mongo_multiple_to_mongo import process_adjusted_prices_all_instruments
 
 from quotes.sysinit.futures.contract_prices_from_csv_to_arctic import init_arctic_with_csv_futures_contract_prices
 from quotes.sysinit.futures.multipleprices_from_arcticprices_and_csv_calendars_to_arctic import process_multiple_prices_all_instruments
+from quotes.sysinit.futures.repocsv_spread_costs import copy_spread_costs_from_csv_to_mongo
 from quotes.sysinit.futures.rollcalendars_from_arcticprices_to_csv import build_and_write_roll_calendar
 
 
@@ -58,11 +60,11 @@ class Command(BaseCommand):
 
 
 
-        process_adjusted_prices_all_instruments(
+        '''process_adjusted_prices_all_instruments(
             ADD_TO_ARCTIC=True, ADD_TO_CSV=True, csv_adj_data_path=f"{BASEDIR}\\data\\futures\\adjusted_prices_csv"
-        )
+        )'''
 
-
+        copy_spread_costs_from_csv_to_mongo(dataBlob())
 
         '''sim_data = arcticFuturesContractPriceData()
         print(sim_data.get_merged_prices_for_instrument(instrument_code="AFKS"))'''

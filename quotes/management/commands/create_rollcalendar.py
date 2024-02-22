@@ -24,6 +24,8 @@ class Command(BaseCommand):
 
         #with transaction.atomic():
         #for _ in range(days_to_go_back + 1):
+        date_list = sorted(set(date_list), reverse=True)
+        print(date_list)
         for query_date in date_list:
             current_next_contracts = find_current_next_contracts_for_instruments(quote_objects, query_date)
             
@@ -48,14 +50,16 @@ class Command(BaseCommand):
                     instrument_obj = Instrument.objects.get(instrument=instrument)
                     timestamp =  datetime.strptime(current_contract, '%Y%m%d')
                     # Создайте объект RollCalendar с использованием объекта Instrument
-                    roll_calendar_entries.append(RollCalendar(
-                        exchange=exchange,
-                        instrument=instrument_obj,
-                        current_contract=current_contract,
-                        next_contract=next_contract,
-                        carry_contract=next_contract,
-                        timestamp=timestamp
-                    ))
+                    if instrument_obj:
+                        roll_calendar_entries.append(RollCalendar(
+                            exchange=exchange,
+                            instrument=instrument_obj,
+                            current_contract=current_contract,
+                            next_contract=next_contract,
+                            carry_contract=next_contract,
+                            timestamp=timestamp
+                        ))
+                        
 
             # Если есть записи, добавляем их в базу данных
             if roll_calendar_entries:

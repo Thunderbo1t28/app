@@ -4,6 +4,7 @@ import numpy as np
 import re
 
 from quotes.syscore.constants import arg_not_supplied
+from quotes.sysdata.arctic.arctic_connection import arcticData
 from quotes.sysdata.config.production_config import get_production_config
 
 LIST_OF_MONGO_PARAMS = ["mongo_db", "mongo_host", "mongo_port"]
@@ -64,13 +65,12 @@ class MongoClientFactory(object):
 
     def get_mongo_client(self, host, port):
         key = (host, port)
-        '''if key in self.mongo_clients:
+        if key in self.mongo_clients:
             return self.mongo_clients.get(key)
         else:
-            client = MongoClient(host=host, port=port)
+            client = 1#MongoClient(host=host, port=port)
             self.mongo_clients[key] = client
-            return client'''
-        return 1
+            return client
 
 
 # Only need one of these
@@ -86,26 +86,26 @@ class mongoDb:
 
     def __init__(
         self,
-        #mongo_database_name: str = arg_not_supplied,
-        #mongo_host: str = arg_not_supplied,
-        #mongo_port: int = arg_not_supplied,
+        mongo_database_name: str = arg_not_supplied,
+        mongo_host: str = arg_not_supplied,
+        mongo_port: int = arg_not_supplied,
     ):
 
         database_name, host, port = mongo_defaults(
-            #mongo_database_name=mongo_database_name,
-            #mongo_host=mongo_host,
-            #mongo_port=mongo_port,
+            mongo_database_name=mongo_database_name,
+            mongo_host=mongo_host,
+            mongo_port=mongo_port,
         )
 
-        #self.database_name = database_name
-        #self.host = host
-        #self.port = port
+        self.database_name = database_name
+        self.host = host
+        self.port = port
 
-        #client = mongo_client_factory.get_mongo_client(host, port)
-        #db = client[database_name]
+        client = mongo_client_factory.get_mongo_client(host, port)
+        db = client#[database_name]
 
-        #self.client = client
-        #self.db = db
+        self.client = client
+        self.db = db
 
     def __repr__(self):
         clean_host = clean_mongo_host(self.host)
@@ -127,28 +127,28 @@ class mongoConnection(object):
         if mongo_db is arg_not_supplied or mongo_db is None:
             mongo_db = mongoDb()
 
-        #database_name = mongo_db.database_name
-        #host = mongo_db.host
-        #port = mongo_db.port
-        #db = mongo_db.db
-        #client = mongo_db.client
+        database_name = mongo_db.database_name
+        host = mongo_db.host
+        port = mongo_db.port
+        db = mongo_db.db
+        client = mongo_db.client
 
-        #collection = db[collection_name]
+        collection = arcticData(collection_name)
 
-        #self.database_name = database_name
+        self.database_name = database_name
         self.collection_name = collection_name
-        #self.host = host
-        #self.port = port
+        self.host = host
+        self.port = port
 
-        #self.client = client
-        #self.db = db
-        #self.collection = collection
+        self.client = client
+        self.db = db
+        self.collection = collection
 
     def __repr__(self):
         clean_host = clean_mongo_host(self.host)
         return "Mongodb connection: host %s, db name %s, collection %s" % (
             clean_host,
-            #self.database_name,
+            self.database_name,
             self.collection_name,
         )
 
@@ -172,8 +172,8 @@ class mongoConnection(object):
                 index_keys.append(key[0])
 
         return index_count, index_names, index_keys
-    '''
-    def create_index(self, indexname, order=ASCENDING):
+
+    def create_index(self, indexname, order=''):
         index_count, index_names, index_keys = self.get_indexes()
         if indexname in index_keys:
             # we don't try to create a single key index if the key field is already used
@@ -181,7 +181,7 @@ class mongoConnection(object):
             pass
         else:
             self.collection.create_index([(indexname, order)], unique=True)
-    '''
+
     def create_compound_index(self, index_config: dict):
         name_parts = []
         key_tuples = []

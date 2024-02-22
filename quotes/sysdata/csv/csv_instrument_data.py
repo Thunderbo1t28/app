@@ -1,4 +1,5 @@
 import dataclasses
+import os
 
 from quotes.syscore.fileutils import resolve_path_and_filename_for_package
 from quotes.sysdata.futures.instruments import futuresInstrumentData
@@ -11,8 +12,8 @@ from quotes.sysobjects.instruments import (
 )
 #from syslogging.logger import *
 import pandas as pd
-
-INSTRUMENT_CONFIG_PATH = "E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\data\\futures\\csvconfig"
+BASEDIR = os.getcwd()
+INSTRUMENT_CONFIG_PATH = f"{BASEDIR}\\data\\futures\\csvconfig"
 CONFIG_FILE_NAME = "instrumentconfig.csv"
 
 

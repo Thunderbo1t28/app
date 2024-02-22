@@ -146,7 +146,7 @@ class futures_multiple_prices(models.Model):
     
     objects = ArcticDataManager()
 
-class spreads(models.Model):
+class spread_costs(models.Model):
     ident = models.CharField(max_length=255, unique=True)
     data = models.JSONField()
     
