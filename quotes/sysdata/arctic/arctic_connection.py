@@ -61,7 +61,8 @@ class arcticData(object):
             for key, value in item.items():
                 if isinstance(value, float):
                     item[key] = str(value)
-
+                if pd.isna(value):
+                    item[key] = None
         # Сериализация данных в JSON-строку
         json_data = json.dumps(data)
 

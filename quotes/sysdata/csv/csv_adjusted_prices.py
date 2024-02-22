@@ -1,14 +1,14 @@
 import pandas as pd
 
-from sysdata.futures.adjusted_prices import futuresAdjustedPricesData
-from sysobjects.adjusted_prices import futuresAdjustedPrices
-from syscore.fileutils import (
+from quotes.sysdata.futures.adjusted_prices import futuresAdjustedPricesData
+from quotes.sysobjects.adjusted_prices import futuresAdjustedPrices
+from quotes.syscore.fileutils import (
     resolve_path_and_filename_for_package,
     files_with_extension_in_pathname,
 )
-from syscore.pandas.pdutils import pd_readcsv
-from syscore.constants import arg_not_supplied
-from syslogging.logger import *
+from quotes.syscore.pandas.pdutils import pd_readcsv
+from quotes.syscore.constants import arg_not_supplied
+#from syslogging.logger import *
 
 ADJUSTED_PRICES_DIRECTORY = "data.futures.adjusted_prices_csv"
 DATE_INDEX_NAME = "DATETIME"
@@ -21,10 +21,10 @@ class csvFuturesAdjustedPricesData(futuresAdjustedPricesData):
     """
 
     def __init__(
-        self, datapath=arg_not_supplied, log=get_logger("csvFuturesContractPriceData")
+        self, datapath=arg_not_supplied, #log=get_logger("csvFuturesContractPriceData")
     ):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
 
         if datapath is arg_not_supplied:
             datapath = ADJUSTED_PRICES_DIRECTORY
@@ -49,7 +49,8 @@ class csvFuturesAdjustedPricesData(futuresAdjustedPricesData):
         try:
             instrpricedata = pd_readcsv(filename)
         except OSError:
-            self.log.warning("Can't find adjusted price file %s" % filename)
+            #self.log.warning("Can't find adjusted price file %s" % filename)
+            print(f"Can't find adjusted price file {filename}")
             return futuresAdjustedPrices.create_empty()
 
         instrpricedata.columns = ["price"]

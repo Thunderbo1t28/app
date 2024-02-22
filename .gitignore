@@ -10,3 +10,4 @@ downloadData
 quotes/migrations
 db.sqlite3-journal
 data
+fixtures/quotes/quote.json
