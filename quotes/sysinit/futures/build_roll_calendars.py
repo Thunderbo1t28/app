@@ -338,7 +338,8 @@ def _get_set_of_prices(
 
     current_contract = str(approx_row.current_contract)
     next_contract = str(approx_row.next_contract)
-
+    #print(dict_of_futures_contract_prices[current_contract])
+    #print(dict_of_futures_contract_prices[next_contract])
     try:
         current_prices = dict_of_futures_contract_prices[current_contract]
         next_prices = dict_of_futures_contract_prices[next_contract]
