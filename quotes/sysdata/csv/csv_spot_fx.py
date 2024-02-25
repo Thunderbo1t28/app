@@ -1,17 +1,18 @@
 from dataclasses import dataclass
+import os
 import pandas as pd
 
-from sysdata.fx.spotfx import fxPricesData
-from sysobjects.spot_fx_prices import fxPrices
-from syscore.fileutils import (
+from quotes.sysdata.fx.spotfx import fxPricesData
+from quotes.sysobjects.spot_fx_prices import fxPrices
+from quotes.syscore.fileutils import (
     resolve_path_and_filename_for_package,
     files_with_extension_in_pathname,
 )
-from syscore.constants import arg_not_supplied
-from syscore.pandas.pdutils import pd_readcsv, DEFAULT_DATE_FORMAT_FOR_CSV
-from syslogging.logger import *
-
-FX_PRICES_DIRECTORY = "data.futures.fx_prices_csv"
+from quotes.syscore.constants import arg_not_supplied
+from quotes.syscore.pandas.pdutils import pd_readcsv, DEFAULT_DATE_FORMAT_FOR_CSV
+#from syslogging.logger import *
+BASEDIR = os.getcwd()
+FX_PRICES_DIRECTORY = f"{BASEDIR}\\data\\futures\\fx_prices_csv"
 
 
 @dataclass
@@ -37,7 +38,7 @@ class csvFxPricesData(fxPricesData):
     def __init__(
         self,
         datapath=arg_not_supplied,
-        log=get_logger("csvFxPricesData"),
+        #log=get_logger("csvFxPricesData"),
         config: ConfigCsvFXPrices = arg_not_supplied,
     ):
         """
@@ -47,7 +48,7 @@ class csvFxPricesData(fxPricesData):
         :param log: logging object
         """
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
 
         if datapath is arg_not_supplied:
             datapath = FX_PRICES_DIRECTORY
@@ -84,10 +85,11 @@ class csvFxPricesData(fxPricesData):
                 filename, date_format=date_format, date_index_name=date_column
             )
         except OSError:
-            self.log.warning(
+            '''self.log.warning(
                 "Can't find currency price file %s" % filename,
                 **{CURRENCY_CODE_LOG_LABEL: code},
-            )
+            )'''
+            print(f"Can't find currency price file {filename}")
             return fxPrices.create_empty()
 
         fx_data = pd.Series(fx_data[price_column])
@@ -115,10 +117,11 @@ class csvFxPricesData(fxPricesData):
             filename, index_label=date_column, date_format=date_format, header=True
         )
 
-        self.log.debug(
+        '''self.log.debug(
             "Wrote currency prices to %s for %s" % (filename, code),
             **{CURRENCY_CODE_LOG_LABEL: code},
-        )
+        )'''
+        print(f"Wrote currency prices to {filename} for {code}")
 
     def _filename_given_fx_code(self, code: str):
         return resolve_path_and_filename_for_package(self._datapath, "%s.csv" % (code))

@@ -152,6 +152,12 @@ class spread_costs(models.Model):
     
     objects = ArcticDataManager()
 
+class spotfx_prices(models.Model):
+    ident = models.CharField(max_length=255, unique=True)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
 class MongoDataSingleKey(models.Model):
     collection_name = models.CharField(max_length=255)
     key_name = models.CharField(max_length=255)

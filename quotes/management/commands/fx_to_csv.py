@@ -29,10 +29,11 @@ class Command(BaseCommand):
             if max_trading_date.date() == contract_date:
                 LastDownloadDate.objects.filter(id=contract_data['id']).update(is_active=False)
         '''
+        BASEDIR = os.getcwd()
         instruments = FxPriceData.objects.all().values_list('currency', flat=True)
         instruments = list(set(instruments))
         for instrument in instruments:
-            fx_quotes = FxPriceData.objects.filter(currency=instrument)
+            fx_quotes = FxPriceData.objects.filter(currency=instrument).order_by('timestamp')
             #timestamp_dates = quotes_contract.values_list('timestamp__date', flat=True)
             
 
@@ -40,7 +41,7 @@ class Command(BaseCommand):
             #timestamp_dates = [datetime.strptime(str(date), '%Y-%m-%d %H:%M:%S') for date in timestamp_dates]
             df = pd.DataFrame({
                 'DATETIME': fx_quotes.values_list('timestamp__date', flat=True),
-                'PRICE': fx_quotes.values_list('open_price', flat=True),
+                'PRICE': fx_quotes.values_list('price', flat=True),
             })#.set_index('<DATE>')
             df['DATETIME'] = pd.to_datetime(df['DATETIME']) + pd.Timedelta('23:00:00')
             #df.index = pd.to_datetime(df['<DATE>'], format='%Y-%m-%d %H:%M:%S').values

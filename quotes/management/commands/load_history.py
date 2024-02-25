@@ -1,3 +1,4 @@
+from audioop import reverse
 import time
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -7,22 +8,15 @@ from datetime import datetime, timedelta
 from quotes.models import Quote  
 
 
-
-
-
-
 class Command(BaseCommand):
     help = 'Load available instruments into the database'
-
     def handle(self, *args, **options):
         # Базовый URL
         base_url = "https://iss.moex.com/iss/history/engines/futures/markets/forts/securities.json"
-
         # Получаем текущую дату
-        current_date = datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #datetime.now().date()
-
+        current_date = datetime.now().date() #datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #datetime.now().date()
         # Задаем конечную дату (например, "2024-01-01")
-        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
+        end_date = datetime.strptime("2021-10-15", "%Y-%m-%d").date()
         contracts_to_instruments = {'ED': 'ED',  'EJ': 'EJPY', 'Eu': 'Eu', 
                                      'FL': 'FLOT', 'FN': 'FNI',  'FV': 'FIVE',
                                       'GD': 'GOLD', 'GK': 'GMKN',  'GU': 'GBPU', 'GZ': 'GAZR',
@@ -52,17 +46,13 @@ class Command(BaseCommand):
             date_list.append(current_date)
             current_date -= timedelta(days=1)
 
-
-        
+        date_list = sorted(set(date_list), reverse=False)
         for query_date in date_list:
             formatted_date = query_date.strftime("%Y-%m-%d")
             full_url = f"{base_url}?date={formatted_date}"
-
             response_total = requests.get(full_url).json()['history.cursor']['data'][0][1]
-            #print(response_total)
             total = int(response_total)
             start = 0
-            #print(total)
             while start < total:
                 # Добавляем параметры start и total к URL
                 page_url = f"{full_url}&start={start}&total={min(100, total - start)}"
@@ -79,24 +69,18 @@ class Command(BaseCommand):
                     # Ваш код обработки данных
                     sec_id = item.SECID
                     sectype = sec_id[:-7]
-                    
+                    sectype2 = sec_id[:-2]
                     if len(sectype)==2:
                         
                         # Проверяем, что контракт присутствует в словаре
                         if sectype and sectype in contracts_to_instruments:
                             instrument = contracts_to_instruments[sectype]
-                            #print(f"last_two_chars: {sectype}, instrument: {instrument}")
-                            try:
-                                contract = Quote.objects.filter(sectype=sectype).order_by('timestamp').first()
-                            except Quote.DoesNotExist:
-                                continue
                             if pd.notna(item.TRADEDATE) and pd.notna(item.OPEN) and pd.notna(item.LOW) and pd.notna(item.HIGH) and pd.notna(item.CLOSE) and pd.notna(item.VOLUME):
                                 existing_quotes = Quote.objects.filter(
                                     instrument=instrument,
                                     secid=sec_id,
                                     timestamp=item.TRADEDATE
                                 )
-
                                 # Если данные уже существуют, пропускаем текущую итерацию цикла
                                 if existing_quotes.exists():
                                     continue
@@ -104,20 +88,13 @@ class Command(BaseCommand):
                                     instrument=instrument,
                                     secid=sec_id
                                 )
-                                contract = sec_id
-                                # Если данные уже существуют, пропускаем текущую итерацию цикла
-                                if contract_try.exists():
-                                    contract = contract_try.values('contract')
-                                else:
-                                    contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
-                                    #contract_time = f'{contract_date}{year_digit:d}{month:02d}00'
-                                    contract = f'{contract_date}'
-
+                                contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
+                                contract_try.update(contract=contract_date)
                                 quote_data = {
                                     'exchange': 'MOEX',
                                     'instrument': instrument,
                                     'section': item.BOARDID,
-                                    'contract': contract,
+                                    'contract': contract_date,
                                     'sectype': sectype,
                                     'secid': sec_id,
                                     'open_price': item.OPEN,
@@ -129,10 +106,42 @@ class Command(BaseCommand):
                                 }
                                 quotes_to_create.append(Quote(**quote_data))
                                 #print(f'Data loaded successfully   {instrument}  {contract}  {item.TRADEDATE}')
-                        
                                 
-                                #print(f'Data loaded successfully   {instrument}  {sec_id}  {item.TRADEDATE}')
-
+                    elif len(sectype2)==2:
+                        if sectype2 and sectype2 in contracts_to_instruments:
+                            instrument = contracts_to_instruments[sectype2]
+                            
+                            if pd.notna(item.TRADEDATE) and pd.notna(item.OPEN) and pd.notna(item.LOW) and pd.notna(item.HIGH) and pd.notna(item.CLOSE) and pd.notna(item.VOLUME):
+                                existing_quotes = Quote.objects.filter(
+                                    instrument=instrument,
+                                    secid=sec_id,
+                                    timestamp=item.TRADEDATE
+                                )
+                                # Если данные уже существуют, пропускаем текущую итерацию цикла
+                                if existing_quotes.exists():
+                                    continue
+                                contract_try = Quote.objects.filter(
+                                    instrument=instrument,
+                                    secid=sec_id
+                                )
+                                contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
+                                contract_try.update(contract=contract_date)
+                                quote_data = {
+                                    'exchange': 'MOEX',
+                                    'instrument': instrument,
+                                    'section': item.BOARDID,
+                                    'contract': contract_date,
+                                    'sectype': sectype2,
+                                    'secid': sec_id,
+                                    'open_price': item.OPEN,
+                                    'low_price': item.LOW,
+                                    'high_price': item.HIGH,
+                                    'close_price': item.CLOSE,
+                                    'volume': item.VOLUME,
+                                    'timestamp': item.TRADEDATE
+                                }
+                                quotes_to_create.append(Quote(**quote_data))
+                           #print(f'Data loaded successfully   {instrument}  {sec_id}  {item.TRADEDATE}')
                 if quotes_to_create:
                     Quote.objects.bulk_create(quotes_to_create)
                     print(len(quotes_to_create))

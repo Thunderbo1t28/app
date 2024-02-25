@@ -2,7 +2,9 @@ import os
 from django.core.management.base import BaseCommand
 from backtest.sysproduction.data.prices import get_valid_instrument_code_from_user
 from quotes.sysdata.arctic.arctic_futures_per_contract_prices import arcticFuturesContractPriceData
+from quotes.sysdata.arctic.arctic_spotfx_prices import arcticFxPricesData
 from quotes.sysdata.csv.csv_futures_contract_prices import ConfigCsvFuturesPrices
+from quotes.sysdata.csv.csv_spot_fx import csvFxPricesData
 from quotes.sysdata.data_blob import dataBlob
 from quotes.sysinit.futures.adjustedprices_from_mongo_multiple_to_mongo import process_adjusted_prices_all_instruments
 
@@ -41,9 +43,9 @@ class Command(BaseCommand):
         #instrument_code = get_valid_instrument_code_from_user(source="single")
         ## MODIFY DATAPATH IF REQUIRED
         # build_and_write_roll_calendar(instrument_code, output_datapath=arg_not_supplied)
-        instruments_list = ['AUDU',] #'FEES','TRNF','IRAO','Si','VTBR', '1MFR', 'AED', 'AFKS', 'AFLT', 'ALRS', 'AUDU', 'BANE', 'BELU', 'BR', 'BSPB', 'CBOM', 'CHMF', 'CNI', 'CNY', 'Co', 'DAX', 'ED',  'Eu', 'FIVE', 'FLOT', 'FNI', 'GAZR', 'GBPU', 'GMKN', 'GOLD', 'HANG', 'HKD','HOME', 'HYDR', 'INR', 'ISKJ', 'KMAZ', 'KZT', 'LKOH', 'MAGN', 'MGNT', 'MIX', 'MMI', 'MOEX', 'MTLR', 'MTSI', 'MVID', 'MXI', 'NASD', 'NG', 'NIKK', 'NLMK', 'NOTK','OGI', 'OZON', 'PHOR', 'PIKK', 'PLD', 'PLT', 'PLZL', 'POLY', 'POSI', 'RGBI', 'ROSN', 'RTKM', 'RTS', 'RTSM', 'RUAL','RUON', 'SBPR', 'SBRF', 'SGZH', 'SIBN', 'SILV', 'SMLT', 'SNGP', 'SNGR','SPBE', 'SPYF', 'STOX', 'SUGAR','TATN', 'TRY', 'UCAD', 'UCHF', 'UCNY', 'UJPY', 'UTRY', 'VKCO', 'WHEAT', 'WUSH', 'YNDF']
+        '''instruments_list = ['AUDU',] #'FEES','TRNF','IRAO','Si','VTBR', '1MFR', 'AED', 'AFKS', 'AFLT', 'ALRS', 'AUDU', 'BANE', 'BELU', 'BR', 'BSPB', 'CBOM', 'CHMF', 'CNI', 'CNY', 'Co', 'DAX', 'ED',  'Eu', 'FIVE', 'FLOT', 'FNI', 'GAZR', 'GBPU', 'GMKN', 'GOLD', 'HANG', 'HKD','HOME', 'HYDR', 'INR', 'ISKJ', 'KMAZ', 'KZT', 'LKOH', 'MAGN', 'MGNT', 'MIX', 'MMI', 'MOEX', 'MTLR', 'MTSI', 'MVID', 'MXI', 'NASD', 'NG', 'NIKK', 'NLMK', 'NOTK','OGI', 'OZON', 'PHOR', 'PIKK', 'PLD', 'PLT', 'PLZL', 'POLY', 'POSI', 'RGBI', 'ROSN', 'RTKM', 'RTS', 'RTSM', 'RUAL','RUON', 'SBPR', 'SBRF', 'SGZH', 'SIBN', 'SILV', 'SMLT', 'SNGP', 'SNGR','SPBE', 'SPYF', 'STOX', 'SUGAR','TATN', 'TRY', 'UCAD', 'UCHF', 'UCNY', 'UJPY', 'UTRY', 'VKCO', 'WHEAT', 'WUSH', 'YNDF']
         for instrument in instruments_list:
-            build_and_write_roll_calendar(instrument, output_datapath=f"{BASEDIR}\\data\\futures\\roll_calendars_csv")
+            build_and_write_roll_calendar(instrument, output_datapath=f"{BASEDIR}\\data\\futures\\roll_calendars_csv")'''
         
 
 
@@ -65,6 +67,27 @@ class Command(BaseCommand):
         )'''
 
         '''copy_spread_costs_from_csv_to_mongo(dataBlob())'''
+
+
+        arctic_fx_prices = arcticFxPricesData()
+        csv_fx_prices = csvFxPricesData()
+
+        currency_code = input("Currency code? <return for ALL currencies> ")
+        if currency_code == "":
+            list_of_ccy_codes = csv_fx_prices.get_list_of_fxcodes()
+        else:
+            list_of_ccy_codes = [currency_code]
+
+        for currency_code in list_of_ccy_codes:
+            fx_prices = csv_fx_prices.get_fx_prices(currency_code)
+            print(fx_prices)
+
+            arctic_fx_prices.add_fx_prices(
+                currency_code, fx_prices, ignore_duplication=True
+            )
+
+
+
 
         '''sim_data = arcticFuturesContractPriceData()
         print(sim_data.get_merged_prices_for_instrument(instrument_code="AFKS"))'''
