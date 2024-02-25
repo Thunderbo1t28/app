@@ -80,6 +80,7 @@ class Command(BaseCommand):
                     sec_id = item.SECID
                     sectype = sec_id[:-7]
                     
+                    
                     if len(sectype)==2:
                         
                         # Проверяем, что контракт присутствует в словаре

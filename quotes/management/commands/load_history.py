@@ -16,7 +16,7 @@ class Command(BaseCommand):
         # Получаем текущую дату
         current_date = datetime.now().date() #datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #datetime.now().date()
         # Задаем конечную дату (например, "2024-01-01")
-        end_date = datetime.strptime("2021-10-15", "%Y-%m-%d").date()
+        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
         contracts_to_instruments = {'ED': 'ED',  'EJ': 'EJPY', 'Eu': 'Eu', 
                                      'FL': 'FLOT', 'FN': 'FNI',  'FV': 'FIVE',
                                       'GD': 'GOLD', 'GK': 'GMKN',  'GU': 'GBPU', 'GZ': 'GAZR',
@@ -69,6 +69,7 @@ class Command(BaseCommand):
                     # Ваш код обработки данных
                     sec_id = item.SECID
                     sectype = sec_id[:-7]
+                    
                     sectype2 = sec_id[:-2]
                     if len(sectype)==2:
                         
@@ -88,13 +89,20 @@ class Command(BaseCommand):
                                     instrument=instrument,
                                     secid=sec_id
                                 )
-                                contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
-                                contract_try.update(contract=contract_date)
+                                contract_month = sec_id[2:-6]
+                                contract_year = sec_id[5:]
+                                #print(contract_year)
+                                month_letters = "FGHJKMNQUVXZ"
+                                month_number = month_letters.index(contract_month) + 1  # Индексация начинается с 0, поэтому добавляем 1
+                                month_str = str(month_number).zfill(2)
+                                contract_concat = f"{contract_year}{month_str}00"
+                                #contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
+                                #contract_try.update(contract=contract_date)
                                 quote_data = {
                                     'exchange': 'MOEX',
                                     'instrument': instrument,
                                     'section': item.BOARDID,
-                                    'contract': contract_date,
+                                    'contract': contract_concat,
                                     'sectype': sectype,
                                     'secid': sec_id,
                                     'open_price': item.OPEN,
@@ -124,13 +132,33 @@ class Command(BaseCommand):
                                     instrument=instrument,
                                     secid=sec_id
                                 )
-                                contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
-                                contract_try.update(contract=contract_date)
+                                contract_month = sec_id[-2:-1]
+                                contract_year = sec_id[3:]
+                                month_letters = "FGHJKMNQUVXZ"
+                                month_number = month_letters.index(contract_month) + 1  # Индексация начинается с 0, поэтому добавляем 1
+                                month_str = str(month_number).zfill(2)
+                                
+                                # Словарь для соответствия цифровых значений года и соответствующего года в формате строки
+                                year_mapping = {
+                                    '0': '2020',
+                                    '1': '2021',
+                                    '2': '2022',
+                                    '3': '2023',
+                                    '4': '2024',
+                                    # Добавьте дополнительные соответствия по мере необходимости
+                                }
+                                # Преобразование года в формат строки
+                                #print(month_str)
+                                contract_year_str = year_mapping.get(contract_year, 'Unknown')
+                                #print(contract_year_str)
+                                contract_concat = f"{contract_year_str}{month_str}00"
+                                #contract_date = datetime.strptime(item.TRADEDATE, "%Y-%m-%d").strftime("%Y%m%d")
+                                #contract_try.update(contract=contract_date)
                                 quote_data = {
                                     'exchange': 'MOEX',
                                     'instrument': instrument,
                                     'section': item.BOARDID,
-                                    'contract': contract_date,
+                                    'contract': contract_concat,
                                     'sectype': sectype2,
                                     'secid': sec_id,
                                     'open_price': item.OPEN,
