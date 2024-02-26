@@ -16,7 +16,7 @@ class Command(BaseCommand):
         # Получаем текущую дату
         current_date = datetime.now().date() #datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #datetime.now().date()
         # Задаем конечную дату (например, "2024-01-01")
-        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
+        end_date = datetime.strptime("2022-05-26", "%Y-%m-%d").date()
         contracts_to_instruments = {'ED': 'ED',  'EJ': 'EJPY', 'Eu': 'Eu', 
                                      'FL': 'FLOT', 'FN': 'FNI',  'FV': 'FIVE',
                                       'GD': 'GOLD', 'GK': 'GMKN',  'GU': 'GBPU', 'GZ': 'GAZR',
@@ -91,7 +91,7 @@ class Command(BaseCommand):
                                 )
                                 contract_month = sec_id[2:-6]
                                 contract_year = sec_id[5:]
-                                #print(contract_year)
+                                print(contract_year)
                                 month_letters = "FGHJKMNQUVXZ"
                                 month_number = month_letters.index(contract_month) + 1  # Индексация начинается с 0, поэтому добавляем 1
                                 month_str = str(month_number).zfill(2)
@@ -140,11 +140,16 @@ class Command(BaseCommand):
                                 
                                 # Словарь для соответствия цифровых значений года и соответствующего года в формате строки
                                 year_mapping = {
+                                    '9': '2019',
                                     '0': '2020',
                                     '1': '2021',
                                     '2': '2022',
                                     '3': '2023',
                                     '4': '2024',
+                                    '5': '2025',
+                                    '6': '2026',
+                                    '7': '2027',
+                                    '8': '2028',
                                     # Добавьте дополнительные соответствия по мере необходимости
                                 }
                                 # Преобразование года в формат строки
