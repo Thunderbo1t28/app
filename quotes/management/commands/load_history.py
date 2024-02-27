@@ -85,10 +85,10 @@ class Command(BaseCommand):
                                 # Если данные уже существуют, пропускаем текущую итерацию цикла
                                 if existing_quotes.exists():
                                     continue
-                                contract_try = Quote.objects.filter(
+                                '''contract_try = Quote.objects.filter(
                                     instrument=instrument,
                                     secid=sec_id
-                                )
+                                )'''
                                 contract_month = sec_id[2:-6]
                                 contract_year = sec_id[5:]
                                 print(contract_year)
@@ -128,10 +128,10 @@ class Command(BaseCommand):
                                 # Если данные уже существуют, пропускаем текущую итерацию цикла
                                 if existing_quotes.exists():
                                     continue
-                                contract_try = Quote.objects.filter(
+                                '''contract_try = Quote.objects.filter(
                                     instrument=instrument,
                                     secid=sec_id
-                                )
+                                )'''
                                 contract_month = sec_id[-2:-1]
                                 contract_year = sec_id[3:]
                                 month_letters = "FGHJKMNQUVXZ"
