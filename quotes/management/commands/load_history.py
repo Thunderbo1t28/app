@@ -91,7 +91,7 @@ class Command(BaseCommand):
                                 )'''
                                 contract_month = sec_id[2:-6]
                                 contract_year = sec_id[5:]
-                                print(contract_year)
+                                #print(contract_year)
                                 month_letters = "FGHJKMNQUVXZ"
                                 month_number = month_letters.index(contract_month) + 1  # Индексация начинается с 0, поэтому добавляем 1
                                 month_str = str(month_number).zfill(2)
