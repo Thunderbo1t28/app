@@ -16,7 +16,7 @@ class Command(BaseCommand):
         # Получаем текущую дату
         current_date = datetime.now().date() #datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #datetime.now().date()
         # Задаем конечную дату (например, "2024-01-01")
-        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
+        end_date = datetime.strptime("2013-03-29", "%Y-%m-%d").date()
         contracts_to_instruments = {'ED': 'ED',  'EJ': 'EJPY', 'Eu': 'Eu', 
                                      'FL': 'FLOT', 'FN': 'FNI',  'FV': 'FIVE',
                                       'GD': 'GOLD', 'GK': 'GMKN',  'GU': 'GBPU', 'GZ': 'GAZR',
@@ -181,4 +181,4 @@ class Command(BaseCommand):
                 # Увеличиваем значение start для следующего запроса
                 start += 100
 
-                #time.sleep(1)
+                time.sleep(1)
