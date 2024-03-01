@@ -7,7 +7,7 @@ from quotes.sysobjects.rolls import rollParameters
 
 import pandas as pd
 BASEDIR = os.getcwd()
-ROLLS_DATAPATH = BASEDIR + "\\data\\futures\\csvconfig"
+ROLLS_DATAPATH = f"{BASEDIR}\\data\\futures\\csvconfig"
 ROLLS_CONFIG_FILE = "rollconfig.csv"
 
 

@@ -5,34 +5,36 @@ import numpy as np
 from quotes.dao import DjangoFuturesSimData
 import pandas as pd
 
+from quotes.sysdata.sim.db_futures_sim_data import dbFuturesSimData
+
 class Command(BaseCommand):
     help = 'Test EWMA Trading Rule using DjangoFuturesSimData'
 
     def handle(self, *args, **options):
-        sim_data = DjangoFuturesSimData()
+        sim_data = dbFuturesSimData()
         # Например:
-        instrument_code = 'AED'
+        instrument_code = 'Si'
         currency1='RUB'
         currency2='USD'
         start_date='2024-01-01'
         start_date = datetime.strptime(start_date, "%Y-%m-%d")
         #data = sim_data['Si']
         
-        price=sim_data.get_instrument_raw_carry_data(instrument_code)
+        '''price=sim_data.get_instrument_raw_carry_data(instrument_code)'''
         #price = price.set_index('timestamp')
         #ewmac=calc_ewmac_forecast(price.price, 32, 128)
         #ewmac.tail(5)
 
-        print(price)
+        '''print(price)'''
         #multiple_prices = sim_data.get_multiple_prices_from_start_date(instrument_code, start_date)
         #spread_cost = sim_data.get_spread_cost(instrument_code)
         #backadjusted_prices = sim_data.get_backadjusted_futures_price(instrument_code)
         #instrument_meta_data = sim_data.get_instrument_meta_data(instrument_code)
         #roll_parameters = sim_data.get_roll_parameters(instrument_code)
         #instrument_with_meta_data = sim_data.get_instrument_object_with_meta_data(instrument_code)
-        #raw_carry_data = sim_data.get_instrument_raw_carry_data(instrument_code)
+        raw_carry_data = sim_data.get_instrument_raw_carry_data(instrument_code)
         #current_forward_price_data = sim_data.get_current_and_forward_price_data(instrument_code)
-        
+        print(raw_carry_data)
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully tested EWMA Trading Rule.'))
 

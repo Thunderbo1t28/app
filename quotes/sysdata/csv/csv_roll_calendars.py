@@ -1,3 +1,4 @@
+import os
 from quotes.sysobjects.roll_calendars import rollCalendar
 from quotes.sysdata.futures.roll_calendars import rollCalendarData
 from quotes.syscore.fileutils import (
@@ -7,8 +8,8 @@ from quotes.syscore.fileutils import (
 from quotes.syscore.pandas.pdutils import pd_readcsv
 from quotes.syscore.constants import arg_not_supplied
 #from syslogging.logger import *
-
-CSV_ROLL_CALENDAR_DIRECTORY = "E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\data\\futures\\roll_calendars_csv"
+BASEDIR = os.getcwd()
+CSV_ROLL_CALENDAR_DIRECTORY = f"{BASEDIR}\\data\\futures\\roll_calendars_csv"
 DATE_INDEX_NAME = "DATE_TIME"
 
 # NOTE: can't change calendars here - do we need init?

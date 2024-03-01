@@ -75,7 +75,15 @@ class futuresSimData(simData):
         :return: price
         """
         price = self.get_backadjusted_futures_price(instrument_code)
-        
+        specific_date = start_date
+        if specific_date not in price.index:
+            # Если дата отсутствует, устанавливаем самую раннюю дату DataFrame в качестве start_date
+            start_date = price.index.min()
+            #print(f"Данных для {start_date} нет. Установлен стартовый дата: {start_date}")
+        else:
+            # Иначе используем конкретную дату
+            start_date = specific_date
+            #print(f"Используем конкретную дату: {start_date}")
         return price[start_date:]
 
     def get_instrument_raw_carry_data(self, instrument_code: str) -> pd.DataFrame:

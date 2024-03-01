@@ -1,17 +1,17 @@
 import pandas as pd
 from datetime import datetime
-from sysdata.csv.csv_multiple_prices import csvFuturesMultiplePricesData
-from sysdata.csv.csv_adjusted_prices import csvFuturesAdjustedPricesData
-from sysdata.csv.csv_spot_fx import csvFxPricesData
-from sysdata.csv.csv_instrument_data import csvFuturesInstrumentData
-from sysdata.csv.csv_roll_parameters import csvRollParametersData
-from sysdata.data_blob import dataBlob
-from sysobjects.spot_fx_prices import fxPrices
-from sysobjects.adjusted_prices import futuresAdjustedPrices
-from sysobjects.multiple_prices import futuresMultiplePrices
-from sysdata.sim.futures_sim_data_with_data_blob import genericBlobUsingFuturesSimData
-from syslogging.logger import *
-from syscore.dateutils import ARBITRARY_START
+from quotes.sysdata.csv.csv_multiple_prices import csvFuturesMultiplePricesData
+from quotes.sysdata.csv.csv_adjusted_prices import csvFuturesAdjustedPricesData
+from quotes.sysdata.csv.csv_spot_fx import csvFxPricesData
+from quotes.sysdata.csv.csv_instrument_data import csvFuturesInstrumentData
+from quotes.sysdata.csv.csv_roll_parameters import csvRollParametersData
+from quotes.sysdata.data_blob import dataBlob
+from quotes.sysobjects.spot_fx_prices import fxPrices
+from quotes.sysobjects.adjusted_prices import futuresAdjustedPrices
+from quotes.sysobjects.multiple_prices import futuresMultiplePrices
+from quotes.sysdata.sim.futures_sim_data_with_data_blob import genericBlobUsingFuturesSimData
+#from syslogging.logger import *
+from quotes.syscore.dateutils import ARBITRARY_START
 
 
 class CsvFuturesSimTestData(genericBlobUsingFuturesSimData):
@@ -24,10 +24,10 @@ class CsvFuturesSimTestData(genericBlobUsingFuturesSimData):
     DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
     DEFAULT_END_DATE = datetime.strptime("2021-03-08 20:00:00", DATE_FORMAT)
 
-    def __init__(self, start_date=None, end_date=None, log=get_logger("csvFuturesSimTestData")):
+    def __init__(self, start_date=None, end_date=None, ):#log=get_logger("csvFuturesSimTestData")):
 
         data = dataBlob(
-            log=log,
+            #log=log,
             csv_data_paths=dict(
                 csvFuturesAdjustedPricesData="data.test.adjusted_prices_csv",
                 csvFuturesInstrumentData="data.test.csvconfig",

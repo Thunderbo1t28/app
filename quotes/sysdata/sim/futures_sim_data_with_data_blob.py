@@ -1,3 +1,5 @@
+
+
 from quotes.sysdata.sim.futures_sim_data import futuresSimData
 
 from quotes.sysdata.futures.adjusted_prices import futuresAdjustedPricesData
@@ -39,6 +41,15 @@ class genericBlobUsingFuturesSimData(futuresSimData):
         #print(fx_code)
         data = self.db_fx_prices_data.get_fx_prices(fx_code)
         #print(fx_code)
+        specific_date = start_date
+        if specific_date not in data.index:
+            # Если дата отсутствует, устанавливаем самую раннюю дату DataFrame в качестве start_date
+            start_date = data.index.min()
+            #print(f"Данных для {start_date} нет. Установлен стартовый дата: {start_date}")
+        else:
+            # Иначе используем конкретную дату
+            start_date = specific_date
+            #print(f"Используем конкретную дату: {start_date}")
         data_after_start = data[start_date:]
 
         return data_after_start
@@ -72,7 +83,17 @@ class genericBlobUsingFuturesSimData(futuresSimData):
         self, instrument_code: str, start_date
     ) -> futuresMultiplePrices:
         data = self.db_futures_multiple_prices_data.get_multiple_prices(instrument_code)
-        #print(data)
+        #print(instrument_code)
+        #print(data.info())
+        specific_date = start_date
+        if specific_date not in data.index:
+            # Если дата отсутствует, устанавливаем самую раннюю дату DataFrame в качестве start_date
+            start_date = data.index.min()
+            #print(f"Данных для {start_date} нет. Установлен стартовый дата: {start_date}")
+        else:
+            # Иначе используем конкретную дату
+            start_date = specific_date
+            #print(f"Используем конкретную дату: {start_date}")
         return data[start_date:]
 
     def get_instrument_meta_data(

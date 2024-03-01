@@ -1,4 +1,5 @@
 import json
+import os
 from django.core.management.base import BaseCommand
 import yaml
 from backtest.models import BacktestResult, BacktestResult2
@@ -9,6 +10,7 @@ from backtest.systems.provided.rob_system.rawdata import myFuturesRawData
 from backtest.systems.risk import Risk
 from backtest.systems.forecasting import Rules
 from backtest.systems.basesystem import System
+from quotes.sysdata.sim.db_futures_sim_data import dbFuturesSimData
 from quotes.sysdata.sim.django_futures_sim_data import djangoFuturesSimData
 from quotes.sysdata.config.configdata import Config
 from backtest.systems.forecast_combine import ForecastCombine
@@ -24,7 +26,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         #callback_function = options['callback']
         #logging.info("Starting backtest_test command...")
-        data = djangoFuturesSimData()
+        data = dbFuturesSimData()
+        BASEDIR = os.getcwd()
+        #my_config = Config(f"{BASEDIR}\\private\\test_single\\config.yaml")
         
         
         # Получение аргументов из командной строки по их именам
@@ -35,7 +39,7 @@ class Command(BaseCommand):
         
         for instrument in instruments:
             print(instrument)
-            my_config = Config("E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\config.yaml")
+            my_config = Config(f"{BASEDIR}\\private\\autotest\\config.yaml")
             my_config.instruments = [instrument]
             
             system = System(
@@ -58,7 +62,7 @@ class Command(BaseCommand):
             parsed_result = profits.percent.stats()
             
             sysdiag = systemDiag(system)
-            sysdiag.yaml_config_with_estimated_parameters(f'E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\result.yaml',
+            sysdiag.yaml_config_with_estimated_parameters(f'{BASEDIR}\\private\\autotest\\result.yaml',
                                                         attr_names=['forecast_scalars',
                                                                             'forecast_weights',
                                                                             'forecast_div_multiplier',
@@ -68,21 +72,21 @@ class Command(BaseCommand):
             
 
             # Загрузка содержимого первого YAML файла
-            with open('E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\template.yaml', 'r') as file1:
+            with open(f'{BASEDIR}\\private\\autotest\\template.yaml', 'r') as file1:
                 data1 = yaml.safe_load(file1)
 
             # Загрузка содержимого второго YAML файла
-            with open(f'E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\result.yaml', 'r') as file2:
+            with open(f'{BASEDIR}\\private\\autotest\\result.yaml', 'r') as file2:
                 data2 = yaml.safe_load(file2)
 
             # Объединение данных из двух файлов
             combined_data = {**data1, **data2}
 
             # Запись объединенных данных в новый YAML файл
-            with open(f'E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\combine.yaml', 'w') as outfile:
+            with open(f'{BASEDIR}\\private\\autotest\\combine.yaml', 'w') as outfile:
                 yaml.dump(combined_data, outfile)
             
-            my_config = Config(f"E:\\OneDrive\\Documents\\code\\djangosystemtrade\\app\\private\\autotest\\combine.yaml")
+            my_config = Config(f"{BASEDIR}\\private\\autotest\\combine.yaml")
             # Получение аргументов из командной строки по их именам
             
             #config = MyConfigModel.objects.get(id=config_id)

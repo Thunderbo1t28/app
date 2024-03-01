@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 
 from quotes.sysdata.futures.adjusted_prices import futuresAdjustedPricesData
@@ -9,8 +10,8 @@ from quotes.syscore.fileutils import (
 from quotes.syscore.pandas.pdutils import pd_readcsv
 from quotes.syscore.constants import arg_not_supplied
 #from syslogging.logger import *
-
-ADJUSTED_PRICES_DIRECTORY = "data.futures.adjusted_prices_csv"
+BASEDIR = os.getcwd()
+ADJUSTED_PRICES_DIRECTORY = f"{BASEDIR}\\data\\futures\\adjusted_prices_csv"
 DATE_INDEX_NAME = "DATETIME"
 
 

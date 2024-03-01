@@ -4,6 +4,7 @@ from django.apps import apps
 import pandas as pd
 
 from quotes.models import ArcticDataManager
+from quotes.syscore.exceptions import missingData
 
 
 
@@ -35,16 +36,27 @@ class arcticData(object):
         try:
             arctic_data = self.model.objects.get(ident=ident)
             arctic_data = self.parse_json_data(arctic_data.data)
-            # Преобразовать данные обратно в DataFrame
+            
+            # Проверка наличия данных и их корректности
+            if not arctic_data or not isinstance(arctic_data, list):
+                raise ValueError("Invalid or empty data")
+            
+            # Преобразование данных в DataFrame
             data_copy = pd.DataFrame(arctic_data)
-            # Преобразовать столбец 'index' обратно в формат Timestamp
+            
+            # Проверка наличия столбца 'index'
+            if 'index' not in data_copy.columns:
+                raise ValueError("Missing 'index' column in data")
+            
+            # Преобразование столбца 'index' в формат Timestamp
             data_copy['index'] = pd.to_datetime(data_copy['index'])
-            # Установить столбец 'index' в качестве индекса
+            
+            # Установка столбца 'index' в качестве индекса
             data_copy.set_index('index', inplace=True)
             
             return data_copy
         except self.model.DoesNotExist:
-            return pd.DataFrame()
+            raise ValueError(f"Data with ident={ident} not found")
         
     def convert_data_to_json(self, data):
         """
@@ -168,14 +180,17 @@ class arcticData(object):
     def get_result_dict_for_key(self, key) -> dict:
         try:
             result_dict = self.collection.get(ident=key)
-            result_dict.pop(MONGO_ID_KEY)
+            
+            #result_dict.pop(MONGO_ID_KEY)
             return result_dict
         except self.model.DoesNotExist:
             raise missingData(f"Key {key} not found in Mongo data")
 
     def get_result_dict_for_key_without_key_value(self, key) -> dict:
-        result_dict = self.get_result_dict_for_key(key)
-        result_dict.pop('ident')
+        result_object = self.get_result_dict_for_key(key)
+        result_dict = result_object.data
+        result_dict.pop('ident', None)
+        #result_dict.pop('ident')
         return result_dict
 
     def get_list_of_result_dict_for_custom_dict(self, custom_dict: dict) -> list:

@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from quotes.sysdata.futures.multiple_prices import futuresMultiplePricesData
 from quotes.sysobjects.multiple_prices import (
@@ -13,8 +14,8 @@ from quotes.syscore.pandas.pdutils import pd_readcsv
 from quotes.syscore.genutils import str_of_int
 from quotes.syscore.constants import arg_not_supplied
 #from syslogging.logger import *
-
-CSV_MULTIPLE_PRICE_DIRECTORY = "data.futures.multiple_prices_csv"
+BASEDIR = os.getcwd()
+CSV_MULTIPLE_PRICE_DIRECTORY = f"{BASEDIR}\\data\\futures\\multiple_prices_csv"
 DATE_INDEX_NAME = "DATETIME"
 
 
