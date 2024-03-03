@@ -101,130 +101,130 @@ trading_rules:
     data:
     - rawdata.get_daily_prices
     - rawdata.daily_returns_volatility
-    function: backtest.systems.provided.rules.accel.accel
+    function: systems.provided.rules.accel.accel
     other_args:
       Lfast: 16
   accel32:
     data:
     - rawdata.get_daily_prices
     - rawdata.daily_returns_volatility
-    function: backtest.systems.provided.rules.accel.accel
+    function: systems.provided.rules.accel.accel
     other_args:
       Lfast: 32
   accel64:
     data:
     - rawdata.get_daily_prices
     - rawdata.daily_returns_volatility
-    function: backtest.systems.provided.rules.accel.accel
+    function: systems.provided.rules.accel.accel
     other_args:
       Lfast: 64
   assettrend16:
     data:
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 16
       Lslow: 64
   assettrend2:
     data:
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 2
       Lslow: 8
   assettrend32:
     data:
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 32
       Lslow: 128
   assettrend4:
     data:
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 4
       Lslow: 16
   assettrend64:
     data:
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 64
       Lslow: 256
   assettrend8:
     data:
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 8
       Lslow: 32
   breakout10:
     data:
     - rawdata.get_daily_prices
-    function: backtest.systems.provided.rules.breakout.breakout
+    function: systems.provided.rules.breakout.breakout
     other_args:
       lookback: 10
   breakout160:
     data:
     - rawdata.get_daily_prices
-    function: backtest.systems.provided.rules.breakout.breakout
+    function: systems.provided.rules.breakout.breakout
     other_args:
       lookback: 160
   breakout20:
     data:
     - rawdata.get_daily_prices
-    function: backtest.systems.provided.rules.breakout.breakout
+    function: systems.provided.rules.breakout.breakout
     other_args:
       lookback: 20
   breakout320:
     data:
     - rawdata.get_daily_prices
-    function: backtest.systems.provided.rules.breakout.breakout
+    function: systems.provided.rules.breakout.breakout
     other_args:
       lookback: 320
   breakout40:
     data:
     - rawdata.get_daily_prices
-    function: backtest.systems.provided.rules.breakout.breakout
+    function: systems.provided.rules.breakout.breakout
     other_args:
       lookback: 40
   breakout80:
     data:
     - rawdata.get_daily_prices
-    function: backtest.systems.provided.rules.breakout.breakout
+    function: systems.provided.rules.breakout.breakout
     other_args:
       lookback: 80
   carry10:
     data:
     - rawdata.raw_carry
-    function: backtest.systems.provided.rules.carry.carry
+    function: systems.provided.rules.carry.carry
     other_args:
       smooth_days: 10
   carry125:
     data:
     - rawdata.raw_carry
-    function: backtest.systems.provided.rules.carry.carry
+    function: systems.provided.rules.carry.carry
     other_args:
       smooth_days: 125
   carry30:
     data:
     - rawdata.raw_carry
-    function: backtest.systems.provided.rules.carry.carry
+    function: systems.provided.rules.carry.carry
     other_args:
       smooth_days: 30
   carry60:
     data:
     - rawdata.raw_carry
-    function: backtest.systems.provided.rules.carry.carry
+    function: systems.provided.rules.carry.carry
     other_args:
       smooth_days: 60
   momentum16:
     data:
     - rawdata.get_daily_prices
     - rawdata.daily_returns_volatility
-    function: backtest.systems.provided.rules.ewmac.ewmac
+    function: systems.provided.rules.ewmac.ewmac
     other_args:
       Lfast: 16
       Lslow: 64
@@ -232,7 +232,7 @@ trading_rules:
     data:
     - rawdata.get_daily_prices
     - rawdata.daily_returns_volatility
-    function: backtest.systems.provided.rules.ewmac.ewmac
+    function: systems.provided.rules.ewmac.ewmac
     other_args:
       Lfast: 32
       Lslow: 128
@@ -240,7 +240,7 @@ trading_rules:
     data:
     - rawdata.get_daily_prices
     - rawdata.daily_returns_volatility
-    function: backtest.systems.provided.rules.ewmac.ewmac
+    function: systems.provided.rules.ewmac.ewmac
     other_args:
       Lfast: 4
       Lslow: 16
@@ -248,7 +248,7 @@ trading_rules:
     data:
     - rawdata.get_daily_prices
     - rawdata.daily_returns_volatility
-    function: backtest.systems.provided.rules.ewmac.ewmac
+    function: systems.provided.rules.ewmac.ewmac
     other_args:
       Lfast: 64
       Lslow: 256
@@ -256,7 +256,7 @@ trading_rules:
     data:
     - rawdata.get_daily_prices
     - rawdata.daily_returns_volatility
-    function: backtest.systems.provided.rules.ewmac.ewmac
+    function: systems.provided.rules.ewmac.ewmac
     other_args:
       Lfast: 8
       Lslow: 32
@@ -264,48 +264,48 @@ trading_rules:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.cs_mr.cross_sectional_mean_reversion
+    function: systems.provided.rules.cs_mr.cross_sectional_mean_reversion
     other_args:
       horizon: 1000
   normmom16:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 16
       Lslow: 64
   normmom2:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 2
       Lslow: 8
   normmom32:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 32
       Lslow: 128
   normmom4:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 4
       Lslow: 16
   normmom64:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 64
       Lslow: 256
   normmom8:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
-    function: backtest.systems.provided.rules.ewmac.ewmac_calc_vol
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
     other_args:
       Lfast: 8
       Lslow: 32
@@ -313,39 +313,39 @@ trading_rules:
     data:
     - rawdata.smoothed_carry
     - rawdata.median_carry_for_asset_class
-    function: backtest.systems.provided.rules.carry.relative_carry
+    function: systems.provided.rules.carry.relative_carry
   relmomentum10:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.rel_mom.relative_momentum
+    function: systems.provided.rules.rel_mom.relative_momentum
     other_args:
       horizon: 10
   relmomentum20:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.rel_mom.relative_momentum
+    function: systems.provided.rules.rel_mom.relative_momentum
     other_args:
       horizon: 20
   relmomentum40:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.rel_mom.relative_momentum
+    function: systems.provided.rules.rel_mom.relative_momentum
     other_args:
       horizon: 40
   relmomentum80:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
     - rawdata.normalised_price_for_asset_class
-    function: backtest.systems.provided.rules.rel_mom.relative_momentum
+    function: systems.provided.rules.rel_mom.relative_momentum
     other_args:
       horizon: 80
   skewabs180:
     data:
     - rawdata.get_demeanded_factor_value
-    function: backtest.systems.provided.rules.factors.factor_trading_rule
+    function: systems.provided.rules.factors.factor_trading_rule
     other_args:
       _demean_method: historic_average_factor_value_all_assets
       _factor_name: neg_skew
@@ -354,7 +354,7 @@ trading_rules:
   skewabs365:
     data:
     - rawdata.get_demeanded_factor_value
-    function: backtest.systems.provided.rules.factors.factor_trading_rule
+    function: systems.provided.rules.factors.factor_trading_rule
     other_args:
       _demean_method: historic_average_factor_value_all_assets
       _factor_name: neg_skew
@@ -363,7 +363,7 @@ trading_rules:
   skewrv180:
     data:
     - rawdata.get_demeanded_factor_value
-    function: backtest.systems.provided.rules.factors.factor_trading_rule
+    function: systems.provided.rules.factors.factor_trading_rule
     other_args:
       _demean_method: average_factor_value_in_asset_class_for_instrument
       _factor_name: neg_skew
@@ -372,7 +372,7 @@ trading_rules:
   skewrv365:
     data:
     - rawdata.get_demeanded_factor_value
-    function: backtest.systems.provided.rules.factors.factor_trading_rule
+    function: systems.provided.rules.factors.factor_trading_rule
     other_args:
       _demean_method: average_factor_value_in_asset_class_for_instrument
       _factor_name: neg_skew
@@ -413,7 +413,7 @@ use_instrument_weight_estimates: false
 volatility_calculation:
   backfill: true
   days: 35
-  func: backtest.sysquant.estimators.vol.mixed_vol_calc
+  func: sysquant.estimators.vol.mixed_vol_calc
   min_periods: 10
   proportion_of_slow_vol: 0.35
   slow_vol_years: 20

@@ -1,18 +1,18 @@
 import json
 from django.core.management.base import BaseCommand
 from backtest.models import BacktestResult, TradingRuleModel
-from backtest.systems.provided.rules.ewmac import ewmac_forecast_with_defaults as ewmac
-from backtest.systems.trading_rules import TradingRule
-from backtest.systems.forecasting import Rules
-from backtest.systems.basesystem import System
-from quotes.sysdata.sim.django_futures_sim_data import djangoFuturesSimData
-from quotes.sysdata.config.configdata import Config
-from backtest.systems.forecast_scale_cap import ForecastScaleCap
-from backtest.systems.forecast_combine import ForecastCombine
-from backtest.systems.rawdata import RawData
-from backtest.systems.positionsizing import PositionSizing
-from backtest.systems.accounts.accounts_stage import Account
-from backtest.systems.portfolio import Portfolios
+from systems.provided.rules.ewmac import ewmac_forecast_with_defaults as ewmac
+from systems.trading_rules import TradingRule
+from systems.forecasting import Rules
+from systems.basesystem import System
+from sysdata.sim.django_futures_sim_data import djangoFuturesSimData
+from sysdata.config.configdata import Config
+from systems.forecast_scale_cap import ForecastScaleCap
+from systems.forecast_combine import ForecastCombine
+from systems.rawdata import RawData
+from systems.positionsizing import PositionSizing
+from systems.accounts.accounts_stage import Account
+from systems.portfolio import Portfolios
 import logging
 
 

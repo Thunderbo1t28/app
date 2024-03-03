@@ -1,23 +1,23 @@
 from django.core.management.base import BaseCommand
 import yaml
 from backtest.models import BacktestResult, BacktestResult2
-from backtest.systems.attenuate_vol.vol_attenuation_forecast_scale_cap import volAttenForecastScaleCap
-from backtest.systems.basesystem import System
-from backtest.systems.diagoutput import systemDiag
-from backtest.systems.forecast_combine import ForecastCombine
-from backtest.systems.forecasting import Rules
-from backtest.systems.portfolio import Portfolios
-from backtest.systems.positionsizing import PositionSizing
-from backtest.systems.provided.dynamic_small_system_optimise.accounts_stage import accountForOptimisedStage
-from backtest.systems.provided.dynamic_small_system_optimise.optimised_positions_stage import optimisedPositions
-from backtest.systems.provided.rob_system.rawdata import myFuturesRawData
-from backtest.systems.risk import Risk
+from systems.attenuate_vol.vol_attenuation_forecast_scale_cap import volAttenForecastScaleCap
+from systems.basesystem import System
+from systems.diagoutput import systemDiag
+from systems.forecast_combine import ForecastCombine
+from systems.forecasting import Rules
+from systems.portfolio import Portfolios
+from systems.positionsizing import PositionSizing
+from systems.provided.dynamic_small_system_optimise.accounts_stage import accountForOptimisedStage
+from systems.provided.dynamic_small_system_optimise.optimised_positions_stage import optimisedPositions
+from systems.provided.rob_system.rawdata import myFuturesRawData
+from systems.risk import Risk
 from deap import base, creator, tools, algorithms
 import random
 from django.core.management import call_command
-from quotes.sysdata.config.configdata import Config
+from sysdata.config.configdata import Config
 
-from quotes.sysdata.sim.django_futures_sim_data import djangoFuturesSimData
+from sysdata.sim.django_futures_sim_data import djangoFuturesSimData
 
 # Определение класса для оптимизации параметра Sharpe
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))

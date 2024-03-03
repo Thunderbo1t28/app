@@ -5,7 +5,7 @@ import numpy as np
 from quotes.dao import DjangoFuturesSimData
 import pandas as pd
 
-from quotes.sysdata.sim.db_futures_sim_data import dbFuturesSimData
+from sysdata.sim.db_futures_sim_data import dbFuturesSimData
 
 class Command(BaseCommand):
     help = 'Test EWMA Trading Rule using DjangoFuturesSimData'

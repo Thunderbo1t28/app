@@ -1,17 +1,18 @@
 import os
 from django.core.management.base import BaseCommand
-from backtest.sysproduction.data.prices import get_valid_instrument_code_from_user
-from quotes.sysdata.arctic.arctic_futures_per_contract_prices import arcticFuturesContractPriceData
-from quotes.sysdata.arctic.arctic_spotfx_prices import arcticFxPricesData
-from quotes.sysdata.csv.csv_futures_contract_prices import ConfigCsvFuturesPrices
-from quotes.sysdata.csv.csv_spot_fx import csvFxPricesData
-from quotes.sysdata.data_blob import dataBlob
-from quotes.sysinit.futures.adjustedprices_from_mongo_multiple_to_mongo import process_adjusted_prices_all_instruments
+from sysproduction.data.prices import get_valid_instrument_code_from_user
+from sysproduction.interactive_update_capital_manual import interactive_update_capital_manual
+from sysdata.arctic.arctic_futures_per_contract_prices import arcticFuturesContractPriceData
+from sysdata.arctic.arctic_spotfx_prices import arcticFxPricesData
+from sysdata.csv.csv_futures_contract_prices import ConfigCsvFuturesPrices
+from sysdata.csv.csv_spot_fx import csvFxPricesData
+from sysdata.data_blob import dataBlob
+from sysinit.futures.adjustedprices_from_mongo_multiple_to_mongo import process_adjusted_prices_all_instruments
 
-from quotes.sysinit.futures.contract_prices_from_csv_to_arctic import init_arctic_with_csv_futures_contract_prices
-from quotes.sysinit.futures.multipleprices_from_arcticprices_and_csv_calendars_to_arctic import process_multiple_prices_all_instruments
-from quotes.sysinit.futures.repocsv_spread_costs import copy_spread_costs_from_csv_to_mongo
-from quotes.sysinit.futures.rollcalendars_from_arcticprices_to_csv import build_and_write_roll_calendar
+from sysinit.futures.contract_prices_from_csv_to_arctic import init_arctic_with_csv_futures_contract_prices
+from sysinit.futures.multipleprices_from_arcticprices_and_csv_calendars_to_arctic import process_multiple_prices_all_instruments
+from sysinit.futures.repocsv_spread_costs import copy_spread_costs_from_csv_to_mongo
+from sysinit.futures.rollcalendars_from_arcticprices_to_csv import build_and_write_roll_calendar
 
 
 
@@ -100,6 +101,10 @@ class Command(BaseCommand):
         #raw_carry_data = sim_data.get_instrument_raw_carry_data(instrument_code)
         #current_forward_price_data = sim_data.get_current_and_forward_price_data(instrument_code)
         
+
+        interactive_update_capital_manual()
+
+
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))
         

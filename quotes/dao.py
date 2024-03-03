@@ -5,19 +5,19 @@ from django.db.models import F
 import pandas as pd
 import pytz
 
-from quotes.syscore.dateutils import ARBITRARY_START
+from syscore.dateutils import ARBITRARY_START
 from quotes.models import AdjustedPrice, FxPriceData, Instrument, MultiplePriceData, RollCalendar, RollParameters, SpreadCosts
-from quotes.syscore.exceptions import missingData, missingInstrument
-from quotes.syscore.pandas.frequency import resample_prices_to_business_day_index
-from quotes.sysdata.django.django_spotfx import djangoFxPricesData
-from quotes.sysdata.futures.instruments import futuresInstrumentData
-from quotes.sysobjects.adjusted_prices import futuresAdjustedPrices
-from quotes.sysobjects.instruments import assetClassesAndInstruments, futuresInstrument, futuresInstrumentWithMetaData, instrumentCosts, instrumentMetaData
-from quotes.sysobjects.multiple_prices import futuresMultiplePrices
-from quotes.sysobjects.rolls import rollParameters
-from quotes.sysobjects.spot_fx_prices import fxPrices
+from syscore.exceptions import missingData, missingInstrument
+from syscore.pandas.frequency import resample_prices_to_business_day_index
+from sysdata.django.django_spotfx import djangoFxPricesData
+from sysdata.futures.instruments import futuresInstrumentData
+from sysobjects.adjusted_prices import futuresAdjustedPrices
+from sysobjects.instruments import assetClassesAndInstruments, futuresInstrument, futuresInstrumentWithMetaData, instrumentCosts, instrumentMetaData
+from sysobjects.multiple_prices import futuresMultiplePrices
+from sysobjects.rolls import rollParameters
+from sysobjects.spot_fx_prices import fxPrices
 
-from quotes.sysobjects.dict_of_named_futures_per_contract_prices import (
+from sysobjects.dict_of_named_futures_per_contract_prices import (
         contract_name_from_column_name,
         price_name,
         carry_name,

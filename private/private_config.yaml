@@ -1,0 +1,175 @@
+# YAML
+broker_account: 'U9641370' # your account number at IB
+email_address: 'ksabiev@gmail.com' # add your address here
+email_to: 'ksabiev@gmail.com' # add your address here
+email_pwd: 'lwxawmrlhhslezga' # your password
+email_server: 'smtp.gmail.com' # the smtp server
+email_port: 587
+email_security: 'TLS' # for future use
+#ib_ipaddress: 92.124.139.47
+#mongo_host: 'localhost' # can be elsewhere
+#mongo_db: 'production_test' # fits with all the documentation
+#
+#           PRODUCTION STUFF
+#
+#
+## Strategy configuration
+# This won't actually work unless you have a strategy called example.. so don't uncomment use as a template
+strategy_list:
+  example:
+    load_backtests:
+      object: sysproduction.strategy_code.run_system_classic.runSystemClassic
+      function: system_method
+    reporting_code:
+      function: sysproduction.strategy_code.report_system_classic.report_system_classic
+#
+# Allocate capital to strategies
+# strategy_weights *must* be defined in private config
+strategy_capital_allocation:
+  function: sysproduction.strategy_code.strategy_allocation.weighted_strategy_allocation
+  strategy_weights:
+    example: 100.0
+#
+## Where do we save backtests
+backtest_store_directory: '/home/ksabiev/data/backtests'
+#
+# And backups
+csv_backup_directory: '/home/ksabiev/data/backups_csv'
+mongo_dump_directory: '/home/ksabiev/data/mongo_dump'
+echo_directory: '/home/ksabiev/data/echos'
+log_directory: '/home/ksabiev/data/log'
+offsystem_backup_directory: '/home/ksabiev/data/offsystem'
+reporting_directory: '/home/ksabiev/data/reports'
+#
+# Interactive brokers
+ib_ipaddress: 127.0.0.1
+ib_port: 4001
+ib_idoffset: 100
+#
+# Broker class list resolution function
+broker_factory_func: 'sysbrokers.broker_factory.get_ib_class_list'
+#
+# Mongo DB
+mongo_host: 127.0.0.1
+mongo_db: '05'
+# DO NOT CHANGE THIS VALUE!!!! IT WILL SCREW UP ARCTIC. If you need to use a port other than 27017, use the url
+# format for mongo_host, eg mongodb://127.0.0.1:27018
+mongo_port: 27017
+#
+# Needs to be consistent with what you are using in crontab
+echo_extension: '.txt'
+# Spike checker
+max_price_spike: 8.0
+# Default get_GMT_offset_hours
+GMT_offset_hours: 0
+# Behaviour of price filtering
+#ignore_future_prices: True
+#ignore_prices_with_zero_volumes_intraday: True
+#ignore_prices_with_zero_volumes_daily: False
+#ignore_zero_prices: True
+#ignore_negative_prices: False
+#
+# Price frequency (we collect daily data, and separately this frequency
+intraday_frequency: H
+#
+percentage_vol_target: 25.0
+notional_trading_capital: 2500000
+base_currency: "RUB"
+# Capital calculation
+production_capital_method: 'full'
+#
+stale_instruments: ['an_instrument_i_no_longer_trade_or_sample']
+#
+#
+#           BACKTESTING STUFF
+#
+# Raw data
+#
+
+#
+# forecast capping and scaling
+# fixed values
+#
+#
+# with varying stuff
+#
+#
+
+#
+#
+# forecast combination
+#
+
+
+#
+# Capital correction
+#
+
+# other options are full_compounding and half_compounding, but see syscore.capital.py
+
+#
+# add instrument codes here to make long only at position sizing
+
+# Portfolio creation
+#
+# smooth weights they will are in daily space
+# buffering / position inertia
+
+# costs and accounting
+
+#
+# risk overlay - make these numbers and uncomment
+#risk_overlay:
+#  max_risk_fraction_normal_risk: 99999
+#  max_risk_fraction_stdev_risk: 99999
+#  max_risk_limit_sum_abs_risk: 99999
+#  max_risk_leverage: 99999
+#
+
+# small system optimisation
+
+#
+# duplicated/excluded instruments are ignored in backtests
+# we still collect price data for them in production, do rolls etc
+# this is to avoid double counting of basically the same instrument
+# anything in the 'exclude' list is ignored in backtests
+# we use the 'include section to match up for reporting when deciding which to trade
+# Be careful when swapping between instruments, a bit dangerous if a position is held...
+# You can override this by modifying the backtest config .yaml file used in either sim or production
+#
+# THe following example shows how you would select one instrument out of a choice of 3
+#
+duplicate_instruments:
+  include:
+    things: 'thing_we_want'
+  exclude:
+    things: ['bad_thing', 'Another_thing']
+exclude_instrument_lists:
+  # ignore_instruments are ignored in backtests
+  # we still collect price data for them in production, do rolls etc
+  # You can override this by modifying the backtest config .yaml file used in either sim or production
+  # If you want to ignore because a duplicate market, use duplicate_instruments
+  # If you want to include in sim data, but not actually trade, use trading_restrictions
+  #
+  # BEST FOR INSTRUMENTS THAT LOOK EXPENSIVE, BUT WHERE WE HAVEN'T GOT ACCURATE DATA YET
+  #
+  # REVIEW REGULARLY AND CHECK THESE INSTRUMENTS AREN'T BETTER ELSEWHERE...
+  ignore_instruments:
+    - 'EXAMPLE'
+  #
+  # Here we put stuff we can't trade, but for which we still want to bring in prices in sim
+  # For the dynamically optimised strategy this list will be used in sim as 'don't trade'
+  # For static strategies, you will probably want to set these to zero instrument weights
+  # In production, things here will be added to the 'reduce_only' list of instruments
+  # NOTE: This will be regionally biased, you will probably want to override this in private_config.yaml
+  #
+  trading_restrictions:
+    - RESTRICTED_EXAMPLE
+  # These are markets that are too expensive or illiquid to actually trade
+  # For the dynamically optimised strategy this list will be used in sim as 'don't trade'
+  # For static strategies, you will probably want to set these to zero instrument weights
+  # In production, things here will be added to the 'reduce_only' list of instruments
+  # Run interactive controls to get a list of suggested markets here
+  # To override this list, change in sim .yaml config (sim) and private_config.yaml (production)
+  bad_markets:
+    - BAD_EXAMPLE
