@@ -26,7 +26,7 @@ class arcticFuturesContractPriceData(futuresContractPriceData):
 
     def __init__(self, mongo_db=None, log=get_logger("arcticFuturesContractPriceData")):
 
-        super().__init__(log=log)
+        super().__init__() #log=log)
 
         self._arctic_connection = arcticData(CONTRACT_COLLECTION, mongo_db=mongo_db)
 

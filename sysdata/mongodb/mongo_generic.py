@@ -1,5 +1,7 @@
+import ast
 from copy import copy
 from datetime import date, time
+import json
 
 from syscore.constants import arg_not_supplied
 from syscore.exceptions import missingData, existingData
@@ -137,15 +139,24 @@ class mongoDataWithMultipleKeys:
         return f"mongoData connection for {col}/{db}, {host}"
 
     def get_list_of_all_dicts(self) -> list:
-        cursor = self._mongo.collection.find()
-        dict_list = [db_entry for db_entry in cursor]
-        _ = [dict_item.pop(MONGO_ID_KEY) for dict_item in dict_list]
+        cursor = self._mongo.get_list_of_keys()
+        data_list = []
 
+        for i in cursor:
+            data_string = i.strip('[]')
+            data_string = data_string.strip('"')
+            data_dict = ast.literal_eval(data_string)
+            data_list.append(data_dict)
+
+        dict_list = [db_entry for db_entry in data_list]
+        
+        #_ = [dict_item.pop(MONGO_ID_KEY) for dict_item in dict_list]
+        #print(dict_list)
         return dict_list
 
     def get_result_dict_for_dict_keys(self, dict_of_keys: dict) -> dict:
         result_dict = self._mongo.get_result_dict_for_key(dict_of_keys)
-        result_dict.pop(MONGO_ID_KEY)
+        #result_dict.pop(MONGO_ID_KEY)
         return result_dict
 
     def get_list_of_result_dicts_for_dict_keys(self, dict_of_keys: dict) -> list:

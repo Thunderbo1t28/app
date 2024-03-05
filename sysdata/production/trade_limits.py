@@ -197,7 +197,7 @@ class tradeLimitData(baseData):
             )
         except missingData:
             return self.no_limit(instrument_strategy, period_days)
-
+        print(trade_limit_as_dict)
         trade_limit_object = tradeLimit.from_dict(trade_limit_as_dict)
 
         return trade_limit_object

@@ -91,17 +91,17 @@ class mongoDb:
         mongo_port: int = arg_not_supplied,
     ):
 
-        database_name, host, port = mongo_defaults(
+        '''database_name, host, port = mongo_defaults(
             mongo_database_name=mongo_database_name,
             mongo_host=mongo_host,
             mongo_port=mongo_port,
-        )
+        )'''
 
-        self.database_name = database_name
-        self.host = host
-        self.port = port
+        self.database_name = 'database_name'
+        self.host = 'host'
+        self.port = 'port'
 
-        client = mongo_client_factory.get_mongo_client(host, port)
+        client = mongo_client_factory.get_mongo_client('host', 'port')
         db = client#[database_name]
 
         self.client = client

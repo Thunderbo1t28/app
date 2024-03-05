@@ -1,6 +1,10 @@
 import os
 from django.core.management.base import BaseCommand
+from sysdata.arctic.arctic_adjusted_prices import arcticFuturesAdjustedPricesData
+from sysdata.sim.db_futures_sim_data import dbFuturesSimData
 from sysproduction.data.prices import get_valid_instrument_code_from_user
+from sysproduction.interactive_controls import interactive_controls
+from sysproduction.interactive_manual_check_fx_prices import interactive_manual_check_fx_prices
 from sysproduction.interactive_update_capital_manual import interactive_update_capital_manual
 from sysdata.arctic.arctic_futures_per_contract_prices import arcticFuturesContractPriceData
 from sysdata.arctic.arctic_spotfx_prices import arcticFxPricesData
@@ -13,6 +17,10 @@ from sysinit.futures.contract_prices_from_csv_to_arctic import init_arctic_with_
 from sysinit.futures.multipleprices_from_arcticprices_and_csv_calendars_to_arctic import process_multiple_prices_all_instruments
 from sysinit.futures.repocsv_spread_costs import copy_spread_costs_from_csv_to_mongo
 from sysinit.futures.rollcalendars_from_arcticprices_to_csv import build_and_write_roll_calendar
+from sysproduction.run_capital_update import run_capital_update
+from sysproduction.run_systems import run_systems
+from sysproduction.update_strategy_capital import update_strategy_capital
+from sysproduction.update_total_capital import update_total_capital
 
 
 
@@ -90,21 +98,30 @@ class Command(BaseCommand):
 
 
 
-        '''sim_data = arcticFuturesContractPriceData()
-        print(sim_data.get_merged_prices_for_instrument(instrument_code="AFKS"))'''
+        #sim_data = dbFuturesSimData()
+        #print(sim_data.get_merged_prices_for_instrument(instrument_code="AFKS"))
         #multiple_prices = sim_data.get_multiple_prices_from_start_date(instrument_code, start_date)
         #spread_cost = sim_data.get_spread_cost(instrument_code)
-        #backadjusted_prices = sim_data.get_backadjusted_futures_price(instrument_code)
+        #backadjusted_prices = sim_data.get_backadjusted_futures_price(instrument_code="AFKS")
         #instrument_meta_data = sim_data.get_instrument_meta_data(instrument_code)
         #roll_parameters = sim_data.get_roll_parameters(instrument_code)
         #instrument_with_meta_data = sim_data.get_instrument_object_with_meta_data(instrument_code)
-        #raw_carry_data = sim_data.get_instrument_raw_carry_data(instrument_code)
+        #raw_carry_data = sim_data.get_instrument_raw_carry_data(instrument_code="AFKS")
         #current_forward_price_data = sim_data.get_current_and_forward_price_data(instrument_code)
+        #print(backadjusted_prices)
+
         
-
-        interactive_update_capital_manual()
-
-
+        #update_capital_pd_df_for_strategy()
+        #interactive_update_capital_manual()
+        run_capital_update()
+        #run_systems()
+        #update_total_capital()
+        #update_strategy_capital()
+        
+        #interactive_controls()
+        #interactive_diagnostics()
+        #interactive_manual_check_fx_prices()
+        #interactive_manual_check_historical_prices()
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))
         

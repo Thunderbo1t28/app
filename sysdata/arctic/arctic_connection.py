@@ -189,7 +189,8 @@ class arcticData(object):
     def get_result_dict_for_key_without_key_value(self, key) -> dict:
         result_object = self.get_result_dict_for_key(key)
         result_dict = result_object.data
-        result_dict.pop('ident', None)
+        #print(result_dict)
+        #result_dict.pop('ident', None)
         #result_dict.pop('ident')
         return result_dict
 

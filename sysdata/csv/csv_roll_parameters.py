@@ -68,7 +68,7 @@ class csvRollParametersData(rollParametersData):
         self, datapath=arg_not_supplied, log=get_logger("csvRollParametersData"),
     ):
 
-        super().__init__(log=log)
+        super().__init__() #log=log)
         if datapath is arg_not_supplied:
             datapath = ROLLS_DATAPATH
         config_file = resolve_path_and_filename_for_package(datapath, ROLLS_CONFIG_FILE)

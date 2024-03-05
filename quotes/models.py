@@ -105,7 +105,10 @@ class LastDownloadDate(models.Model):
     
 class ArcticDataManager(models.Manager):
     def create_arctic_data(self, model, ident, data):
-        #print(data)
+        #print(ident)
+        #print(model)
+        if data is None:
+            data = ident
         arctic_data = model.objects.update_or_create(ident=ident, data=data)
         #arctic_data.save()
         
@@ -157,6 +160,42 @@ class spotfx_prices(models.Model):
     data = models.JSONField()
     
     objects = ArcticDataManager()
+
+class arctic_capital(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
+class margin(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
+class process_control(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
+class limit_status(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager() 
+
+class futures_contracts(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField()
+    
+    objects = ArcticDataManager()
+
+class spreads(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager() 
 
 class MongoDataSingleKey(models.Model):
     collection_name = models.CharField(max_length=255)

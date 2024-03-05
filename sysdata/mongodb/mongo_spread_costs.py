@@ -18,7 +18,7 @@ class mongoSpreadCostData(spreadCostData):
     """
 
     def __init__(self, mongo_db=None, log=get_logger("mongoSpreadCostData")):
-        super().__init__(log=log)
+        super().__init__() #log=log)
         self._mongo_data = mongoDataWithSingleKey(
             SPREAD_COST_COLLECTION, mongo_db=mongo_db, key_name=INSTRUMENT_KEY
         )

@@ -91,7 +91,7 @@ def apply_price_cleaning(
             log.warning(
                 "Ignoring %d prices with negative prices ****COULD BE REAL PRICES****"
                 % (price_length - new_price_length)
-            )'''
+            )
             print(f"Ignoring {(price_length - new_price_length)} prices with negative prices ****COULD BE REAL PRICES****")
             price_length = new_price_length  ## not used again but for tidiness
 

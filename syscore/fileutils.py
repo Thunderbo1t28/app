@@ -135,6 +135,7 @@ def resolve_path_and_filename_for_package(
     """
 
     path_and_filename_as_list = transform_path_into_list(path_and_filename)
+    #print(path_and_filename_as_list)
     if seperate_filename is None:
         (
             path_as_list,
@@ -144,11 +145,11 @@ def resolve_path_and_filename_for_package(
         )
     else:
         path_as_list = path_and_filename_as_list
-
+    #print(path_as_list)
     resolved_pathname = get_pathname_from_list(path_as_list)
-
+    #print(resolved_pathname)
     resolved_path_and_filename = os.path.join(resolved_pathname, seperate_filename)
-
+    #print(resolved_path_and_filename)
     return resolved_path_and_filename
 
 
@@ -262,6 +263,7 @@ def get_pathname_from_list(path_as_list: List[str]) -> str:
         resolved_pathname = get_absolute_windows_pathname_from_list(path_as_list)
     else:
         # relative
+        #print(path_as_list)
         resolved_pathname = get_relative_pathname_from_list(path_as_list)
 
     return resolved_pathname
@@ -285,18 +287,21 @@ def get_relative_pathname_from_list(path_as_list: List[str]) -> str:
     """
     package_name = path_as_list[0]
     paths_or_files = path_as_list[1:]
-
+    #print(paths_or_files)
     if len(paths_or_files) == 0:
+        print(package_name)
         directory_name_of_package = os.path.dirname(
             import_module(package_name).__file__
         )
+        
         return directory_name_of_package
 
     last_item_in_list = path_as_list.pop()
+    
     pathname = os.path.join(
         get_relative_pathname_from_list(path_as_list), last_item_in_list
     )
-
+    #print(pathname)
     return pathname
 
 

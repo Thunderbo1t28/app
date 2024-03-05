@@ -83,7 +83,9 @@ class dataBlob(object):
 
     def add_class_object(self, class_object):
         class_name = get_class_name(class_object)
+        #print(class_name)
         attr_name = self._get_new_name(class_name)
+        #print(attr_name)
         if not self._already_existing_class_name(attr_name):
             resolved_instance = self._get_resolved_instance_of_class(class_object)
             self._resolve_names_and_add(resolved_instance, class_name)

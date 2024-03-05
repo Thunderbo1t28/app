@@ -12,7 +12,7 @@ class brokerCapitalData(capitalData):
         self, data: dataBlob, #log: pst_logger = get_logger("brokerCapitalData")
     ):
 
-        super().__init__(log=log)) #
+        super().__init__(log=log) #
         self._data = data
 
     def get_account_value_across_currency(

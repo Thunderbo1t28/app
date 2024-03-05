@@ -25,7 +25,7 @@ class mongoFuturesContractData(futuresContractData):
         self, mongo_db=arg_not_supplied, log=get_logger("mongoFuturesContractData")
     ):
 
-        super().__init__(log=log)
+        super().__init__()#log=log)
         mongo_data = mongoDataWithSingleKey(
             CONTRACT_COLLECTION, "contract_key", mongo_db=mongo_db
         )

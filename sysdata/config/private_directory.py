@@ -12,5 +12,5 @@ def get_full_path_for_private_config(filename: str):
         private_config_path = f"{os.environ[PRIVATE_CONFIG_DIR_ENV_VAR]}/{filename}"
     else:
         private_config_path = f"{DEFAULT_PRIVATE_DIR}/{filename}"
-
+    #print(private_config_path)
     return private_config_path
