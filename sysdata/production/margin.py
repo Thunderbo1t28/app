@@ -14,7 +14,7 @@ class seriesOfMargin(pd.Series):
 
     def add_value(self, value: float, dateref=datetime.datetime.now()):
 
-        return seriesOfMargin(self.append(pd.Series([value], index=[dateref])))
+        return seriesOfMargin(self._append(pd.Series([value], index=[dateref])))
 
 
 class marginData(object):

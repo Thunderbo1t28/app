@@ -2,6 +2,7 @@ import ast
 from copy import copy
 from datetime import date, time
 import json
+from django.db import models
 
 from syscore.constants import arg_not_supplied
 from syscore.exceptions import missingData, existingData
@@ -53,45 +54,159 @@ class mongoDataWithSingleKey:
         col = self._mongo.collection_name
         return f"mongoData connection for {col}"
 
+    '''@property
+    def collection(self):
+        return self._mongo.collection'''
+
+    def get_indexes(self):
+        index_fields = []
+
+        for field in self._mongo.model._meta.get_fields():
+            if field.db_index:
+                index_fields.append(field.name)
+
+        return len(index_fields), index_fields, index_fields
+    
+    def create_index(self, indexname, order=''):
+        # Проверяем существует ли индекс
+        if indexname in self._mongo.model._meta.indexes:
+            # Если индекс уже существует, ничего не делаем
+            pass
+        else:
+            # Создаем новый индекс с указанным именем и порядком сортировки
+            self.self._mongo.model._meta.indexes.append(models.Index(fields=[indexname], name=indexname))
+
+    def create_compound_index(self, index_config: dict):
+        name_parts = []
+        keys = index_config.pop("keys")
+        for key, value in keys.items():
+            name_parts.append(str(key))
+            name_parts.append(str(value))
+        new_index_name = "_".join(name_parts)
+
+        # Проверяем существует ли индекс
+        if new_index_name in self._mongo.model._meta.indexes:
+            # Если индекс уже существует, ничего не делаем
+            pass
+        else:
+            # Создаем новый составной индекс
+            fields = [(key, value) for key, value in keys.items()]
+            self._mongo.model._meta.indexes.append(models.Index(fields=fields, name=new_index_name, **index_config))
+    
     @property
     def collection(self):
-        return self._mongo.collection
+        return self._mongo.model.objects.all()
 
     def get_list_of_keys(self) -> list:
-        return self._mongo.get_keynames()
+        return list(self._mongo.model.objects.values_list('ident', flat=True))
 
     def get_max_of_keys(self) -> int:
-        return self._mongo.get_max_of_keys()
+        doc = self.collection.order_by('-ident').first()
+        return doc.ident if doc else 0
 
     def get_list_of_values_for_dict_key(self, dict_key):
-        return self._mongo.get_list_of_values_for_dict_key(dict_key)
+        return list(self.collection.filter(ident__exists=True).values_list(dict_key, flat=True))
 
     def get_result_dict_for_key(self, key) -> dict:
-        return self._mongo.get_result_dict_for_key(key)
+        try:
+            existing_key = self.collection.filter(ident=key)
+            if existing_key.exists():
+                data = self._mongo.model.objects.get(ident=key)
+                
+                result_dict = data.data
+                print(result_dict)
+            else:
+                result_dict = {}
+            #result_dict = self.collection.get(ident=key)
+            
+            #result_dict.pop(MONGO_ID_KEY)
+            return result_dict
+        
+        except self._mongo.model.DoesNotExist:
+            raise missingData(f"Key {key} not found in Mongo data")
 
     def get_result_dict_for_key_without_key_value(self, key) -> dict:
-        return self._mongo.get_result_dict_for_key_without_key_value(key)
+        key_name = self.key_name
+        result_object = self.get_result_dict_for_key(key)
+        result_dict = result_object
+        if key_name in result_dict:
+            result_dict.pop(key_name)
+        else:
+            # Можно добавить обработку случая, когда ключ 'process_name' отсутствует
+            pass
+        #result_dict.pop('ident')
+        return result_dict
 
     def get_list_of_result_dict_for_custom_dict(self, custom_dict: dict) -> list:
-        return self._mongo.get_list_of_result_dict_for_custom_dict(custom_dict)
+        return list(self.collection.filter(**custom_dict).values())
 
     def key_is_in_data(self, key):
-        return self._mongo.key_is_in_data(key)
+        return self.collection.filter(ident=key).exists()
 
     def delete_data_without_any_warning(self, key):
-        return self._mongo.delete_data_without_any_warning(key)
+        try:
+            self.collection.filter(ident=key).delete()
+        except self._mongo.model.DoesNotExist:
+            raise missingData(f"{self.key_name}:{key} not in data {self.name}")
 
     def delete_data_with_any_warning_for_custom_dict(self, custom_dict: dict):
-        return self._mongo.delete_data_with_any_warning_for_custom_dict(custom_dict)
+        self.collection.filter(**custom_dict).delete()
 
     def add_data(self, key, data_dict: dict, allow_overwrite=False, clean_ints=True):
-        return self._mongo.add_data(key, data_dict, allow_overwrite, clean_ints)
+        if clean_ints:
+            cleaned_data_dict = {}#mongo_clean_ints(data_dict)
+        else:
+            cleaned_data_dict = copy(data_dict)
+
+        if self.key_is_in_data(key):
+            if allow_overwrite:
+                self._update_existing_data_with_cleaned_dict(key, cleaned_data_dict)
+            else:
+                raise existingData(
+                    "Can't overwrite existing data %s/%s for %s"
+                    % (self.key_name, key, self.name)
+                )
+        else:
+            try:
+                #print(key)
+                self._add_new_cleaned_dict(key, cleaned_data_dict)
+            except:
+                ## this could happen if the key has just been added most likely for logs
+                raise existingData(
+                    "Can't overwrite existing data %s/%s for %s"
+                    % (self.key_name, key, self.name)
+                )
 
     def _update_existing_data_with_cleaned_dict(self, key, cleaned_data_dict):
-        return self._mongo._update_existing_data_with_cleaned_dict(key, cleaned_data_dict)
+        #key_name = self.key_name
+        self.collection.filter(ident=key).update(data=cleaned_data_dict)
+
+    '''def _add_new_cleaned_dict(self, key, cleaned_data_dict):
+        self.manager.create_arctic_data(model=self.model, ident=key, data=cleaned_data_dict)'''
 
     def _add_new_cleaned_dict(self, key, cleaned_data_dict):
-        return self._mongo._add_new_cleaned_dict(key, cleaned_data_dict)
+        key_name = self.key_name
+        #print(cleaned_data_dict)
+        cleaned_data_dict[key_name] = key
+        self._mongo.manager.create_arctic_data(model=self._mongo.model, ident=key, data=cleaned_data_dict) 
+
+def mongo_clean_ints(dict_to_clean):
+    """
+    Mongo doesn't like ints
+
+    :param dict_to_clean: dict
+    :return: dict
+    """
+    pass
+
+
+def clean_mongo_host(host_string):
+    """
+    If the host string is a mongodb connection URL with authentication values, then return just the host and port part
+    :param host_string
+    :return: host and port only
+    """
+    pass
 
 class mongoDataWithMultipleKeys:
     """

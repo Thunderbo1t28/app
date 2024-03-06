@@ -39,13 +39,13 @@ class totalCapitalUpdate(object):
     def update_margin(self):
         data = self.data
         margin_data = dataMargin(data)
-        broker_data = dataBroker(data)
+        #broker_data = dataBroker(data)
 
         log = data.log
 
-        margin_in_base_currency = broker_data.get_margin_used_in_base_currency()
-        log.debug("Broker margin value is %f" % margin_in_base_currency)
-
+        '''margin_in_base_currency = broker_data.get_margin_used_in_base_currency()
+        log.debug("Broker margin value is %f" % margin_in_base_currency)'''
+        margin_in_base_currency = 0
         # Update total capital
         margin_data.add_total_margin_entry(margin_in_base_currency)
         margin_series = margin_data.get_series_of_total_margin()
@@ -54,13 +54,14 @@ class totalCapitalUpdate(object):
 
     def update_capital(self):
         data = self.data
-        broker_data = dataBroker(data)
+        '''broker_data = dataBroker(data)
 
         # This assumes that each account only reports either in one currency or
         # for each currency, i.e. no double counting
         total_account_value_in_base_currency = (
             broker_data.get_total_capital_value_in_base_currency()
-        )
+        )'''
+        total_account_value_in_base_currency = 2500000
         data.log.debug(
             "Broker account value is %f" % total_account_value_in_base_currency
         )
