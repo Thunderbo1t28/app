@@ -30,8 +30,11 @@ class mongoLockData(lockData):
 
     def _get_lock_for_instrument_no_checking(self, instrument_code: str) -> str:
         result = self.mongo_data.get_result_dict_for_key(instrument_code)
-
-        lock = result[LOCK_DICT_KEY]
+        if LOCK_DICT_KEY in result:
+            lock = result[LOCK_DICT_KEY]
+        else:
+            lock = "OFF"
+        
 
         return lock
 

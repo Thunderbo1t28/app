@@ -337,7 +337,7 @@ class brokerOrder(Order):
 
         return order
 
-    '''def log_with_attributes(self, log):
+    def log_with_attributes(self, log):
         """
         Returns a new log object with broker_order attributes added
 
@@ -358,7 +358,7 @@ class brokerOrder(Order):
             }
         )
 
-        return new_log'''
+        return new_log
 
     def add_execution_details_from_matched_broker_order(self, matched_broker_order):
         fill_qty_okay = self.trade.fill_less_than_or_equal_to_desired_trade(

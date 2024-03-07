@@ -53,7 +53,9 @@ class arcticOptimalPositionData(optimalPositionData):
 
         try:
             ident = instrument_strategy.key
+            #print(ident)
             df_result = self.arctic_connection.read(ident)
+            #print(df_result)
         except:
             raise missingData
 

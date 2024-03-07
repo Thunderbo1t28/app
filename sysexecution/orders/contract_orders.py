@@ -280,7 +280,7 @@ class contractOrder(Order):
     def inter_spread_order(self):
         return bool(self.order_info["inter_spread_order"])
 
-    '''def log_with_attributes(self, log):
+    def log_with_attributes(self, log):
         """
         Returns a new log object with contract_order attributes added
 
@@ -300,7 +300,7 @@ class contractOrder(Order):
             }
         )
 
-        return new_log'''
+        return new_log
 
 
 @dataclass

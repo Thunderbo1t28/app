@@ -18,6 +18,7 @@ from sysinit.futures.multipleprices_from_arcticprices_and_csv_calendars_to_arcti
 from sysinit.futures.repocsv_spread_costs import copy_spread_costs_from_csv_to_mongo
 from sysinit.futures.rollcalendars_from_arcticprices_to_csv import build_and_write_roll_calendar
 from sysproduction.run_capital_update import run_capital_update
+from sysproduction.run_strategy_order_generator import run_strategy_order_generator
 from sysproduction.run_systems import run_systems
 from sysproduction.update_strategy_capital import update_strategy_capital
 from sysproduction.update_total_capital import update_total_capital
@@ -113,11 +114,11 @@ class Command(BaseCommand):
         
         #update_capital_pd_df_for_strategy()
         #interactive_update_capital_manual()
-        run_capital_update()
+        #run_capital_update()
         #run_systems()
         #update_total_capital()
         #update_strategy_capital()
-        
+        run_strategy_order_generator()
         #interactive_controls()
         #interactive_diagnostics()
         #interactive_manual_check_fx_prices()

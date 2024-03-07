@@ -89,7 +89,6 @@ class ForecastCombine(SystemStage):
             "Calculating combined forecast for %s" % (instrument_code),
             instrument_code=instrument_code,
         )
-        print(f"Calculating combined forecast for {instrument_code}")
         raw_multiplied_combined_forecast = (
             self.get_raw_combined_forecast_before_mapping(instrument_code)
         )
@@ -239,7 +238,7 @@ class ForecastCombine(SystemStage):
             "Calculating forecast weights for %s" % (instrument_code),
             instrument_code=instrument_code,
         )
-        print(f"Calculating forecast weights for {instrument_code}")
+
         # note these might include missing weights, eg too expensive, or absent
         # from fixed weights
         # These are monthly to save space, or possibly even only 2 rows long
@@ -610,7 +609,7 @@ class ForecastCombine(SystemStage):
         """
 
         self.log.info("Calculating raw forecast weights for %s" % instrument_code)
-        print(f"Calculating raw forecast weights for {instrument_code}")
+
         config = self.config
         # Get some useful stuff from the config
         weighting_params = copy(config.forecast_weight_estimate)
@@ -654,7 +653,7 @@ class ForecastCombine(SystemStage):
         weighting_params = {**weighting_params, **cost_params}
 
         returns_pre_processor = returnsPreProcessor(
-            pandl_forecasts, turnovers=turnovers,  **weighting_params
+            pandl_forecasts, turnovers=turnovers, log=self.log, **weighting_params
         )
 
         return returns_pre_processor
@@ -818,14 +817,13 @@ class ForecastCombine(SystemStage):
                 % (instrument_code, ceiling_cost_SR)
             )
             self.log.warning(error_msg)
-            print(error_msg)
+
         else:
             self.log.debug(
                 "Only this set of rules %s is cheap enough to trade for %s"
                 % (str(cheap_rule_list), instrument_code),
                 instrument_code=instrument_code,
             )
-            print(f"Only this set of rules {str(cheap_rule_list)} is cheap enough to trade for {instrument_code}")
 
         return cheap_rule_list
 
@@ -855,7 +853,6 @@ class ForecastCombine(SystemStage):
                 % (instrument_code, rule_variation_name)
             )
             self.log.warning(warn_msg)
-            print(warn_msg)
             return 0.0
 
         return accounts.get_SR_cost_for_instrument_forecast(
@@ -894,7 +891,6 @@ class ForecastCombine(SystemStage):
                 "You need an accounts stage in the system to estimate forecast weights"
             )
             self.log.critical(error_msg)
-            print(error_msg)
             raise Exception(error_msg)
 
         pandl = accounts.pandl_for_instrument_rules_unweighted(
@@ -998,7 +994,7 @@ class ForecastCombine(SystemStage):
             "WARNING: No forecast weights  - using equal weights of %.3f over all %d trading rules in system"
             % (equal_weight, len(rules))
         )
-        print(f"WARNING: No forecast weights  - using equal weights of {equal_weight} over all {len(rules)} trading rules in system")
+
         self.log.warning(warn_msg, instrument_code=instrument_code)
 
         fixed_weights = dict([(rule_name, equal_weight) for rule_name in rules])
@@ -1078,7 +1074,6 @@ class ForecastCombine(SystemStage):
                 "Need to specify 'forecast_div_multiplier' in config or system_defaults"
             )
             self.log.critical(error_msg, instrument_code=instrument_code)
-            print(f"Need to specify 'forecast_div_multiplier' in config or system_defaults  {instrument_code}")
             raise missingData(error_msg) from e
 
         fixed_div_mult = _get_fixed_fdm_scalar_value_from_config(
@@ -1138,7 +1133,7 @@ class ForecastCombine(SystemStage):
             "Calculating forecast div multiplier for %s" % instrument_code,
             instrument_code=instrument_code,
         )
-        print(f"Calculating forecast div multiplier for {instrument_code}")
+
         # Get some useful stuff from the config
         div_mult_params = copy(self.parent.config.forecast_div_mult_estimate)
 
@@ -1291,7 +1286,7 @@ class ForecastCombine(SystemStage):
         self.log.info(
             "Calculating forecast correlations over %s" % ", ".join(codes_to_use)
         )
-        print(f"Calculating forecast correlations over ")
+
         forecast_data = self.get_all_forecasts_for_a_list_of_instruments(codes_to_use)
         correlation_list = corr_func(forecast_data, **corr_params)
 
@@ -1339,7 +1334,6 @@ class ForecastCombine(SystemStage):
                     % (instrument_code, configuration["threshold"]),
                     instrument_code=instrument_code,
                 )
-                print(f"Applying threshold mapping for {instrument_code} threshold")
                 return post_process_func, kwargs
 
         # just use the default, applying capping
@@ -1349,7 +1343,7 @@ class ForecastCombine(SystemStage):
             "No mapping applied for %s" % instrument_code,
             instrument_code=instrument_code,
         )
-        print(f"No mapping applied for {instrument_code}")
+
         return post_process_func, kwargs
 
     @input
@@ -1402,12 +1396,9 @@ def _get_fixed_weights_from_config(
             "Nested dict of forecast weights for %s %s: weights different by instrument"
             % (instrument_code, str(fixed_weights))
         )
-        print(f"Nested dict of forecast weights for {instrument_code} {str(fixed_weights)}: weights different by instrument"
-              )
     elif config_is_auto_group(forecast_weights_config):
         ## autogrouping
         log.debug("Auto grouping of weights for %s" % instrument_code)
-        print(f"Auto grouping of weights for {instrument_code}")
         fixed_weights = _get_forecast_weights_for_instrument_with_autogrouping(
             forecast_weights_config=forecast_weights_config,
             expensive_trading_rules_post_processing=expensive_trading_rules_post_processing,
@@ -1418,8 +1409,7 @@ def _get_fixed_weights_from_config(
             "Non-nested dict of forecast weights for %s %s: weights the same for all instruments"
             % (instrument_code, str(fixed_weights))
         )
-        print(f"Non-nested dict of forecast weights for {instrument_code} {str(fixed_weights)}: weights the same for all instruments"
-              )
+
     return fixed_weights
 
 
@@ -1476,7 +1466,7 @@ def _get_forecast_weights_for_instrument_with_autogrouping(
 
 
 def _get_fixed_fdm_scalar_value_from_config(
-    forecast_div_multiplier_config: dict, instrument_code: str, #log
+    forecast_div_multiplier_config: dict, instrument_code: str, log
 ) -> float:
 
     error_msg = ""
@@ -1506,11 +1496,8 @@ def _get_fixed_fdm_scalar_value_from_config(
             % (fixed_div_mult, instrument_code),
             instrument_code=instrument_code,
         )
-        print(f"Using fixed FDM multiplier of {fixed_div_mult} for {instrument_code}"
-              )
     else:
         log.critical(error_msg, instrument_code=instrument_code)
-        print(f"FDM in config needs to be either float, or dict with {instrument_code} keys")
         raise (error_msg)
 
     return fixed_div_mult

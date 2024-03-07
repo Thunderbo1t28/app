@@ -127,7 +127,7 @@ class mongoStrategyHistoricOrdersData(
     mongoGenericHistoricOrdersData, strategyHistoricOrdersData
 ):
     def _collection_name(self):
-        return "_STRATEGY_HISTORIC_ORDERS"
+        return "STRATEGY_HISTORIC_ORDERS"
 
     def _order_class(self):
         return instrumentOrder
@@ -171,7 +171,7 @@ class mongoContractHistoricOrdersData(
     mongoGenericHistoricOrdersData, contractHistoricOrdersData
 ):
     def _collection_name(self):
-        return "_CONTRACT_HISTORIC_ORDERS"
+        return "CONTRACT_HISTORIC_ORDERS"
 
     def _order_class(self):
         return contractOrder
@@ -184,7 +184,7 @@ class mongoBrokerHistoricOrdersData(
     mongoGenericHistoricOrdersData, brokerHistoricOrdersData
 ):
     def _collection_name(self):
-        return "_BROKER_HISTORIC_ORDERS"
+        return "BROKER_HISTORIC_ORDERS"
 
     def _order_class(self):
         return brokerOrder

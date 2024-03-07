@@ -114,7 +114,7 @@ class mongoDataWithSingleKey:
                 data = self._mongo.model.objects.get(ident=key)
                 
                 result_dict = data.data
-                print(result_dict)
+                #print(result_dict)
             else:
                 result_dict = {}
             #result_dict = self.collection.get(ident=key)
@@ -252,7 +252,10 @@ class mongoDataWithMultipleKeys:
         host = clean_mongo_host(self._mongo.host)
 
         return f"mongoData connection for {col}/{db}, {host}"
-
+    @property
+    def collection(self):
+        return self._mongo.model.objects.all()
+    
     def get_list_of_all_dicts(self) -> list:
         cursor = self._mongo.get_list_of_keys()
         data_list = []
@@ -270,9 +273,28 @@ class mongoDataWithMultipleKeys:
         return dict_list
 
     def get_result_dict_for_dict_keys(self, dict_of_keys: dict) -> dict:
-        result_dict = self._mongo.get_result_dict_for_key(dict_of_keys)
-        #result_dict.pop(MONGO_ID_KEY)
-        return result_dict
+        try:
+            #print(dict_of_keys)
+            #print(self._mongo.model)
+            if 'key' in dict_of_keys:
+                existing_key = self.collection.filter(ident=dict_of_keys['key'])
+            else:
+                existing_key = self.collection.filter(ident=dict_of_keys['instrument_code'])
+            
+            if existing_key.exists():
+                data = self._mongo.model.objects.get(ident=dict_of_keys)
+                
+                result_dict = data.data
+                #print(result_dict)
+            else:
+                result_dict = {}
+            #result_dict = self.collection.get(ident=key)
+            
+            #result_dict.pop(MONGO_ID_KEY)
+            return result_dict
+        
+        except self._mongo.model.DoesNotExist:
+            raise missingData(f"Key {key} not found in Mongo data")
 
     def get_list_of_result_dicts_for_dict_keys(self, dict_of_keys: dict) -> list:
         list_of_result_dicts = self._mongo.get_list_of_result_dict_for_custom_dict(dict_of_keys)

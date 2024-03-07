@@ -99,7 +99,11 @@ class mongoPositionLimitData(positionLimitData):
             INSTRUMENT_KEY: instrument_strategy.instrument_code,
         }
         find_object_dict = self.mongo_data.get_result_dict_for_dict_keys(dict_of_keys)
-        position_limit = find_object_dict[POSITION_LIMIT_KEY]
+        if POSITION_LIMIT_KEY in find_object_dict:
+            position_limit = find_object_dict[POSITION_LIMIT_KEY]
+        else:
+            position_limit = 999.0
+        
 
         return position_limit
 
@@ -110,7 +114,10 @@ class mongoPositionLimitData(positionLimitData):
         dict_of_keys = {MARKER_KEY: MARKER_INSTRUMENT, INSTRUMENT_KEY: instrument_code}
 
         find_object_dict = self.mongo_data.get_result_dict_for_dict_keys(dict_of_keys)
-        position_limit = find_object_dict[POSITION_LIMIT_KEY]
+        if POSITION_LIMIT_KEY in find_object_dict:
+            position_limit = find_object_dict[POSITION_LIMIT_KEY]
+        else:
+            position_limit = 999.0
 
         return position_limit
 

@@ -45,7 +45,7 @@ class System(object):
         stage_list: list,
         data: DjangoFuturesSimData,
         config: Config = arg_not_supplied,
-        #log: pst_logger = get_logger("base_system"),
+        log: pst_logger = get_logger("base_system"),
     ):
         """
         Create a system object for doing simulations or live trading
@@ -76,7 +76,7 @@ class System(object):
 
         self._data = data
         self._config = config
-        #self._log = log
+        self._log = log
 
         self.config.system_init(self)
         self.data.system_init(self)
@@ -124,9 +124,9 @@ class System(object):
 
         return description + sslist
 
-    #@property
-    #def log(self):
-        #return self._log
+    @property
+    def log(self):
+        return self._log
 
     @property
     def data(self):

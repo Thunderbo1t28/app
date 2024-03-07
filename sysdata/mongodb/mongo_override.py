@@ -90,7 +90,11 @@ class mongoOverrideData(overrideData):
 
 
 def from_dict_to_override(result_dict: dict) -> Override:
-    value = result_dict[OVERRIDE_VALUE]
+    if OVERRIDE_VALUE in result_dict:
+        value = result_dict[OVERRIDE_VALUE]
+    else:
+        value = 1.0
+    #value = result_dict[OVERRIDE_VALUE]
     override = Override.from_numeric_value(value)
     return override
 

@@ -109,12 +109,16 @@ class ArcticDataManager(models.Manager):
         #print(model)
         if data is None:
             data = ident
-        arctic_data = model.objects.update_or_create(ident=ident, data=data)
-        #arctic_data.save()
-        
-        # Вернуться к предыдущему порядку столбцов, если необходимо
-        #data_copy = data_copy[data_present]
-        #print(arctic_data)
+        # Попытаться получить существующий объект по идентификатору
+        try:
+            arctic_data = model.objects.get(ident=ident)
+            # Если объект существует, обновить его данные
+            arctic_data.data = data
+            arctic_data.save()
+        except model.DoesNotExist:
+            # Если объект не существует, создать новый объект
+            arctic_data = model.objects.create(ident=ident, data=data)
+
         return arctic_data
     
 class ArcticDataModel(models.Model):
@@ -202,6 +206,90 @@ class IBClientTracker(models.Model):
     data = models.JSONField(null=True, blank=True)
     
     objects = ArcticDataManager() 
+
+class optimal_positions(models.Model):
+    ident = models.CharField(max_length=255, unique=True)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager() 
+
+class INSTRUMENT_ORDER_STACK(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager() 
+
+class CONTRACT_ORDER_STACK(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class BROKER_ORDER_STACK(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class CONTRACT_HISTORIC_ORDERS(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class STRATEGY_HISTORIC_ORDERS(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class BROKER_HISTORIC_ORDERS(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class futures_roll_status(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class strategy_positions(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class contract_positions(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class overide_status(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class position_limit_status(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class temporary_close_collection(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
+class locks(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
 
 class MongoDataSingleKey(models.Model):
     collection_name = models.CharField(max_length=255)

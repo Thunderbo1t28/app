@@ -133,21 +133,33 @@ class instrumentOrder(Order):
 
     @classmethod
     def from_dict(instrumentOrder, order_as_dict):
-        trade = order_as_dict.pop("trade")
-        key = order_as_dict.pop("key")
-        fill = order_as_dict.pop("fill")
-        filled_price = order_as_dict.pop("filled_price")
-        fill_datetime = order_as_dict.pop("fill_datetime")
-        locked = order_as_dict.pop("locked")
-        order_id = if_empty_string_return_object(
-            order_as_dict.pop("order_id"), no_order_id
-        )
-        parent = if_empty_string_return_object(order_as_dict.pop("parent"), no_parent)
-        children = if_empty_string_return_object(
-            order_as_dict.pop("children"), no_children
-        )
-        active = order_as_dict.pop("active")
-        order_type = instrumentOrderType(order_as_dict.pop("order_type", None))
+        if "trade" in order_as_dict:
+            trade = order_as_dict.pop("trade")
+        if "key" in order_as_dict:
+            key = order_as_dict.pop("key")
+        if "fill" in order_as_dict:
+            fill = order_as_dict.pop("fill")
+        if "filled_price" in order_as_dict:
+            filled_price = order_as_dict.pop("filled_price")
+        if "fill_datetime" in order_as_dict:
+            fill_datetime = order_as_dict.pop("fill_datetime")
+        if "locked" in order_as_dict:
+            locked = order_as_dict.pop("locked")
+        if "order_id" in order_as_dict:
+            order_id = if_empty_string_return_object(
+                order_as_dict.pop("order_id"), no_order_id
+            )
+        if "parent" in order_as_dict:
+            parent = if_empty_string_return_object(order_as_dict.pop("parent"), no_parent)
+        if "children" in order_as_dict:
+            children = if_empty_string_return_object(
+                order_as_dict.pop("children"), no_children
+            )
+        if "active" in order_as_dict:
+            active = order_as_dict.pop("active")
+        if "order_type" in order_as_dict:
+            order_type = instrumentOrderType(order_as_dict.pop("order_type", None))
+        
 
         order_info = order_as_dict
 
@@ -228,7 +240,7 @@ class instrumentOrder(Order):
     def roll_order(self):
         return bool(self.order_info["roll_order"])
 
-    '''def log_with_attributes(self, log):
+    def log_with_attributes(self, log):
         """
         Returns a new log object with instrument_order attributes added
 
@@ -253,4 +265,4 @@ class instrumentOrder(Order):
             }
         )
 
-        return new_log'''
+        return new_log

@@ -35,6 +35,7 @@ class arcticData(object):
 
     def read(self, ident):
         try:
+            #print(ident)
             arctic_data = self.model.objects.get(ident=ident)
             arctic_data = self.parse_json_data(arctic_data.data)
             
