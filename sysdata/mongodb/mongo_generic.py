@@ -3,6 +3,8 @@ from copy import copy
 from datetime import date, time
 import json
 from django.db import models
+import pandas as pd
+from pymongo import ASCENDING
 
 from syscore.constants import arg_not_supplied
 from syscore.exceptions import missingData, existingData
@@ -98,6 +100,7 @@ class mongoDataWithSingleKey:
         return self._mongo.model.objects.all()
 
     def get_list_of_keys(self) -> list:
+        #print(self._mongo.model)
         return list(self._mongo.model.objects.values_list('ident', flat=True))
 
     def get_max_of_keys(self) -> int:
@@ -109,11 +112,13 @@ class mongoDataWithSingleKey:
 
     def get_result_dict_for_key(self, key) -> dict:
         try:
+            #print(key)
             existing_key = self.collection.filter(ident=key)
             if existing_key.exists():
-                data = self._mongo.model.objects.get(ident=key)
+                data = self._mongo.model.objects.filter(ident=key).order_by('id').last()
                 
                 result_dict = data.data
+                result_dict = self.parse_json_data(result_dict)
                 #print(result_dict)
             else:
                 result_dict = {}
@@ -154,10 +159,10 @@ class mongoDataWithSingleKey:
 
     def add_data(self, key, data_dict: dict, allow_overwrite=False, clean_ints=True):
         if clean_ints:
-            cleaned_data_dict = {}#mongo_clean_ints(data_dict)
+            cleaned_data_dict = self.convert_data_to_json(data_dict) #mongo_clean_ints(data_dict)
         else:
             cleaned_data_dict = copy(data_dict)
-
+        #print(data_dict)
         if self.key_is_in_data(key):
             if allow_overwrite:
                 self._update_existing_data_with_cleaned_dict(key, cleaned_data_dict)
@@ -189,6 +194,53 @@ class mongoDataWithSingleKey:
         #print(cleaned_data_dict)
         cleaned_data_dict[key_name] = key
         self._mongo.manager.create_arctic_data(model=self._mongo.model, ident=key, data=cleaned_data_dict) 
+
+    def convert_data_to_json(self, data):
+        """
+        Функция для преобразования данных в JSON с учетом значений типа float.
+
+        Args:
+            data (list): Список словарей с данными.
+
+        Returns:
+            str: JSON-строка с преобразованными данными.
+        """
+        #print(data)
+        # Преобразование значений float в строковый формат
+        
+        for key, value in data.items():
+            if isinstance(value, float):
+                data[key] = str(value)
+            elif isinstance(value, datetime.datetime):
+                data[key] = value.isoformat()
+            if pd.isna(value):
+                data[key] = None
+        # Сериализация данных в JSON-строку
+        json_data = json.dumps(data)
+
+        return json_data
+    def parse_json_data(self, json_data):
+        """
+        Функция для разбора JSON-строки и восстановления данных.
+
+        Args:
+            json_data (str): JSON-строка с данными.
+
+        Returns:
+            list: Список словарей с восстановленными данными.
+        """
+        # Удаление дополнительных обратных слешей из JSON-строки
+        json_data = json_data.replace("\\", "")
+        # Разбор JSON-строки
+        parsed_data = json.loads(json_data)
+
+        # Преобразование строковых значений обратно в float
+        
+        for key, value in parsed_data.items():
+            if isinstance(value, str) and value.replace('.', '', 1).isdigit():
+                parsed_data[key] = float(value)
+
+        return parsed_data
 
 def mongo_clean_ints(dict_to_clean):
     """
@@ -339,7 +391,28 @@ class mongoDataWithMultipleKeys:
     
     def delete_data_without_any_warning(self, dict_of_keys):
         self._mongo.delete_data_without_any_warning(dict_of_keys)
+        
+    def convert_data_to_json(self, data):
+        """
+        Функция для преобразования данных в JSON с учетом значений типа float.
 
+        Args:
+            data (list): Список словарей с данными.
+
+        Returns:
+            str: JSON-строка с преобразованными данными.
+        """
+        # Преобразование значений float в строковый формат
+        for item in data:
+            for key, value in item.items():
+                if isinstance(value, float):
+                    item[key] = str(value)
+                if pd.isna(value):
+                    item[key] = None
+        # Сериализация данных в JSON-строку
+        json_data = json.dumps(data)
+
+        return json_data
 
 _date = date
 _time = time

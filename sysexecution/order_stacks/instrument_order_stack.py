@@ -73,7 +73,7 @@ class instrumentOrderStackData(orderStackData):
         :param new_order: Order
         :return: order_id or failure condition: duplicate_order, failure
         """
-
+        #print(new_order)
         existing_order_id_list = (
             self._get_list_of_orderids_with_same_tradeable_object_on_stack(new_order)
         )

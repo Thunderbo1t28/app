@@ -135,32 +135,52 @@ class instrumentOrder(Order):
     def from_dict(instrumentOrder, order_as_dict):
         if "trade" in order_as_dict:
             trade = order_as_dict.pop("trade")
+        else:
+            trade = 1
         if "key" in order_as_dict:
             key = order_as_dict.pop("key")
+        else:
+            key = 1
         if "fill" in order_as_dict:
             fill = order_as_dict.pop("fill")
+        else:
+            fill = None
         if "filled_price" in order_as_dict:
             filled_price = order_as_dict.pop("filled_price")
+        else:
+            filled_price = None
         if "fill_datetime" in order_as_dict:
             fill_datetime = order_as_dict.pop("fill_datetime")
+        else:
+            fill_datetime = None
         if "locked" in order_as_dict:
             locked = order_as_dict.pop("locked")
+        else:
+            locked = False
         if "order_id" in order_as_dict:
             order_id = if_empty_string_return_object(
                 order_as_dict.pop("order_id"), no_order_id
             )
         if "parent" in order_as_dict:
             parent = if_empty_string_return_object(order_as_dict.pop("parent"), no_parent)
+        else:
+            parent = no_parent
         if "children" in order_as_dict:
             children = if_empty_string_return_object(
                 order_as_dict.pop("children"), no_children
             )
+        else:
+            children = no_children
         if "active" in order_as_dict:
             active = order_as_dict.pop("active")
+        else:
+            active = False
         if "order_type" in order_as_dict:
             order_type = instrumentOrderType(order_as_dict.pop("order_type", None))
+        else:
+            order_type = orderType("market")
         
-
+        #print(key)
         order_info = order_as_dict
 
         order = instrumentOrder(
