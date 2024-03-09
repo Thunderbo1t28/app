@@ -4,7 +4,9 @@ from sysdata.arctic.arctic_adjusted_prices import arcticFuturesAdjustedPricesDat
 from sysdata.sim.db_futures_sim_data import dbFuturesSimData
 from sysproduction.data.prices import get_valid_instrument_code_from_user
 from sysproduction.interactive_controls import interactive_controls
+from sysproduction.interactive_diagnostics import interactive_diagnostics
 from sysproduction.interactive_manual_check_fx_prices import interactive_manual_check_fx_prices
+from sysproduction.interactive_order_stack import interactive_order_stack
 from sysproduction.interactive_update_capital_manual import interactive_update_capital_manual
 from sysdata.arctic.arctic_futures_per_contract_prices import arcticFuturesContractPriceData
 from sysdata.arctic.arctic_spotfx_prices import arcticFxPricesData
@@ -20,6 +22,7 @@ from sysinit.futures.rollcalendars_from_arcticprices_to_csv import build_and_wri
 from sysproduction.run_capital_update import run_capital_update
 from sysproduction.run_strategy_order_generator import run_strategy_order_generator
 from sysproduction.run_systems import run_systems
+from sysproduction.update_sampled_contracts import update_sampled_contracts
 from sysproduction.update_strategy_capital import update_strategy_capital
 from sysproduction.update_total_capital import update_total_capital
 
@@ -118,11 +121,14 @@ class Command(BaseCommand):
         #run_systems()
         #update_total_capital()
         #update_strategy_capital()
-        run_strategy_order_generator()
+        #run_strategy_order_generator()
         #interactive_controls()
+        
         #interactive_diagnostics()
         #interactive_manual_check_fx_prices()
         #interactive_manual_check_historical_prices()
+        update_sampled_contracts()
+        #interactive_order_stack()
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))
         

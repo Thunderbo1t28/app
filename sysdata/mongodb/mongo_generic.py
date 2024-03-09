@@ -122,7 +122,7 @@ class mongoDataWithSingleKey:
                 result_dict = self.parse_json_data(result_dict)
                 #print(result_dict)
             else:
-                result_dict = {}
+                result_dict = {None}
             #result_dict = self.collection.get(ident=key)
             
             #result_dict.pop(MONGO_ID_KEY)
@@ -134,6 +134,7 @@ class mongoDataWithSingleKey:
     def get_result_dict_for_key_without_key_value(self, key) -> dict:
         key_name = self.key_name
         result_object = self.get_result_dict_for_key(key)
+        #print(result_object)
         result_dict = result_object
         if key_name in result_dict:
             result_dict.pop(key_name)
@@ -147,6 +148,8 @@ class mongoDataWithSingleKey:
         return list(self.collection.filter(**custom_dict).values())
 
     def key_is_in_data(self, key):
+        #print(self._mongo.model)
+        #print(key)
         return self.collection.filter(ident=key).exists()
 
     def delete_data_without_any_warning(self, key):
@@ -238,7 +241,7 @@ class mongoDataWithSingleKey:
 
        # Преобразование данных с учетом каждого уровня вложенности
         processed_data = process_dict(data)
-        print(processed_data)
+        #print(processed_data)
         # Сериализация данных в JSON-строку
         json_data = json.dumps(processed_data)
 

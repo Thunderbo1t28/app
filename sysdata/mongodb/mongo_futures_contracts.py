@@ -25,7 +25,7 @@ class mongoFuturesContractData(futuresContractData):
         self, mongo_db=arg_not_supplied, log=get_logger("mongoFuturesContractData")
     ):
 
-        super().__init__()#log=log)
+        super().__init__(log=log)
         mongo_data = mongoDataWithSingleKey(
             CONTRACT_COLLECTION, "contract_key", mongo_db=mongo_db
         )
@@ -39,7 +39,10 @@ class mongoFuturesContractData(futuresContractData):
         return self._mongo_data
 
     def is_contract_in_data(self, instrument_code: str, contract_date_str: str) -> bool:
+        #print(instrument_code)
+        #print(contract_date_str)
         key = contract_key_from_code_and_id(instrument_code, contract_date_str)
+        #print(key)
         return self.mongo_data.key_is_in_data(key)
 
     def _get_list_of_all_contract_keys(self) -> list:
@@ -94,7 +97,8 @@ class mongoFuturesContractData(futuresContractData):
     def _get_contract_data_without_checking(
         self, instrument_code: str, contract_id: str
     ) -> futuresContract:
-
+        #print(instrument_code)
+        #print(contract_id)
         key = contract_key_from_code_and_id(instrument_code, contract_id)
         contract_object = self._get_contract_data_from_key_without_checking(key)
 
@@ -103,7 +107,7 @@ class mongoFuturesContractData(futuresContractData):
     def _get_contract_data_from_key_without_checking(self, key: str) -> futuresContract:
 
         result_dict = self.mongo_data.get_result_dict_for_key_without_key_value(key)
-
+        #print(result_dict)
         contract_object = futuresContract.create_from_dict(result_dict)
 
         return contract_object

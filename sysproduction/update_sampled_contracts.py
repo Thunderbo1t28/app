@@ -70,6 +70,7 @@ class updateSampledContracts(object):
 
     def update_sampled_contracts(self, instrument_code: str = ALL_INSTRUMENTS):
         data = self.data
+        
         update_active_contracts_with_data(data, instrument_code=instrument_code)
 
 
@@ -340,29 +341,29 @@ def update_expiry_and_sampling_status_for_contract(
     db_contract = data_contracts.get_contract_from_db(contract_object)
     db_expiry_date = db_contract.expiry_date
 
-    try:
-        broker_expiry_date = get_contract_expiry_from_broker(contract_object, data=data)
-    except missingContract:
-        log.debug(
-            "Can't find expiry for %s, could be a connection problem but could be because contract has already expired"
-            % (str(contract_object))
-        )
+    # try:
+    #     broker_expiry_date = get_contract_expiry_from_broker(contract_object, data=data)
+    # except missingContract:
+    #     log.debug(
+    #         "Can't find expiry for %s, could be a connection problem but could be because contract has already expired"
+    #         % (str(contract_object))
+    #     )
 
-        ## As probably expired we'll remove it from the sampling list
-        unsample_reason = "Contract not available from IB"
-    else:
-        if broker_expiry_date == db_expiry_date:
-            log.debug(
-                "No change to contract expiry %s to %s"
-                % (str(contract_object), str(broker_expiry_date))
-            )
-        else:
-            # Different!
-            update_contract_object_with_new_expiry_date(
-                data=data,
-                broker_expiry_date=broker_expiry_date,
-                contract_object=contract_object,
-            )
+    #     ## As probably expired we'll remove it from the sampling list
+    #     unsample_reason = "Contract not available from IB"
+    # else:
+    #     if broker_expiry_date == db_expiry_date:
+    #         log.debug(
+    #             "No change to contract expiry %s to %s"
+    #             % (str(contract_object), str(broker_expiry_date))
+    #         )
+    #     else:
+    #         # Different!
+    #         update_contract_object_with_new_expiry_date(
+    #             data=data,
+    #             broker_expiry_date=broker_expiry_date,
+    #             contract_object=contract_object,
+    #         )
 
     ## Now the unsampling, re-read contract as expiry maybe updated
     db_contract = data_contracts.get_contract_from_db(contract_object)

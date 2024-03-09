@@ -19,9 +19,9 @@ class futuresContractData(baseData):
     If you want more information about a given instrument you have to read it in using futuresInstrumentData
     """
 
-    def __init__(self):
+    def __init__(self, log=get_logger("futuresInstrumentData")):
 
-        super().__init__()
+        super().__init__(log=log)
 
     def __repr__(self):
         return "Individual futures contract data - DO NOT USE"
@@ -82,20 +82,20 @@ class futuresContractData(baseData):
         instrument_code = contract_object.instrument_code
         contract_date = contract_object.date_str
 
-        log = contract_object.log(self.log)
+        #log = contract_object.log(self.log)
 
         if self.is_contract_in_data(instrument_code, contract_date):
             if ignore_duplication:
                 pass
             else:
-                log.warning(
-                    "There is already %s in the data, you have to delete it first"
-                    % (contract_object.key)
-                )
+                # log.warning(
+                #     "There is already %s in the data, you have to delete it first"
+                #     % (contract_object.key)
+                # )
                 return None
 
         self._add_contract_object_without_checking_for_existing_entry(contract_object)
-        log.info("Added contract %s %s" % (instrument_code, contract_date))
+        #log.info("Added contract %s %s" % (instrument_code, contract_date))
 
     def get_list_of_contract_dates_for_instrument_code(
         self, instrument_code: str, allow_expired: bool = False

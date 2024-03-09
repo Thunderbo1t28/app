@@ -36,7 +36,7 @@ class arcticCapitalData(capitalData):
             raise missingData(
                 "Unable to get capital data from arctic for strategy %s" % strategy_name
             )
-
+        #print(pd_series)
         return pd_series
 
     def _delete_all_capital_for_strategy_no_checking(self, strategy_name: str):

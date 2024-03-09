@@ -3,6 +3,8 @@ import datetime
 
 from dataclasses import dataclass
 
+import numpy
+
 from syscore.constants import arg_not_supplied
 
 from syslogging.logger import *
@@ -90,15 +92,15 @@ class futuresContract(object):
         self._contract_date = contract_date_object
         self._params = parameter_object
 
-    #def specific_log(self, log):
-        #new_log = log.setup(
-            #**{
+    def specific_log(self, log):
+        new_log = log.setup(
+            **{
                 #INSTRUMENT_CODE_LOG_LABEL: self.instrument_code,
                 #CONTRACT_DATE_LOG_LABEL: self.date_str,
-            #}
-        #)
+            }
+        )
 
-        #return new_log
+        return new_log
 
     @property
     def instrument(self):
@@ -146,10 +148,10 @@ class futuresContract(object):
     def sampling_off(self):
         self.params.sampling = False
 
-    #def log(self, log: pst_logger):
-        #return log.setup(
-            #instrument_code=self.instrument_code, contract_date=self.date_str
-        #)
+    def log(self, log: pst_logger):
+        return log.setup(
+            instrument_code=self.instrument_code, contract_date=self.date_str
+        )
 
     def as_dict(self):
         """
@@ -197,7 +199,16 @@ class futuresContract(object):
 
     @property
     def date_str(self):
-        return self.contract_date.date_str
+        #print(self.contract_date)
+        date_str = self.contract_date
+        if type(date_str) is numpy.float64:
+            date_str = int(date_str)
+            #print([(str(date_str)),])
+            return str(date_str)
+        date_str = int(date_str.date_str)
+        date_str = str(date_str)
+        #print(date_str)
+        return date_str
 
     @property
     def date(self):

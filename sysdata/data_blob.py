@@ -124,6 +124,7 @@ class dataBlob(object):
 
     def _add_ib_class(self, class_object):
         log = self._get_specific_logger(class_object)
+        #print(class_object)
         try:
             resolved_instance = class_object(self.ib_conn, self, log=log)
         except Exception as e:

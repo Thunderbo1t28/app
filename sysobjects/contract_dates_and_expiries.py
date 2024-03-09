@@ -4,6 +4,8 @@ Represent contract dates and expiries
 
 import datetime
 
+import numpy
+
 from syscore.dateutils import contract_month_from_number, month_from_contract_letter
 from syscore.genutils import np_convert
 
@@ -92,6 +94,8 @@ class singleContractDate(object):
         """
 
         try:
+            date_str = int(date_str)
+            date_str = str(date_str)
             assert isinstance(date_str, str)
             assert int(date_str)
 
@@ -558,9 +562,15 @@ def resolve_date_string_into_list_of_date_str(date_str) -> list:
     :param date_str: str or list
     :return: list
     """
+    #print(date_str)
     if type(date_str) is list:
         return date_str
-
+    #print(date_str)
+    if type(date_str) is numpy.float64:
+        date_str = int(date_str)
+        #print([(str(date_str)),])
+        return [(str(date_str)),]
+    #print(date_str)
     date_str_as_list = date_str.split("_")
     return date_str_as_list
 
