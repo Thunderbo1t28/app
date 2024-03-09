@@ -96,25 +96,25 @@ class mongoOrderStackData(orderStackData):
         try:
             result_dict = self.mongo_data.get_result_dict_for_key(ORDER_ID_STORE_KEY)
             #result_dict = self.mongo_data.collection.last()
-            #print(result_dict)
-            if result_dict == None:
-                orderid = 0
-            elif result_dict == {}:
-                orderid = 0
-            elif type(result_dict.data.pop('order_id')) == str:
-                #print(result_dict.data)
-                orderid = 0
+            # print(result_dict)
+            # if result_dict == None:
+            #     orderid = 0
+            # elif result_dict == {}:
+            #     orderid = 0
+            # elif type(result_dict.data.pop('order_id')) == str:
+            #     #print(result_dict.data)
+            #     orderid = 0
         except missingData:
             orderid = self._create_and_return_max_order_id()
             orderid = 0
             return orderid
-        # if MAX_ORDER_KEY in result_dict:
-        #     order_id = result_dict[MAX_ORDER_KEY]
-        # else:
-        #     order_id = result_dict[MAX_ORDER_KEY]
+        if MAX_ORDER_KEY in result_dict:
+            order_id = result_dict[MAX_ORDER_KEY]
+        else:
+            order_id = 0
         
         #print(orderid)
-        return int(orderid)
+        return order_id
 
     def _update_max_order_id(self, max_order_id: int):
         self.mongo_data.add_data(

@@ -16,7 +16,7 @@ from sysdata.mongodb.mongo_connection import (
     clean_mongo_host,
 )
 from syslogging.logger import *
-
+from dateutil import parser
 
 class mongoDataWithSingleKey:
     """
@@ -118,6 +118,7 @@ class mongoDataWithSingleKey:
                 data = self._mongo.model.objects.filter(ident=key).order_by('id').last()
                 
                 result_dict = data.data
+                #print(result_dict)
                 result_dict = self.parse_json_data(result_dict)
                 #print(result_dict)
             else:
@@ -192,9 +193,11 @@ class mongoDataWithSingleKey:
     def _add_new_cleaned_dict(self, key, cleaned_data_dict):
         key_name = self.key_name
         #print(cleaned_data_dict)
-        cleaned_data_dict[key_name] = key
+        #cleaned_data_dict[key_name] = key
         self._mongo.manager.create_arctic_data(model=self._mongo.model, ident=key, data=cleaned_data_dict) 
 
+    
+    
     def convert_data_to_json(self, data):
         """
         Функция для преобразования данных в JSON с учетом значений типа float.
@@ -206,17 +209,38 @@ class mongoDataWithSingleKey:
             str: JSON-строка с преобразованными данными.
         """
         #print(data)
-        # Преобразование значений float в строковый формат
-        
-        for key, value in data.items():
-            if isinstance(value, float):
-                data[key] = str(value)
-            elif isinstance(value, datetime.datetime):
-                data[key] = value.isoformat()
-            if pd.isna(value):
-                data[key] = None
+        # Рекурсивная функция для обработки каждого уровня вложенности
+        def process_dict(data_dict):
+            processed_dict = {}
+            for key, value in data_dict.items():
+                if isinstance(value, float):
+                    processed_dict[key] = str(value)
+                elif isinstance(value, datetime.datetime):
+                    processed_dict[key] = value.strftime('%Y-%m-%d %H:%M:%S')
+                elif isinstance(value, dict):
+                    processed_dict[key] = process_dict(value)
+                elif isinstance(value, list):
+                    processed_dict[key] = [process_dict(item) if isinstance(item, dict) else str(item) for item in value]
+                else:
+                    processed_dict[key] = value
+            return processed_dict
+        # for key, value in data.items():
+        #     if isinstance(value, float):
+        #         data[key] = str(value)
+        #     elif isinstance(value, datetime.datetime):
+        #         data[key] = value.strftime('%Y-%m-%d %H:%M:%S')
+        #     if pd.isna(value):
+        #         data[key] = None
+        #     if 'running_methods' in data:
+        #         for key, value in data['running_methods'].items():
+        #             if isinstance(value, datetime.datetime):
+        #                 data['running_methods'][key] = value.strftime('%Y-%m-%d %H:%M:%S')
+
+       # Преобразование данных с учетом каждого уровня вложенности
+        processed_data = process_dict(data)
+        print(processed_data)
         # Сериализация данных в JSON-строку
-        json_data = json.dumps(data)
+        json_data = json.dumps(processed_data)
 
         return json_data
     def parse_json_data(self, json_data):
@@ -229,16 +253,43 @@ class mongoDataWithSingleKey:
         Returns:
             list: Список словарей с восстановленными данными.
         """
+        # # Удаление дополнительных обратных слешей из JSON-строки
+        # json_data = json_data.replace("\\", "")
+        # # Разбор JSON-строки
+        # parsed_data = json.loads(json_data)
+
+        # # Преобразование строковых значений обратно в float
+        
+        # for key, value in parsed_data.items():
+        #     if isinstance(value, str) and value.replace('.', '', 1).isdigit():
+        #         parsed_data[key] = float(value)
+
         # Удаление дополнительных обратных слешей из JSON-строки
         json_data = json_data.replace("\\", "")
         # Разбор JSON-строки
         parsed_data = json.loads(json_data)
 
-        # Преобразование строковых значений обратно в float
-        
-        for key, value in parsed_data.items():
+        # Функция для восстановления вложенных словарей и списков
+        def restore_values(value):
             if isinstance(value, str) and value.replace('.', '', 1).isdigit():
-                parsed_data[key] = float(value)
+                return float(value)
+            elif isinstance(value, str) and value.lstrip('-').replace('.', '', 1).isdigit():
+                # Проверяем, является ли строка числом с минусом (для отрицательных чисел)
+                return float(value)
+            elif isinstance(value, str):
+                try:
+                    return parser.parse(value)
+                except ValueError:
+                    return value
+            elif isinstance(value, dict):
+                return {k: restore_values(v) for k, v in value.items()}
+            elif isinstance(value, list):
+                return [restore_values(item) for item in value]
+            else:
+                return value
+
+        # Восстановление данных
+        parsed_data = restore_values(parsed_data)
 
         return parsed_data
 

@@ -18,6 +18,7 @@ class tradeQuantity(list):
             trade_or_fill_qty = [int(trade_or_fill_qty)]
         else:
             # must be a list
+            #print(trade_or_fill_qty)
             trade_or_fill_qty = [int(trade) for trade in trade_or_fill_qty]
 
         super().__init__(trade_or_fill_qty)
