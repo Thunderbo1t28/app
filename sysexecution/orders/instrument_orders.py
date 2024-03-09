@@ -133,7 +133,7 @@ class instrumentOrder(Order):
 
     @classmethod
     def from_dict(instrumentOrder, order_as_dict):
-        print(order_as_dict)
+        #print(order_as_dict)
         if "trade" in order_as_dict:
             trade = order_as_dict.pop("trade")
         else:
