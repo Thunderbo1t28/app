@@ -3,6 +3,7 @@ Read and write data from mongodb for individual futures contracts
 
 """
 
+import numpy
 from syscore.dateutils import Frequency, MIXED_FREQ
 
 from sysdata.arctic.arctic_connection import arcticData
@@ -225,7 +226,7 @@ def from_contract_and_freq_to_key(contract: futuresContract, frequency: Frequenc
         frequency_str = ""
     else:
         frequency_str = frequency.name + "/"
-
+    
     return from_tuple_to_key(
         [frequency_str, contract.instrument_code, contract.date_str]
     )

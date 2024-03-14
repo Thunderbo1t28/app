@@ -44,3 +44,6 @@ def get_ib_class_list():
         ibFuturesInstrumentData,
         ibFxHandlingData,
     ]
+def get_ib_class_list2():
+    return []
+    

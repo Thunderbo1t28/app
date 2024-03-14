@@ -196,11 +196,12 @@ class dataContracts(productionDataLayerGeneric):
     def get_contract_from_db_given_code_and_id(
         self, instrument_code: str, contract_id: str
     ) -> futuresContract:
-
+        #print(contract_id)
+        #print(self.db_contract_data)
         contract_object = self.db_contract_data.get_contract_object(
             instrument_code=instrument_code, contract_id=contract_id
         )
-
+        
         return contract_object
 
     def get_actual_expiry(self, instrument_code: str, contract_id: str) -> expiryDate:

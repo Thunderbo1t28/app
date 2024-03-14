@@ -71,9 +71,6 @@ process_configuration_methods:
     generate_force_roll_orders:
       frequency: 0
       max_executions: 1
-    create_broker_orders_from_contract_orders:
-      frequency: 0
-      max_executions: -1
     process_fills_stack:
       frequency: 0
       max_executions: -1

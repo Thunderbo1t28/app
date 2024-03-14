@@ -205,6 +205,9 @@ class futuresContract(object):
             date_str = int(date_str)
             #print([(str(date_str)),])
             return str(date_str)
+        if type(date_str) is float:
+              date_str = int(date_str)
+              return str(date_str)
         date_str = int(date_str.date_str)
         date_str = str(date_str)
         #print(date_str)

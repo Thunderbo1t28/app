@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import pandas as pd
 import datetime
-
+from types import NoneType
 from sysobjects.production.positions import (
     instrumentStrategyPosition,
     listOfInstrumentStrategyPositions,
@@ -73,7 +73,16 @@ class bufferedOptimalPositions(baseOptimalPosition):
         # run on __init__ by parent class
         upper_position = self.upper_position
         lower_position = self.lower_position
-
+        print(upper_position)
+        print(lower_position)
+        if type(lower_position) is NoneType:
+            lower_position = 0.0
+        if type(upper_position) is NoneType:
+            upper_position = 0.0
+        if isinstance(lower_position, str):
+            lower_position = float(lower_position)
+        if isinstance(upper_position, str):
+            upper_position = float(upper_position)
         try:
             assert upper_position >= lower_position
         except BaseException:
@@ -85,6 +94,16 @@ class bufferedOptimalPositions(baseOptimalPosition):
     def check_position_break(self, position: int):
         self._argument_checks()
         # ignore warnings set dynamically
+        if type(self.lower_position) is NoneType:
+            self.lower_position = 0.0
+        if type(self.upper_position) is NoneType:
+            self.upper_position = 0.0
+        if isinstance(self.lower_position, str):
+            self.lower_position = float(self.lower_position)
+        if isinstance(position, str):
+            position = float(position)
+        if isinstance(self.upper_position, str):
+            self.upper_position = float(self.upper_position)
         return position < round(self.lower_position) or position > round(
             self.upper_position
         )

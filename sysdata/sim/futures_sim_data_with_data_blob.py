@@ -94,8 +94,8 @@ class genericBlobUsingFuturesSimData(futuresSimData):
             # Иначе используем конкретную дату
             start_date = specific_date
             #print(f"Используем конкретную дату: {start_date}")
-        #print(data)
-        #print(instrument_code)
+        print(data)
+        print(instrument_code)
         return data[start_date:]
 
     def get_instrument_meta_data(

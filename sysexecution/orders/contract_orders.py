@@ -138,6 +138,7 @@ class contractOrder(Order):
 
     @classmethod
     def from_dict(contractOrder, order_as_dict):
+        #print(order_as_dict)
         trade = order_as_dict.pop("trade")
         key = order_as_dict.pop("key")
         fill = order_as_dict.pop("fill")
@@ -345,6 +346,7 @@ def split_contract_order_args(
     args: tuple, fill: tradeQuantity
 ) -> contractOrderKeyArguments:
     if len(args) == 2:
+        #print(args[1])
         tradeable_object = futuresContractStrategy.from_key(args[0])
         trade = args[1]
     elif len(args) == 4:

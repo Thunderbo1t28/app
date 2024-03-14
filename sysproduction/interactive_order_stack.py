@@ -894,14 +894,14 @@ def delete_entire_stack(data):
 
 
 def view_positions(data):
-    data_broker = dataBroker(data)
+    #data_broker = dataBroker(data)
 
     diag_positions = diagPositions(data)
     data_optimal = dataOptimalPositions(data)
     ans0 = data_optimal.get_pd_of_position_breaks()
     ans1 = diag_positions.get_all_current_strategy_instrument_positions()
     ans2 = diag_positions.get_all_current_contract_positions_with_db_expiries()
-    ans3 = data_broker.get_all_current_contract_positions()
+    #ans3 = data_broker.get_all_current_contract_positions()
     print("Optimal vs actual")
     print(ans0.sort_values("breaks"))
     print("Strategy positions")
@@ -914,15 +914,15 @@ def view_positions(data):
     else:
         print("(No breaks positions consistent)")
     print("\n Broker positions")
-    print(ans3.as_pd_df().sort_values(["instrument_code", "contract_date"]))
-    breaks = data_broker.get_list_of_breaks_between_broker_and_db_contract_positions()
-    if len(breaks) > 0:
-        print(
-            "\nBREAKS between broker and DB stored contract positions: %s\n"
-            % str(breaks)
-        )
-    else:
-        print("(No breaks positions consistent)")
+    #print(ans3.as_pd_df().sort_values(["instrument_code", "contract_date"]))
+    #breaks = data_broker.get_list_of_breaks_between_broker_and_db_contract_positions()
+    # if len(breaks) > 0:
+    #     print(
+    #         "\nBREAKS between broker and DB stored contract positions: %s\n"
+    #         % str(breaks)
+    #     )
+    # else:
+    #     print("(No breaks positions consistent)")
     return None
 
 

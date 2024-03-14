@@ -111,6 +111,8 @@ def _panama_stitch(
 def _roll_in_panama(adjusted_prices_values, previous_row, current_row):
     # This is the sort of code you will need to change to adjust the roll logic
     # The roll differential is from the previous_row
+    #print(type(previous_row.FORWARD), previous_row.FORWARD)
+    #print(type(previous_row.PRICE), previous_row.PRICE)
     roll_differential = previous_row.FORWARD - previous_row.PRICE
     if np.isnan(roll_differential):
         raise Exception(

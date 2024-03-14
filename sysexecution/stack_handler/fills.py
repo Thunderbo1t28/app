@@ -30,8 +30,8 @@ class stackHandlerForFills(stackHandlerForCompletions):
         :return: success
         """
 
-        self.pass_fills_from_broker_to_broker_stack()
-        self.pass_fills_from_broker_up_to_contract()
+        #self.pass_fills_from_broker_to_broker_stack()
+        #self.pass_fills_from_broker_up_to_contract()
         self.pass_fills_from_contract_up_to_instrument()
 
     def pass_fills_from_broker_to_broker_stack(self):
@@ -134,9 +134,11 @@ class stackHandlerForFills(stackHandlerForCompletions):
         )
 
     def apply_contract_order_fill_to_database(self, contract_order: contractOrder):
+        #print(contract_order)
         contract_order_before_fill = self.contract_stack.get_order_with_id_from_stack(
             contract_order.order_id
         )
+        #print(contract_order_before_fill)
         self.apply_fills_to_contract_order(
             contract_order_before_fill=contract_order_before_fill,
             filled_qty=contract_order.fill,
@@ -251,6 +253,9 @@ class stackHandlerForFills(stackHandlerForCompletions):
     def apply_contract_fill_to_parent_order_single_child(
         self, contract_order_id: int, instrument_order: instrumentOrder
     ):
+        #print(type(contract_order_id))
+        if type(contract_order_id) is float:
+            contract_order_id = int(contract_order_id)
         contract_order = self.contract_stack.get_order_with_id_from_stack(
             contract_order_id
         )

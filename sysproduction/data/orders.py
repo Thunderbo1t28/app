@@ -44,10 +44,10 @@ class dataOrders(object):
             [
                 mongoInstrumentOrderStackData,
                 mongoContractOrderStackData,
-                mongoBrokerOrderStackData,
+                #mongoBrokerOrderStackData,
                 mongoContractHistoricOrdersData,
                 mongoStrategyHistoricOrdersData,
-                mongoBrokerHistoricOrdersData,
+                #mongoBrokerHistoricOrdersData,
             ]
         )
         self._data = data
@@ -84,15 +84,15 @@ class dataOrders(object):
         self,
         instrument_order: instrumentOrder,
         list_of_contract_orders: listOfOrders,
-        list_of_broker_orders: listOfOrders,
+        #list_of_broker_orders: listOfOrders,
     ):
         self.add_historic_instrument_order_to_data(instrument_order)
 
         for contract_order in list_of_contract_orders:
             self.add_historic_contract_order_to_data(contract_order)
 
-        for broker_order in list_of_broker_orders:
-            self.add_historic_broker_order_to_data(broker_order)
+        '''for broker_order in list_of_broker_orders:
+            self.add_historic_broker_order_to_data(broker_order)'''
 
     def add_historic_instrument_order_to_data(self, instrument_order: instrumentOrder):
         self.db_strategy_historic_orders_data.add_order_to_data(instrument_order)

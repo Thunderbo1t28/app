@@ -679,7 +679,8 @@ class RawData(SystemStage):
                 % instrument_code
             )
             return self.get_daily_prices(instrument_code)
-
+        
+        #print(prices)
         daily_prices = prices.resample("1B").last()
 
         return daily_prices

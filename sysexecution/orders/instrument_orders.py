@@ -94,6 +94,7 @@ class instrumentOrder(Order):
         :param type: str
         """
         if len(args) == 2:
+            #print(args)
             tradeable_object = instrumentStrategy.from_key(args[0])
             trade = args[1]
         else:

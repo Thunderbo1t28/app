@@ -395,7 +395,7 @@ class Order(object):
         order_type = orderType(order_as_dict.pop("order_type", None))
 
         order_info = order_as_dict
-
+        print(object_name)
         order = Order(
             object_name,
             trade,
@@ -410,7 +410,7 @@ class Order(object):
             order_type=order_type,
             **order_info,
         )
-
+        #print(order)
         return order
 
     @property

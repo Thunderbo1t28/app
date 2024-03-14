@@ -99,7 +99,7 @@ class dataBlob(object):
     def _get_class_adding_method(self, class_object):
         prefix = self._get_class_prefix(class_object)
         class_dict = dict(
-            ib=self._add_ib_class,
+            #ib=self._add_ib_class,
             csv=self._add_csv_class,
             arctic=self._add_arctic_class,
             mongo=self._add_mongo_class,
@@ -241,6 +241,7 @@ class dataBlob(object):
 
     def _get_new_name(self, class_name: str) -> str:
         split_up_name = camel_case_split(class_name)
+        #print(split_up_name)
         attr_name = identifying_name(
             split_up_name, keep_original_prefix=self._keep_original_prefix
         )
@@ -363,7 +364,7 @@ class dataBlob(object):
         return log_name
 
 
-source_dict = dict(django="db", arctic="db", mongo="db", csv="db", ib="broker")
+source_dict = dict(django="db", arctic="db", mongo="db", csv="db", )#ib="broker")
 
 
 def identifying_name(split_up_name: list, keep_original_prefix=False) -> str:

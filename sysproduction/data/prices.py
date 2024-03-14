@@ -448,6 +448,7 @@ def recent_average_price(data: dataBlob, instrument_code: str) -> float:
     if len(prices) == 0:
         return np.nan
     one_year_ago = n_days_ago(365)
+    #print(instrument_code)
     recent_prices = prices[one_year_ago:]
 
     return recent_prices.mean(skipna=True)

@@ -86,7 +86,8 @@ class mongoGenericHistoricOrdersData(genericOrdersData):
             result_dict = self.mongo_data.get_result_dict_for_key(order_id)
         except missingData:
             return missing_order
-
+        if result_dict is None:
+            return missing_order
         order_class = self._order_class()
         order = order_class.from_dict(result_dict)
 

@@ -37,7 +37,7 @@ class csvFuturesContractPriceData(futuresContractPriceData):
         config: ConfigCsvFuturesPrices = arg_not_supplied,
     ):
 
-        super().__init__(log=log)
+        super().__init__() #log=log
         if datapath is arg_not_supplied:
             raise Exception("Need to pass datapath")
         self._datapath = datapath

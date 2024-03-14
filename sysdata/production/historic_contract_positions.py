@@ -33,7 +33,10 @@ class contractPositionData(baseData):
 
         if len(position_series) == 0:
             return 0.0
-
+        string_value = position_series[-1]
+        if isinstance(string_value, str):
+            return int(float(string_value))
+        
         return position_series[-1]
 
     def update_position_for_contract_object(
@@ -169,6 +172,7 @@ class contractPositionData(baseData):
             current_series = self.get_position_as_series_for_contract_object(
                 contract_object
             )
+            #print(current_series)
             self._update_position_for_contract_object_with_date_and_existing_data(
                 contract_object=contract_object,
                 current_series=current_series,
@@ -195,8 +199,8 @@ class contractPositionData(baseData):
             error_msg = "Adding a position which is older than the last position!"
             self.log.critical(error_msg)
             raise Exception(error_msg)
-
-        updated_series = current_series.append(new_position_series)
+        #print(current_series)
+        updated_series = current_series._append(new_position_series)
         self._write_updated_position_series_for_contract_object(
             contract_object=contract_object, updated_series=updated_series
         )

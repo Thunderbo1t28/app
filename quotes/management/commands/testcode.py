@@ -15,11 +15,16 @@ from sysdata.csv.csv_spot_fx import csvFxPricesData
 from sysdata.data_blob import dataBlob
 from sysinit.futures.adjustedprices_from_mongo_multiple_to_mongo import process_adjusted_prices_all_instruments
 
-from sysinit.futures.contract_prices_from_csv_to_arctic import init_arctic_with_csv_futures_contract_prices
-from sysinit.futures.multipleprices_from_arcticprices_and_csv_calendars_to_arctic import process_multiple_prices_all_instruments
+from sysinit.futures.contract_prices_from_csv_to_arctic import init_arctic_with_csv_futures_contract_prices, init_arctic_with_csv_futures_contract_prices_for_code
+from sysinit.futures.multipleprices_from_arcticprices_and_csv_calendars_to_arctic import process_multiple_prices_all_instruments, process_multiple_prices_single_instrument
 from sysinit.futures.repocsv_spread_costs import copy_spread_costs_from_csv_to_mongo
 from sysinit.futures.rollcalendars_from_arcticprices_to_csv import build_and_write_roll_calendar
+from sysproduction.interactive_update_roll_status import interactive_update_roll_status
+from sysproduction.run_backups import run_backups
 from sysproduction.run_capital_update import run_capital_update
+from sysproduction.run_cleaners import run_cleaners
+from sysproduction.run_reports import run_reports
+from sysproduction.run_stack_handler import run_stack_handler
 from sysproduction.run_strategy_order_generator import run_strategy_order_generator
 from sysproduction.run_systems import run_systems
 from sysproduction.update_sampled_contracts import update_sampled_contracts
@@ -47,39 +52,52 @@ class Command(BaseCommand):
 
 
         print(BASEDIR)
-        '''datapath = BASEDIR + "/downloadData"
-        data = init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)'''
+        datapath = BASEDIR + "/downloadData"
+        csv_multiple_data_path = f"{BASEDIR}\\data\\futures\\multiple_prices_csv"
+        csv_roll_data_path = f"{BASEDIR}\\data\\futures\\roll_calendars_csv"
 
 
+        #data = init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)
+
+
+        '''init_arctic_with_csv_futures_contract_prices_for_code(
+            'AUDU', datapath, csv_config=barchart_csv_config
+        )'''
+
+
+        '''process_multiple_prices_single_instrument(
+            instrument_code='AUDU',
+            csv_multiple_data_path=csv_multiple_data_path,
+            csv_roll_data_path=csv_roll_data_path,
+            ADD_TO_ARCTIC=True,
+            ADD_TO_CSV=True,
+        )'''
 
         # '1MFR', 'AED', 'AFKS', 'AFLT', 'ALRS', 'AUDU', 'BANE', 'BELU', 'BR', 'BSPB', 'CBOM', 'CHMF', 'CNI', 'CNY', 'Co', 'DAX', 'ED', 'EJPY', 'Eu', 'FIVE', 'FLOT', 'FNI', 'GAZR', 'GBPU', 'GMKN', 'GOLD', 'HANG', 'HKD','HOME', 'HYDR', 'INR', 'ISKJ', 'KMAZ', 'KZT', 'LKOH', 'MAGN', 'MGNT', 'MIX', 'MMI', 'MOEX', 'MTLR', 'MTSI', 'MVID', 'MXI', 'NASD', 'NG', 'NIKK', 'NLMK', 'NOTK','OGI', 'OZON', 'PHOR', 'PIKK', 'PLD', 'PLT', 'PLZL', 'POLY', 'POSI', 'RGBI', 'ROSN', 'RTKM', 'RTS', 'RTSM', 'RUAL','RUON', 'SBPR', 'SBRF', 'SGZH', 'SIBN', 'SILV', 'SMLT', 'SNGP', 'SNGR','SPBE', 'SPYF', 'STOX', 'SUGAR','TATN', 'TRY', 'UCAD', 'UCHF', 'UCNY', 'UJPY', 'UTRY', 'VKCO', 'WHEAT', 'WUSH', 'YNDF'
-        # 'ALMN','AMD', 'ASTR','Nl','RVI', 'SOFL','SUGR','TCSI', 'TRNF', ECAD, VTBR, Zn, 'IRAO', EGBP, 'EJPY',
+        # 'ALMN','AMD', 'ASTR','Nl','RVI', 'SOFL','SUGR','TCSI', 'TRNF', ECAD, VTBR, Zn, 'IRAO', EGBP, 'EJPY', 'MMI', 'UTRY', 'RUON'
         #instrument_code = get_valid_instrument_code_from_user(source="single")
         ## MODIFY DATAPATH IF REQUIRED
         # build_and_write_roll_calendar(instrument_code, output_datapath=arg_not_supplied)
-        '''instruments_list = ['RVI', ] #'AUDU', 'FEES','TRNF','IRAO','Si','VTBR', '1MFR', 'AED', 'AFKS', 'AFLT', 'ALRS', 'AUDU', 'BANE', 'BELU', 'BR', 'BSPB', 'CBOM', 'CHMF', 'CNI', 'CNY', 'Co', 'DAX', 'ED',  'Eu', 'FIVE', 'FLOT', 'FNI', 'GAZR', 'GBPU', 'GMKN', 'GOLD', 'HANG', 'HKD','HOME', 'HYDR', 'INR', 'ISKJ', 'KMAZ', 'KZT', 'LKOH', 'MAGN', 'MGNT', 'MIX', 'MMI', 'MOEX', 'MTLR', 'MTSI', 'MVID', 'MXI', 'NASD', 'NG', 'NIKK', 'NLMK', 'NOTK','OGI', 'OZON', 'PHOR', 'PIKK', 'PLD', 'PLT', 'PLZL', 'POLY', 'POSI', 'RGBI', 'ROSN', 'RTKM', 'RTS', 'RTSM', 'RUAL','RUON', 'SBPR', 'SBRF', 'SGZH', 'SIBN', 'SILV', 'SMLT', 'SNGP', 'SNGR','SPBE', 'SPYF', 'STOX', 'SUGAR','TATN', 'TRY', 'UCAD', 'UCHF', 'UCNY', 'UJPY', 'UTRY', 'VKCO', 'WHEAT', 'WUSH', 'YNDF']
+        '''instruments_list = ['UCAD', ] #'AUDU', 'FEES','TRNF','IRAO','Si','VTBR', '1MFR', 'AED', 'AFKS', 'AFLT', 'ALRS', 'AUDU', 'BANE', 'BELU', 'BR', 'BSPB', 'CBOM', 'CHMF', 'CNI', 'CNY', 'Co', 'DAX', 'ED',  'Eu', 'FIVE', 'FLOT', 'FNI', 'GAZR', 'GBPU', 'GMKN', 'GOLD', 'HANG', 'HKD','HOME', 'HYDR', 'INR', 'ISKJ', 'KMAZ', 'KZT', 'LKOH', 'MAGN', 'MGNT', 'MIX', 'MMI', 'MOEX', 'MTLR', 'MTSI', 'MVID', 'MXI', 'NASD', 'NG', 'NIKK', 'NLMK', 'NOTK','OGI', 'OZON', 'PHOR', 'PIKK', 'PLD', 'PLT', 'PLZL', 'POLY', 'POSI', 'RGBI', 'ROSN', 'RTKM', 'RTS', 'RTSM', 'RUAL','RUON', 'SBPR', 'SBRF', 'SGZH', 'SIBN', 'SILV', 'SMLT', 'SNGP', 'SNGR','SPBE', 'SPYF', 'STOX', 'SUGAR','TATN', 'TRY', 'UCAD', 'UCHF', 'UCNY', 'UJPY', 'UTRY', 'VKCO', 'WHEAT', 'WUSH', 'YNDF']
         for instrument in instruments_list:
             build_and_write_roll_calendar(instrument, output_datapath=f"{BASEDIR}\\data\\futures\\roll_calendars_csv")'''
         
 
 
-        '''csv_multiple_data_path = f"{BASEDIR}\\data\\futures\\multiple_prices_csv"
-
-        # only change if you have written the files elsewhere
-        csv_roll_data_path = f"{BASEDIR}\\data\\futures\\roll_calendars_csv"
+        
 
         # modify flags as required
-        process_multiple_prices_all_instruments(
+        '''process_multiple_prices_all_instruments(
             csv_multiple_data_path=csv_multiple_data_path,
             csv_roll_data_path=csv_roll_data_path,
         )'''
-
+        
 
         '''process_adjusted_prices_all_instruments(
             ADD_TO_ARCTIC=True, ADD_TO_CSV=True, csv_adj_data_path=f"{BASEDIR}\\data\\futures\\adjusted_prices_csv"
         )'''
 
-        '''copy_spread_costs_from_csv_to_mongo(dataBlob())'''
+        #copy_spread_costs_from_csv_to_mongo(dataBlob())
 
 
         '''arctic_fx_prices = arcticFxPricesData()
@@ -123,12 +141,16 @@ class Command(BaseCommand):
         #update_strategy_capital()
         #run_strategy_order_generator()
         #interactive_controls()
-        
+        #interactive_update_roll_status()
         #interactive_diagnostics()
         #interactive_manual_check_fx_prices()
         #interactive_manual_check_historical_prices()
-        update_sampled_contracts()
+        #update_sampled_contracts()
         #interactive_order_stack()
+        #run_backups()
+        #run_stack_handler()
+        #run_cleaners()
+        #run_reports()
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))
         

@@ -36,7 +36,7 @@ backtest_store_directory: '/home/ksabiev/data/backtests'
 # And backups
 csv_backup_directory: '/home/ksabiev/data/backups_csv'
 mongo_dump_directory: '/home/ksabiev/data/mongo_dump'
-echo_directory: '/home/ksabiev/data/echos'
+echo_directory: 'private/echos'
 log_directory: '/home/ksabiev/data/log'
 offsystem_backup_directory: '/home/ksabiev/data/offsystem'
 reporting_directory: '/home/ksabiev/data/reports'
@@ -47,7 +47,7 @@ ib_port: 4001
 ib_idoffset: 100
 #
 # Broker class list resolution function
-broker_factory_func: 'sysbrokers.broker_factory.get_ib_class_list'
+broker_factory_func: 'sysbrokers.broker_factory.get_ib_class_list2'
 #
 # Mongo DB
 mongo_host: 127.0.0.1

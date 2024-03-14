@@ -34,7 +34,7 @@ class arcticFuturesAdjustedPricesData(futuresAdjustedPricesData):
         self, instrument_code: str
     ) -> futuresAdjustedPrices:
         data = self.arctic.read(instrument_code)
-
+        #print(data)
         instrpricedata = futuresAdjustedPrices(data[data.columns[0]])
 
         return instrpricedata

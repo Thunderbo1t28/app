@@ -11,23 +11,25 @@ class Command(BaseCommand):
     help = 'Find current and next contracts for instruments and save to RollCalendar model'
 
     def handle(self, *args, **options):
-        '''
+        
         # Получаем последние даты торгов для каждого контракта
         last_trading_dates = LastDownloadDate.objects.annotate(
             max_trading_date=Max('last_download_date')
         ).values('id', 'contract', 'max_trading_date')
-
+        contract_date = datetime.now().date()
+        contract_date -= timedelta(days=60)
         # Обновляем is_active для контрактов, у которых последняя дата торгов совпадает с именем контракта
         for contract_data in last_trading_dates:
             contract_name = contract_data['contract']
             max_trading_date = contract_data['max_trading_date']
             
             # Преобразование имени контракта в формат даты для сравнения
-            contract_date = datetime.strptime(contract_name, '%Y%m%d').date()
-            
-            if max_trading_date.date() == contract_date:
+            #contract_date = datetime.strptime(contract_name, '%Y%m%d').date()
+            #contract_date = datetime.now().date()
+            #contract_date -= timedelta(days=1)
+            if max_trading_date.date() < contract_date:
                 LastDownloadDate.objects.filter(id=contract_data['id']).update(is_active=False)
-        '''
+        
         instruments = Instrument.objects.all()
         for instrument in instruments:
             # Получаем активные контракты для данного инструмента
@@ -36,7 +38,8 @@ class Command(BaseCommand):
             quotes = Quote.objects.filter(instrument=instrument).order_by('timestamp')
             contract_list = quotes.values_list('contract', flat=True).distinct()
             contract_list = list(set(contract_list))
-            for contract in contract_list:
+            active_contracts = list(set(active_contracts))
+            for contract in active_contracts:
                 quotes_contract = quotes.filter(contract=contract)
                 #timestamp_dates = quotes_contract.values_list('timestamp__date', flat=True)
                 
@@ -60,16 +63,16 @@ class Command(BaseCommand):
                 # Создание каталога, если его нет
                 directory = f'downloadData/'
                 os.makedirs(directory, exist_ok=True)
-                contract = contract[:-2]
+                contract_name = contract[:-2]
 
                 # Сохранение в CSV-файл только если есть данные
                 if not df.empty:
-                    df.to_csv(f'{directory}/{instrument}_{contract}00.csv')
+                    df.to_csv(f'{directory}/{instrument}_{contract_name}00.csv')
 
                     # Обновление или создание записи о последней загрузке
-                    '''last_date = df.index.max()
+                    last_date = df.index.max()
                     LastDownloadDate.objects.update_or_create(
                         instrument=instrument,
                         contract=contract,
                         defaults={'last_download_date': last_date}
-                    )'''
+                    )

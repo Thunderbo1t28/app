@@ -186,14 +186,14 @@ class stackHandlerForCompletions(stackHandlerCore):
         contract_order_list = self.contract_stack.get_list_of_orders_from_order_id_list(
             order_family.list_of_contract_order_id
         )
-        broker_order_list = self.broker_stack.get_list_of_orders_from_order_id_list(
+        '''broker_order_list = self.broker_stack.get_list_of_orders_from_order_id_list(
             order_family.list_of_broker_order_id
-        )
+        )'''
 
         # Update historic order database
         order_data = dataOrders(self.data)
         order_data.add_historic_orders_to_data(
-            instrument_order, contract_order_list, broker_order_list
+            instrument_order, contract_order_list #broker_order_list
         )
 
     def deactivate_family_of_orders(self, order_family: orderFamily):

@@ -244,7 +244,7 @@ class Config(object):
         new_dict_with_defaults = fill_config_dict_with_defaults(
             new_dict_with_private, defaults_dict
         )
-
+        #print(new_dict_with_defaults)
         self._create_config_from_dict(new_dict_with_defaults)
 
     @property

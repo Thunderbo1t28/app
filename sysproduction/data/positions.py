@@ -527,15 +527,15 @@ class updatePositions(productionDataLayerGeneric):
         new_position_db = self.diag_positions.get_position_for_contract(contract)
 
         log = contract.specific_log(self.log)
-        log.debug(
+        '''log.debug(
             "Updated position of %s from %d to %d; new position in db is %d"
             % (
                 str(contract),
                 current_position,
                 new_position,
-                new_position_db,
+                int(new_position_db),
             )
-        )
+        )'''
 
 
 def annonate_df_index_with_positions_held(data: dataBlob, pd_df: pd.DataFrame):

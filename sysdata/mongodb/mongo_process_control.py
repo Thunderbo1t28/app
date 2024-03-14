@@ -40,7 +40,7 @@ class mongoControlProcessData(controlProcessData):
         result_dict = self.mongo_data.get_result_dict_for_key_without_key_value(
             process_name
         )
-
+        #print(process_name)
         control_object = controlProcess.from_dict(result_dict)
 
         return control_object

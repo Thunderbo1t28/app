@@ -127,6 +127,8 @@ class controlProcess(object):
     ):
         if running_methods is arg_not_supplied:
             running_methods = dictOfRunningMethods()
+        if status is None:
+            status = no_run_status
         assert status in possible_status
         self._last_start_time = last_start_time
         self._last_end_time = last_end_time
@@ -195,9 +197,12 @@ class controlProcess(object):
     @classmethod
     def from_dict(controlProcess, input_dict):
         #print(input_dict)
-        input_dict["running_methods"] = dictOfRunningMethods(
-            input_dict.get("running_methods", {})
-        )
+        if "running_methods" in input_dict:
+            input_dict["running_methods"] = dictOfRunningMethods(
+                input_dict.get("running_methods", {})
+            )
+        else:
+            input_dict = dictOfRunningMethods()
         control_process = controlProcess(**input_dict)
 
         return control_process

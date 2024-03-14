@@ -26,7 +26,7 @@ class csvSpreadCostData(spreadCostData):
         log=get_logger("csvSpreadCostData"),
     ):
 
-        super().__init__(log=log)
+        super().__init__() #log=log
 
         if datapath is arg_not_supplied:
             datapath = INSTRUMENT_CONFIG_PATH

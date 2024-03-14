@@ -91,7 +91,7 @@ def update_active_contracts_for_instrument(instrument_code: str, data: dataBlob)
     # Get the list of contracts we'd want to get prices for, given current
     # roll calendar
     required_contract_chain = get_contract_chain(data, instrument_code)
-
+    #print(instrument_code)
     # Make sure contract chain and database are aligned
     update_contract_database_with_contract_chain(
         instrument_code, required_contract_chain, data
@@ -127,7 +127,7 @@ def get_furthest_out_contract_with_roll_parameters(
             data, instrument_code, furthest_out_contract_date
         )
     )
-
+    #print(furthest_out_contract)
     return furthest_out_contract
 
 
@@ -137,6 +137,7 @@ def get_furthest_out_contract_date(data: dataBlob, instrument_code: str) -> str:
 
     # Get the last contract currently being used
     multiple_prices = diag_prices.get_multiple_prices(instrument_code)
+    #print(multiple_prices)
     current_contract_dict = multiple_prices.current_contract_dict()
     furthest_out_contract_date = current_contract_dict.furthest_out_contract_date()
 
@@ -174,12 +175,13 @@ def create_contract_date_chain(
 ) -> list:
     # To give us wiggle room, and ensure we start collecting the new forward a
     # little in advance
+    #print(furthest_out_contract.contract_date)
     final_contract = furthest_out_contract.next_priced_contract()
-
+    #print(final_contract)
     ## this will pick up contracts from 6 months ago, to deal with any gaps
     ## however if these have expired they are marked as close sampling later
     contract_date_chain = final_contract.get_contracts_from_recently_to_contract_date()
-
+    #print(contract_date_chain)
     return contract_date_chain
 
 
@@ -350,7 +352,7 @@ def update_expiry_and_sampling_status_for_contract(
     #     )
 
     #     ## As probably expired we'll remove it from the sampling list
-    #     unsample_reason = "Contract not available from IB"
+    unsample_reason = "Contract not available from IB"
     # else:
     #     if broker_expiry_date == db_expiry_date:
     #         log.debug(

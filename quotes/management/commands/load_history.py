@@ -16,8 +16,9 @@ class Command(BaseCommand):
         # Получаем текущую дату
         current_date = datetime.now().date() #datetime.strptime("2020-01-01", "%Y-%m-%d").date()  #datetime.now().date()
         # Задаем конечную дату (например, "2024-01-01")
-        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
-        contracts_to_instruments = {'ED': 'ED',  'EJ': 'EJPY', 'Eu': 'Eu', 
+        #end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
+        end_date = Quote.objects.all().order_by('timestamp').last().timestamp.date()
+        contracts_to_instruments = {'ED': 'ED',   'Eu': 'Eu', 
                                      'FL': 'FLOT', 'FN': 'FNI',  'FV': 'FIVE',
                                       'GD': 'GOLD', 'GK': 'GMKN',  'GU': 'GBPU', 'GZ': 'GAZR',
                                         'HK': 'HKD', 'HO': 'HOME', 'HS': 'HANG', 'HY': 'HYDR', 'I2': 'INR',
@@ -25,20 +26,20 @@ class Command(BaseCommand):
                                           'KZ': 'KZT', 'LK': 'LKOH', 'MA': 'MMI', 'MC': 'MTLR', 'ME': 'MOEX', 
                                           'MF': '1MFR', 'MG': 'MAGN', 'MM': 'MXI', 'MN': 'MGNT', 'MT': 'MTSI', 
                                           'MV': 'MVID', 'MX': 'MIX', 'N2': 'NIKK', 'NA': 'NASD', 'NG': 'NG', 
-                                          'NK': 'NOTK', 'Nl': 'Nl', 'NM': 'NLMK', 'OG': 'OGI', 'OZ': 'OZON', 
+                                          'NK': 'NOTK',  'NM': 'NLMK', 'OG': 'OGI', 'OZ': 'OZON', 
                                           'PD': 'PLD', 'PH': 'PHOR', 'PI': 'PIKK', 'PO': 'POLY', 'PS': 'POSI', 
                                           'PT': 'PLT', 'PZ': 'PLZL', 'RB': 'RGBI', 'RI': 'RTS', 'RL': 'RUAL', 
-                                          'RM': 'RTSM', 'RN': 'ROSN', 'RR': 'RUON', 'RT': 'RTKM', 'S0': 'SOFL', 
-                                          'SA': 'SUGR', 'SE': 'SPBE', 'SF': 'SPYF', 'SG': 'SNGP', 'Si': 'Si', 
+                                          'RM': 'RTSM', 'RN': 'ROSN', 'RR': 'RUON', 'RT': 'RTKM',  
+                                           'SE': 'SPBE', 'SF': 'SPYF', 'SG': 'SNGP', 'Si': 'Si', 
                                           'SN': 'SNGR', 'SO': 'SIBN', 'SP': 'SBPR', 'SR': 'SBRF', 'SS': 'SMLT', 
-                                          'Su': 'SUGAR', 'SV': 'SILV', 'SX': 'STOX', 'SZ': 'SGZH', 'TI': 'TCSI', 
-                                          'TN': 'TRNF', 'TR': 'UTRY', 'TT': 'TATN', 'TY': 'TRY', 'UC': 'UCNY', 
-                                           'VI': 'RVI', 'VK': 'VKCO', 'W4': 'WHEAT', 
-                                          'WU': 'WUSH', 'YN': 'YNDF', 'AE': 'AED', 'AF': 'AFLT', 
-                                          'AK': 'AFKS', 'AL': 'ALRS', 'AM': 'ALMN', 'AR': 'AMD', 'AS': 'ASTR', 
+                                          'Su': 'SUGAR', 'SV': 'SILV', 'SX': 'STOX', 'SZ': 'SGZH', 
+                                           'TR': 'UTRY', 'TT': 'TATN', 'TY': 'TRY', 'UC': 'UCNY', 
+                                            'VK': 'VKCO', 'W4': 'WHEAT', #'EG': 'EGBP','IR': 'IRAO','EJ': 'EJPY','Co': 'Co',
+                                          'WU': 'WUSH', 'YN': 'YNDF', 'AE': 'AED', 'AF': 'AFLT', #'SA': 'SUGR','TI': 'TCSI', 'TN': 'TRNF',
+                                          'AK': 'AFKS', 'AL': 'ALRS',    #'AM': 'ALMN','AR': 'AMD','AS': 'ASTR','Nl': 'Nl','VI': 'RVI','S0': 'SOFL',
                                           'AU': 'AUDU', 'BE': 'BELU', 'BN': 'BANE', 'BR': 'BR', 'BS': 'BSPB', 
-                                          'CA': 'UCAD', 'CF': 'UCHF', 'CH': 'CHMF', 'CM': 'CBOM', #'CN': 'CNYRUBTOM', 
-                                          'Co': 'Co', 'CR': 'CNY', 'CS': 'CNI', 'DX': 'DAX', 'VB': 'VTBR','EG': 'EGBP','EC': 'ECAD','IR': 'IRAO','FS': 'FEES','Zn': 'Zn',} 
+                                          'CA': 'UCAD', 'CF': 'UCHF', 'CH': 'CHMF', 'CM': 'CBOM', #'CN': 'CNYRUBTOM', 'EC': 'ECAD','Zn': 'Zn',
+                                           'CR': 'CNY', 'CS': 'CNI', 'DX': 'DAX', 'VB': 'VTBR','FS': 'FEES',} 
 
         # Инициализируем список дат, начиная от текущей и идя к заданной конечной дате
         date_list = []

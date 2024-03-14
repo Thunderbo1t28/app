@@ -19,12 +19,14 @@ class controlProcessData(baseData):
 
     def get_dict_of_control_processes(self) -> dictOfControlProcesses:
         list_of_names = self.get_list_of_process_names()
+        #print(list_of_names)
         output_dict = dict(
             [
                 (process_name, self.get_control_for_process_name(process_name))
                 for process_name in list_of_names
             ]
         )
+        #print(output_dict)
         output_dict = dictOfControlProcesses(output_dict)
 
         return output_dict

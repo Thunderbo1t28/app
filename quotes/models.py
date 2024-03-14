@@ -291,6 +291,12 @@ class locks(models.Model):
     
     objects = ArcticDataManager()
 
+class Logs(models.Model):
+    ident = models.CharField(max_length=255)
+    data = models.JSONField(null=True, blank=True)
+    
+    objects = ArcticDataManager()
+
 class MongoDataSingleKey(models.Model):
     collection_name = models.CharField(max_length=255)
     key_name = models.CharField(max_length=255)
@@ -298,3 +304,27 @@ class MongoDataSingleKey(models.Model):
 class MongoDataMultipleKeys(models.Model):
     collection_name = models.CharField(max_length=255)
     index_config = models.JSONField(null=True, blank=True)
+
+class MyData(models.Model):
+    key = models.CharField(max_length=100)
+    trade = models.JSONField()
+    fill = models.JSONField()
+    fill_datetime = models.DateTimeField(null=True)
+    filled_price = models.FloatField(null=True)
+    locked = models.BooleanField(default=False)
+    order_id = models.IntegerField()
+    parent = models.CharField(max_length=100)
+    children = models.CharField(max_length=100)
+    active = models.BooleanField(default=True)
+    order_type = models.CharField(max_length=100)
+    limit_contract = models.CharField(max_length=100, null=True)
+    limit_price = models.FloatField(null=True)
+    reference_contract = models.CharField(max_length=100)
+    reference_price = models.FloatField()
+    manual_trade = models.BooleanField(default=False)
+    roll_order = models.BooleanField(default=False)
+    reference_datetime = models.DateTimeField()
+    generated_datetime = models.DateTimeField()
+
+    class Meta:
+        ordering = ['fill_datetime']

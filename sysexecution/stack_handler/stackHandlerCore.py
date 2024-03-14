@@ -32,11 +32,11 @@ class stackHandlerCore(object):
 
         instrument_stack = order_data.db_instrument_stack_data
         contract_stack = order_data.db_contract_stack_data
-        broker_stack = order_data.db_broker_stack_data
+        #broker_stack = order_data.db_broker_stack_data
 
         self._instrument_stack = instrument_stack
         self._contract_stack = contract_stack
-        self._broker_stack = broker_stack
+        #self._broker_stack = broker_stack
 
     @property
     def data(self):
@@ -54,9 +54,9 @@ class stackHandlerCore(object):
     def contract_stack(self):
         return self._contract_stack
 
-    @property
+    '''@property
     def broker_stack(self):
-        return self._broker_stack
+        return self._broker_stack'''
 
     @property
     def diag_prices(self) -> diagPrices:

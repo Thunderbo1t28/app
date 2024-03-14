@@ -36,9 +36,9 @@ class baseData(object):
     def __repr__(self):
         return "baseData object"
 
-    #@property
-    #def log(self):
-        #return self._log
+    @property
+    def log(self):
+        return self._log
 
     def __getitem__(self, keyname):
         """

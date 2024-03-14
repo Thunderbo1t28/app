@@ -38,6 +38,9 @@ class mongoRollStateData(rollStateData):
 
     def _get_roll_state_as_str_no_default(self, instrument_code: str):
         result_dict = self.mongo_data.get_result_dict_for_key(instrument_code)
+        #print(self.mongo_data)
+        if result_dict is None:
+            return "No_Roll"
         if ROLL_STATE_KEY in result_dict:
             roll_status = result_dict[ROLL_STATE_KEY]
         else:

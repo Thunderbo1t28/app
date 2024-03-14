@@ -63,7 +63,7 @@ def process_multiple_prices_all_instruments(
     instrument_list = (
         arctic_individual_futures_prices.get_list_of_instrument_codes_with_merged_price_data()
     )
-
+    #print(instrument_list)
     for instrument_code in instrument_list:
         print(instrument_code)
         process_multiple_prices_single_instrument(

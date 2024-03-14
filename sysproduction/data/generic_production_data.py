@@ -20,10 +20,10 @@ class productionDataLayerGeneric(object):
     def data(self) -> dataBlob:
         return self._data
 
-    '''@property
+    @property
     def log(self):
         return self.data.log
-'''
+
     def _add_required_classes_to_data(self, data) -> dataBlob:
 
         return data

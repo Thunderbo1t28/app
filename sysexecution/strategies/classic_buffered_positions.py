@@ -9,6 +9,7 @@ These are 'virtual' orders, because they are per instrument. We translate that t
 Desired virtual orders have to be labelled with the desired type: limit, market,best-execution
 """
 from collections import namedtuple
+from types import NoneType
 
 from sysdata.data_blob import dataBlob
 
@@ -150,8 +151,12 @@ def trade_given_optimal_and_actual_positions(
     upper_for_instrument = optimal_positions.upper_positions[instrument_code]
     lower_for_instrument = optimal_positions.lower_positions[instrument_code]
     actual_for_instrument = actual_positions.get(instrument_code, 0.0)
-    #print(type(lower_for_instrument))
-    #print(type(actual_for_instrument))
+    print((lower_for_instrument))
+    print((actual_for_instrument))
+    if type(lower_for_instrument) is NoneType:
+        lower_for_instrument = 0.0
+    if type(upper_for_instrument) is NoneType:
+        upper_for_instrument = 0.0
     if isinstance(lower_for_instrument, str):
         lower_for_instrument = float(lower_for_instrument)
     if isinstance(upper_for_instrument, str):

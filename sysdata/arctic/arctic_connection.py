@@ -1,4 +1,5 @@
 import copy
+import datetime
 import json
 from django.db import models
 from django.apps import apps
@@ -70,13 +71,19 @@ class arcticData(object):
         Returns:
             str: JSON-строка с преобразованными данными.
         """
+        
         # Преобразование значений float в строковый формат
         for item in data:
             for key, value in item.items():
                 if isinstance(value, float):
                     item[key] = str(value)
-                if pd.isna(value):
+                elif pd.isna(value):
                     item[key] = None
+                
+
+
+        
+        
         # Сериализация данных в JSON-строку
         json_data = json.dumps(data)
 
@@ -95,13 +102,15 @@ class arcticData(object):
         json_data = json_data.replace("\\", "")
         # Разбор JSON-строки
         parsed_data = json.loads(json_data)
-
+        
         # Преобразование строковых значений обратно в float
         for item in parsed_data:
             for key, value in item.items():
                 if isinstance(value, str) and value.replace('.', '', 1).isdigit():
                     item[key] = float(value)
-
+                elif isinstance(value, str) and value == 'nan':
+                    item[key] = None
+        
         return parsed_data
 
     def write(self, ident: str, data: pd.DataFrame):
@@ -125,6 +134,7 @@ class arcticData(object):
         self.model.objects.filter(ident=ident).delete()
 
     def get_keynames(self) -> list:
+        #print(self.model)
         return list(self.model.objects.values_list('ident', flat=True))
 
     def has_keyname(self, keyname) -> bool:

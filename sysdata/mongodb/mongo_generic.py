@@ -2,9 +2,12 @@ import ast
 from copy import copy
 from datetime import date, time
 import json
+from types import NoneType
 from django.db import models
+import numpy as np
 import pandas as pd
 from pymongo import ASCENDING
+from quotes.models import MyData
 
 from syscore.constants import arg_not_supplied
 from syscore.exceptions import missingData, existingData
@@ -17,6 +20,10 @@ from sysdata.mongodb.mongo_connection import (
 )
 from syslogging.logger import *
 from dateutil import parser
+
+from django.db.models import Q
+
+from sysexecution.orders.named_order_objects import missing_order
 
 class mongoDataWithSingleKey:
     """
@@ -112,6 +119,7 @@ class mongoDataWithSingleKey:
 
     def get_result_dict_for_key(self, key) -> dict:
         try:
+            #print(self._mongo.model)
             #print(key)
             existing_key = self.collection.filter(ident=key)
             if existing_key.exists():
@@ -121,21 +129,22 @@ class mongoDataWithSingleKey:
                 #print(result_dict)
                 result_dict = self.parse_json_data(result_dict)
                 #print(result_dict)
-            else:
-                result_dict = {None}
+                return result_dict
+        
             #result_dict = self.collection.get(ident=key)
             
-            #result_dict.pop(MONGO_ID_KEY)
-            return result_dict
-        
+            #print(result_dict)
+            
         except self._mongo.model.DoesNotExist:
             raise missingData(f"Key {key} not found in Mongo data")
 
     def get_result_dict_for_key_without_key_value(self, key) -> dict:
         key_name = self.key_name
         result_object = self.get_result_dict_for_key(key)
-        #print(result_object)
+        #print(key)
         result_dict = result_object
+        if result_dict is None:
+            return None
         if key_name in result_dict:
             result_dict.pop(key_name)
         else:
@@ -145,7 +154,50 @@ class mongoDataWithSingleKey:
         return result_dict
 
     def get_list_of_result_dict_for_custom_dict(self, custom_dict: dict) -> list:
-        return list(self.collection.filter(**custom_dict).values())
+        #print(custom_dict)
+        #print(self._mongo.model)
+        
+        start_date = custom_dict['fill_datetime']['$gte']
+        end_date = custom_dict['fill_datetime']['$lt']
+        json_data = self._mongo.model.objects.all()
+        if json_data.exists():
+            json_data = self._mongo.model.objects.get()
+                            
+            #print(json_data)
+            json_data = self.parse_json_data(json_data.data)
+            # Преобразуйте данные JSON в словарь Python
+            data_dict = json.loads(json_data)
+
+            # Создайте объект MyData и сохраните его в базе данных
+            my_data = MyData.objects.create(
+                key=data_dict['key'],
+                trade=data_dict['trade'],
+                fill=data_dict['fill'],
+                fill_datetime=datetime.strptime(data_dict['fill_datetime'], "%Y-%m-%d %H:%M:%S") if data_dict['fill_datetime'] else None,
+                filled_price=data_dict['filled_price'],
+                locked=data_dict['locked'],
+                order_id=data_dict['order_id'],
+                parent=data_dict['parent'],
+                children=data_dict['children'],
+                active=data_dict['active'],
+                order_type=data_dict['order_type'],
+                limit_contract=data_dict['limit_contract'],
+                limit_price=data_dict['limit_price'],
+                reference_contract=data_dict['reference_contract'],
+                reference_price=data_dict['reference_price'],
+                manual_trade=data_dict['manual_trade'],
+                roll_order=data_dict['roll_order'],
+                reference_datetime=datetime.strptime(data_dict['reference_datetime'], "%Y-%m-%d %H:%M:%S"),
+                generated_datetime=datetime.strptime(data_dict['generated_datetime'], "%Y-%m-%d %H:%M:%S")
+            )
+            # Применяем фильтр к данным
+            filtered_data = MyData.objects.filter(fill_datetime__gte=start_date,
+                                                fill_datetime__lt=end_date)
+            MyData.objects.all().delete()
+        else:
+            return []
+        #print(fill_datetime_range)
+        return list(filtered_data)
 
     def key_is_in_data(self, key):
         #print(self._mongo.model)
@@ -159,7 +211,9 @@ class mongoDataWithSingleKey:
             raise missingData(f"{self.key_name}:{key} not in data {self.name}")
 
     def delete_data_with_any_warning_for_custom_dict(self, custom_dict: dict):
-        self.collection.filter(**custom_dict).delete()
+        #print(custom_dict)
+        #self.collection.filter(**custom_dict).delete()
+        self.collection.delete()
 
     def add_data(self, key, data_dict: dict, allow_overwrite=False, clean_ints=True):
         if clean_ints:
@@ -220,6 +274,11 @@ class mongoDataWithSingleKey:
                     processed_dict[key] = str(value)
                 elif isinstance(value, datetime.datetime):
                     processed_dict[key] = value.strftime('%Y-%m-%d %H:%M:%S')
+                elif isinstance(value, np.int64):
+                    processed_dict[key] = int(value)
+                elif isinstance(value, NoneType):
+                    processed_dict[key] = 0.0
+                
                 elif isinstance(value, dict):
                     processed_dict[key] = process_dict(value)
                 elif isinstance(value, list):
@@ -243,6 +302,7 @@ class mongoDataWithSingleKey:
         processed_data = process_dict(data)
         #print(processed_data)
         # Сериализация данных в JSON-строку
+        #print(processed_data)
         json_data = json.dumps(processed_data)
 
         return json_data
@@ -266,24 +326,47 @@ class mongoDataWithSingleKey:
         # for key, value in parsed_data.items():
         #     if isinstance(value, str) and value.replace('.', '', 1).isdigit():
         #         parsed_data[key] = float(value)
-
+        #print(json_data)
         # Удаление дополнительных обратных слешей из JSON-строки
-        json_data = json_data.replace("\\", "")
+        if "\\" in json_data:
+            json_data = json_data.replace("\\", "")
+        #json_data = json_data.replace("\\", "")
+        if isinstance(json_data, dict):
+            return json_data
         # Разбор JSON-строки
+        #print(json_data)
         parsed_data = json.loads(json_data)
-
+        #print(parsed_data)
         # Функция для восстановления вложенных словарей и списков
         def restore_values(value):
             if isinstance(value, str) and value.replace('.', '', 1).isdigit():
-                return float(value)
-            elif isinstance(value, str) and value.lstrip('-').replace('.', '', 1).isdigit():
-                # Проверяем, является ли строка числом с минусом (для отрицательных чисел)
-                return float(value)
-            elif isinstance(value, str):
                 try:
-                    return parser.parse(value)
+                    return float(value)
                 except ValueError:
-                    return value
+                    pass
+            elif isinstance(value, str) and value.isdigit():
+                try:
+                    return int(value)
+                except ValueError:
+                    pass
+            elif isinstance(value, str) and value.replace('-', '', 1).isdigit():
+                try:
+                    return float(value)
+                except ValueError:
+                    pass
+            elif isinstance(value, str) and value.replace('.', '', 1).isdigit() and value.replace('-', '', 1).isdigit():
+                try:
+                    return float(value)
+                except ValueError:
+                    pass
+            elif isinstance(value, str) and value.replace('-', '', 1).isdigit():
+                try:
+                    return float(value)
+                except ValueError:
+                    pass
+            elif isinstance(value, str) and value == 'nan':
+                    return 0.0
+            
             elif isinstance(value, dict):
                 return {k: restore_values(v) for k, v in value.items()}
             elif isinstance(value, list):
@@ -363,7 +446,7 @@ class mongoDataWithMultipleKeys:
         return self._mongo.model.objects.all()
     
     def get_list_of_all_dicts(self) -> list:
-        cursor = self._mongo.get_list_of_keys()
+        cursor = list(self._mongo.model.objects.values_list('ident', flat=True))
         data_list = []
 
         for i in cursor:

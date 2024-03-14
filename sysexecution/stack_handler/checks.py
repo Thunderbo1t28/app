@@ -28,13 +28,14 @@ class stackHandlerChecks(stackHandlerCore):
             )
 
     def check_external_position_break(self):
-        data_broker = dataBroker(self.data)
+        '''data_broker = dataBroker(self.data)
         breaks = (
             data_broker.get_list_of_breaks_between_broker_and_db_contract_positions()
         )
 
         self.log_and_lock_new_breaks(breaks)
-        self.clear_position_locks_where_breaks_fixed(breaks)
+        self.clear_position_locks_where_breaks_fixed(breaks)'''
+        pass
 
     def log_and_lock_new_breaks(self, breaks: list):
         for contract in breaks:

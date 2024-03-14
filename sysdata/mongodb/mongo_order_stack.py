@@ -53,12 +53,18 @@ class mongoOrderStackData(orderStackData):
 
     def get_order_with_id_from_stack(self, order_id: int):
         try:
+            
+            if type(order_id) is float:
+                order_id = int(order_id)
+            #print(type(order_id))
             result_dict = self.mongo_data.get_result_dict_for_key(order_id)
             #print(result_dict)
         except missingData:
             return missing_order
-        #print(result_dict)
+        if result_dict is None:
+            return missing_order
         order_class = self._order_class()
+        #print(result_dict)
         order = order_class.from_dict(result_dict)
 
         return order
@@ -108,6 +114,8 @@ class mongoOrderStackData(orderStackData):
             orderid = self._create_and_return_max_order_id()
             orderid = 0
             return orderid
+        if result_dict is None:
+            return 0
         if MAX_ORDER_KEY in result_dict:
             order_id = result_dict[MAX_ORDER_KEY]
         else:
