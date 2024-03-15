@@ -216,7 +216,7 @@ class dataContracts(productionDataLayerGeneric):
     def get_priced_contract_id(self, instrument_code: str) -> str:
         contract_dict = self.get_current_contract_dict(instrument_code)
         price_contract = contract_dict.price
-
+        #print(price_contract)
         return price_contract
 
     def _get_carry_contract_id(self, instrument_code: str) -> str:

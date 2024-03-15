@@ -516,7 +516,9 @@ def modify_price_when_contract_has_changed(
         return original_price
 
     diag_prices = diagPrices(data)
+    
     contract_list = [original_contract_date, new_contract_date]
+    #print(contract_list)
     (
         _last_matched_date,
         list_of_matching_prices,

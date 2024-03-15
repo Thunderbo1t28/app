@@ -295,6 +295,7 @@ def _adjust_row_of_approx_roll_calendar(
     set_of_prices = _get_set_of_prices(
         local_row_data, dict_of_futures_contract_prices, omit_carry
     )
+    #print(set_of_prices)
     if set_of_prices is _bad_row:
         _print_roll_date_error(local_row_data)
         return _bad_row
@@ -453,6 +454,7 @@ def _find_best_matching_roll_date(
 
     # Get the list of dates for which a roll is possible
     paired_prices = _required_paired_prices(set_of_prices)
+    #print(paired_prices)
     valid_dates = _valid_dates_from_paired_prices(paired_prices, avoid_date)
 
     if len(valid_dates) == 0:
@@ -494,9 +496,13 @@ def _valid_dates_from_paired_prices(paired_prices: pd.DataFrame, avoid_date):
 
 
 def _matching_prices_from_paired_prices(paired_prices):
-    paired_prices_check_match = paired_prices.apply(
-        lambda xlist: not any(np.isnan(xlist)), axis=1
-    )
+    #print(paired_prices)
+    # paired_prices_check_match = paired_prices.apply(
+    #     lambda xlist: not any(np.isnan(xlist)), axis=1
+    # )
+    # paired_prices_matching = paired_prices_check_match[paired_prices_check_match]
+
+    paired_prices_check_match = paired_prices.isna().apply(lambda row: not any(row), axis=1)
     paired_prices_matching = paired_prices_check_match[paired_prices_check_match]
 
     return paired_prices_matching

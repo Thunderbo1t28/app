@@ -9,6 +9,7 @@ this:
 
 """
 import datetime
+from operator import pos
 from syscore.constants import arg_not_supplied
 from syscore.exceptions import missingData
 
@@ -163,9 +164,11 @@ def updated_buffered_positions(data: dataBlob, strategy_name: str, system: Syste
             lower_position=lower_buffer,
             upper_position=upper_buffer,
         )
+        #print(position_entry)
         instrument_strategy = instrumentStrategy(
             instrument_code=instrument_code, strategy_name=strategy_name
         )
+        #print(instrument_strategy)
         data_optimal_positions.update_optimal_position_for_instrument_strategy(
             instrument_strategy=instrument_strategy, position_entry=position_entry
         )

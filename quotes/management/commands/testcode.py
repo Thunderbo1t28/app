@@ -146,7 +146,7 @@ class Command(BaseCommand):
         #interactive_manual_check_fx_prices()
         #interactive_manual_check_historical_prices()
         #update_sampled_contracts()
-        #interactive_order_stack()
+        interactive_order_stack()
         #run_backups()
         #run_stack_handler()
         #run_cleaners()

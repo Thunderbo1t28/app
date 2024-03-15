@@ -99,6 +99,7 @@ class dictFuturesContractPrices(dict):
         """
 
         all_contract_ids = list(self.keys())
+        #print(all_contract_ids)
         final_price_dict_as_list = []
         for contract_id in all_contract_ids:
             final_prices = self[contract_id].return_final_prices()
@@ -142,7 +143,7 @@ def get_last_matched_date_and_prices_for_contract_list(
         # This will happen if there are no matching prices
         # We just return the last row
         matched_final_prices = dict_of_final_prices.joint_data()
-
+    #print(matched_final_prices)
     last_matched_prices = list(matched_final_prices.iloc[-1].values)
     last_matched_date = matched_final_prices.index[-1]
 

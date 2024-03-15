@@ -170,13 +170,13 @@ def single_instrument_child_orders(
             instrument_order, list_of_child_contract_dates_and_trades
         )
     )
-
+    #print(raw_list_of_contract_orders)
     list_of_contract_orders = adjust_limit_orders_with_correct_prices(
         data=data,
         instrument_order=instrument_order,
         list_of_contract_orders=raw_list_of_contract_orders,
     )
-
+    #print(list_of_contract_orders)
     return list_of_contract_orders
 
 
@@ -193,7 +193,7 @@ def adjust_limit_orders_with_correct_prices(
             data, instrument_order, list_of_contract_orders
         )
     )
-
+    #print(list_of_contract_orders_with_adjusted_reference_prices)
     # Now get the limit prices, where relevant
     # Adjust limit price if limit_contract is different from required contract
     list_of_contract_orders_with_adjusted_limit_prices = (
@@ -521,7 +521,7 @@ def calculate_reference_prices_for_direct_child_orders(
         add_reference_price_to_a_direct_child_order(data, instrument_order, child_order)
         for child_order in list_of_contract_orders
     ]
-
+    #print(list_of_contract_orders)
     list_of_contract_orders = listOfOrders(list_of_contract_orders)
 
     return list_of_contract_orders
@@ -540,7 +540,7 @@ def add_reference_price_to_a_direct_child_order(
 
     contract_to_match = instrument_order.reference_contract
     price_to_adjust = instrument_order.reference_price
-
+    #print(contract_to_match)
     if contract_to_match is None or price_to_adjust is None:
         # No reference price so don't bother
         return child_order
@@ -563,7 +563,7 @@ def add_reference_price_to_a_direct_child_order(
         return child_order
 
     child_order.reference_price = new_reference_price
-
+    #print(child_order)
     return child_order
 
 
@@ -598,7 +598,7 @@ def calculate_adjusted_price_for_a_direct_child_order(
         new_contract_date=child_contract_date,
         original_price=original_price,
     )
-
+    #print(adjusted_price)
     return adjusted_price
 
 
@@ -649,7 +649,11 @@ def add_limit_price_to_a_direct_child_order(
 
     contract_to_match = instrument_order.limit_contract
     price_to_adjust = instrument_order.limit_price
-
+    #print(contract_to_match)
+    #print(price_to_adjust)
+    if contract_to_match is 0.0 or price_to_adjust is 0.0:
+        # No limit price so don't bother
+        return child_order
     if contract_to_match is None or price_to_adjust is None:
         # No limit price so don't bother
         return child_order

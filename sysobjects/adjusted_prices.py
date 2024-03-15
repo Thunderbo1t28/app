@@ -1,4 +1,5 @@
 from copy import copy
+from types import NoneType
 
 import numpy as np
 import pandas as pd
@@ -47,6 +48,7 @@ class futuresAdjustedPrices(pd.Series):
         :return: futuresAdjustedPrices
 
         """
+        #print(multiple_prices)
         adjusted_prices = _panama_stitch(multiple_prices, forward_fill)
         return futuresAdjustedPrices(adjusted_prices)
 
@@ -84,15 +86,22 @@ def _panama_stitch(
         raise Exception("Can't stitch an empty multiple prices object")
 
     previous_row = multiple_prices.iloc[0, :]
-    adjusted_prices_values = [previous_row.PRICE]
-
+    if previous_row.PRICE is None:
+        adjusted_prices_values = [previous_row.PRICE]
+    else:
+        #print(type(previous_row.PRICE))
+        #print(previous_row.PRICE)
+        adjusted_prices_values = [float(previous_row.PRICE)]
+    #adjusted_prices_values = [float(previous_row.PRICE)]
+    #print(previous_row)
     for dateindex in multiple_prices.index[1:]:
         current_row = multiple_prices.loc[dateindex, :]
-
+        #print(current_row)
         if current_row.PRICE_CONTRACT == previous_row.PRICE_CONTRACT:
             # no roll has occured
             # we just append the price
-            adjusted_prices_values.append(current_row.PRICE)
+            
+            adjusted_prices_values.append(float(current_row.PRICE))
         else:
             # A roll has occured
             adjusted_prices_values = _roll_in_panama(
@@ -104,7 +113,7 @@ def _panama_stitch(
     # it's ok to return a DataFrame since the calling object will change the
     # type
     adjusted_prices = pd.Series(adjusted_prices_values, index=multiple_prices.index)
-
+    #print(adjusted_prices)
     return adjusted_prices
 
 
@@ -113,7 +122,7 @@ def _roll_in_panama(adjusted_prices_values, previous_row, current_row):
     # The roll differential is from the previous_row
     #print(type(previous_row.FORWARD), previous_row.FORWARD)
     #print(type(previous_row.PRICE), previous_row.PRICE)
-    roll_differential = previous_row.FORWARD - previous_row.PRICE
+    roll_differential = float(previous_row.FORWARD) - float(previous_row.PRICE)
     if np.isnan(roll_differential):
         raise Exception(
             "On this day %s which should be a roll date we don't have prices for both %s and %s contracts"
@@ -123,10 +132,11 @@ def _roll_in_panama(adjusted_prices_values, previous_row, current_row):
                 previous_row.FORWARD_CONTRACT,
             )
         )
-
+    #print(type(roll_differential), roll_differential)
+    #print(adjusted_prices_values)
     # We add the roll differential to all previous prices
     adjusted_prices_values = [
-        adj_price + roll_differential for adj_price in adjusted_prices_values
+        float(adj_price) + float(roll_differential) for adj_price in adjusted_prices_values
     ]
 
     # note this includes the price for the previous row, which will now be equal to the forward price

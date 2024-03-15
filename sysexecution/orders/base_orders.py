@@ -372,7 +372,7 @@ class Order(object):
         object_dict["order_type"] = self.order_type.as_string()
         for info_key, info_value in self.order_info.items():
             object_dict[info_key] = info_value
-
+        #print(object_dict)
         return object_dict
 
     @classmethod

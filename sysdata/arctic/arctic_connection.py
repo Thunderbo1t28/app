@@ -4,7 +4,8 @@ import json
 from django.db import models
 from django.apps import apps
 import pandas as pd
-
+from datetime import datetime
+import quotes
 from quotes.models import ArcticDataManager
 from syscore.exceptions import existingData, missingData
 
@@ -73,10 +74,21 @@ class arcticData(object):
         """
         
         # Преобразование значений float в строковый формат
+        #print(data)
         for item in data:
             for key, value in item.items():
+                #print(type(value), value)
                 if isinstance(value, float):
-                    item[key] = str(value)
+                    try:
+                        # Пробуем преобразовать в целое число
+                        int_value = int(value)
+                        # Преобразуем в строку только в том случае, если преобразование в int прошло успешно
+                        item[key] = str(int_value)
+                        #print(type(item[key]), item[key])
+                    except ValueError:
+                        # Если преобразование в int не удалось, оставляем значение как строку
+                        item[key] = str(value)
+                        #print(type(item[key]), item[key])
                 elif pd.isna(value):
                     item[key] = None
                 
@@ -86,7 +98,7 @@ class arcticData(object):
         
         # Сериализация данных в JSON-строку
         json_data = json.dumps(data)
-
+        #print(f"arctic {json_data}")
         return json_data
     def parse_json_data(self, json_data):
         """
@@ -102,15 +114,59 @@ class arcticData(object):
         json_data = json_data.replace("\\", "")
         # Разбор JSON-строки
         parsed_data = json.loads(json_data)
-        
+
+        if self.model == quotes.models.optimal_positions:
+            for item in parsed_data:
+                for key, value in item.items():
+                    if isinstance(value, str):
+                        try:
+                            # Преобразуем в строку только в том случае, если преобразование в int прошло успешно
+                            item[key] = int(value)
+                            #print(type(item[key]), item[key])
+                        except ValueError:
+                            if '.' in value:  # Если есть десятичная точка
+                                try:
+                                    date_value = datetime.strptime(value.split('.')[0], '%Y%m%d')
+                                    # Проверяем, что дата входит в интервал
+                                    if 2010 <= date_value.year <= 2025:
+                                        item[key] = date_value.strftime('%Y%m%d') # Преобразуем в формат без точки
+                                except ValueError:
+                                    pass
+                                try:
+                                    item[key] = float(value)  # Попробуем преобразовать в float
+                                except ValueError:
+                                    pass  # Если не удалось преобразовать, оставляем как строку
+                    elif value.isdigit():  # Если это целое число
+                        item[key] = int(value)
+                    elif value == 'nan':
+                        item[key] = None
+                    elif pd.isna(value):
+                        item[key] = None
         # Преобразование строковых значений обратно в float
-        for item in parsed_data:
-            for key, value in item.items():
-                if isinstance(value, str) and value.replace('.', '', 1).isdigit():
-                    item[key] = float(value)
-                elif isinstance(value, str) and value == 'nan':
-                    item[key] = None
+        else:
+            for item in parsed_data:
+                for key, value in item.items():
+                    if isinstance(value, str):
+                        if '.' in value:  # Если есть десятичная точка
+                            # try:
+                            #     date_value = datetime.strptime(value.split('.')[0], '%Y%m%d')
+                            #     # Проверяем, что дата входит в интервал
+                            #     if 2010 <= date_value.year <= 2025:
+                            #         item[key] = date_value.strftime('%Y%m%d') # Преобразуем в формат без точки
+                            # except ValueError:
+                            try:
+                                item[key] = float(value)  # Попробуем преобразовать в float
+                            except ValueError:
+                                pass  # Если не удалось преобразовать, оставляем как строку
+                        elif value.isdigit():  # Если это целое число
+                            item[key] = int(value)
+                        elif value == 'nan':
+                            item[key] = None
+                        elif pd.isna(value):
+                            item[key] = None
         
+        #print(self.model)
+        #print(f"arctic {parsed_data}")
         return parsed_data
 
     def write(self, ident: str, data: pd.DataFrame):
@@ -128,6 +184,7 @@ class arcticData(object):
         #print(data)
         data_dict = data_copy.to_dict(orient='records')
         data_dict = self.convert_data_to_json(data_dict)
+        
         self.manager.create_arctic_data(model=self.model, ident=ident, data=data_dict)
 
     def delete(self, ident: str):
@@ -135,6 +192,7 @@ class arcticData(object):
 
     def get_keynames(self) -> list:
         #print(self.model)
+        #print(list(self.model.objects.values_list('ident', flat=True)))
         return list(self.model.objects.values_list('ident', flat=True))
 
     def has_keyname(self, keyname) -> bool:

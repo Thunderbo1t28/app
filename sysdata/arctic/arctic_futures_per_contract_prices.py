@@ -226,7 +226,7 @@ def from_contract_and_freq_to_key(contract: futuresContract, frequency: Frequenc
         frequency_str = ""
     else:
         frequency_str = frequency.name + "/"
-    
+    #print(contract)
     return from_tuple_to_key(
         [frequency_str, contract.instrument_code, contract.date_str]
     )

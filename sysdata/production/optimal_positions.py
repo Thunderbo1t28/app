@@ -164,6 +164,8 @@ class optimalPositionData(baseData):
                     existing_optimal_positions_as_df, position_entry
                 )
             )
+            #print(existing_optimal_positions_as_df)
+            #print(updated_optimal_positions_as_df)
 
         except missingData:
             #### Starting from scracth

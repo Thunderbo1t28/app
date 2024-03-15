@@ -73,7 +73,7 @@ class contractOrderStackData(orderStackData):
         # only here so the appropriate type is shown as being returned
 
         order = self.stack.get(order_id, missing_order)
-
+        #print(order)
         return order
 
     def does_stack_have_orders_for_instrument_code(self, instrument_code: str) -> bool:

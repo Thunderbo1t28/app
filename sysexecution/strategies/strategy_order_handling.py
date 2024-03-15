@@ -58,6 +58,7 @@ class orderGeneratorForStrategy(object):
         # THIS IS THE MAIN FUNCTION THAT IS RUN
         order_list = self.get_required_orders()
         order_list_with_overrides = self.apply_overrides_and_position_limits(order_list)
+        #print(order_list_with_overrides)
         self.submit_order_list(order_list_with_overrides)
 
     def get_required_orders(self) -> listOfOrders:
@@ -86,7 +87,7 @@ class orderGeneratorForStrategy(object):
     def apply_overrides_and_position_limits(
         self, order_list: listOfOrders
     ) -> listOfOrders:
-
+        #print(order_list)
         new_order_list = [
             self.apply_overrides_and_position_limits_for_instrument_and_strategy(
                 proposed_order
@@ -100,7 +101,9 @@ class orderGeneratorForStrategy(object):
     def apply_overrides_and_position_limits_for_instrument_and_strategy(
         self, proposed_order: instrumentOrder
     ) -> instrumentOrder:
+        #print(proposed_order)
         revised_order = self.apply_overrides_for_instrument_and_strategy(proposed_order)
+
         new_order = self.adjust_order_for_position_limits(revised_order)
 
         return new_order
@@ -152,6 +155,7 @@ class orderGeneratorForStrategy(object):
         log = order.log_with_attributes(self.log)
 
         data_position_limits = dataPositionLimits(self.data)
+        #print(order)
         new_order = data_position_limits.apply_position_limit_to_order(order)
 
         if new_order.trade != order.trade:
@@ -165,7 +169,7 @@ class orderGeneratorForStrategy(object):
                     "Can't do trade of %s because of position limits,instead will do %s"
                     % (str(order), str(new_order.trade))
                 )
-
+        #print(new_order)
         return new_order
 
     def submit_order_list(self, order_list: listOfOrders):
@@ -180,6 +184,7 @@ class orderGeneratorForStrategy(object):
             if instrument_locked:
                 log.debug("Instrument locked, not submitting")
                 continue
+            #print(order)
             self.submit_order(order)
 
     def submit_order(self, order: instrumentOrder):

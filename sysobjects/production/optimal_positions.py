@@ -73,12 +73,12 @@ class bufferedOptimalPositions(baseOptimalPosition):
         # run on __init__ by parent class
         upper_position = self.upper_position
         lower_position = self.lower_position
-        print(upper_position)
-        print(lower_position)
+        #print(upper_position)
+        #print(lower_position)
         if type(lower_position) is NoneType:
-            lower_position = 0.0
+            lower_position = 0
         if type(upper_position) is NoneType:
-            upper_position = 0.0
+            upper_position = 0
         if isinstance(lower_position, str):
             lower_position = float(lower_position)
         if isinstance(upper_position, str):
@@ -218,6 +218,7 @@ def add_optimal_position_entry_row_to_positions_as_df(
     )
 
     position_entry_as_df_row = position_entry.as_df_row()
+    #print(position_entry)
     updated_optimal_df = pd.concat(
         [existing_optimal_positions_as_df, position_entry_as_df_row]
     )

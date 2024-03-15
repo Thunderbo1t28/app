@@ -43,7 +43,7 @@ class orderGeneratorForBufferedPositions(orderGeneratorForStrategy):
         list_of_trades = list_of_trades_given_optimal_and_actual_positions(
             self.data, strategy_name, optimal_positions, actual_positions
         )
-
+        #print(list_of_trades)
         return list_of_trades
 
     def get_optimal_positions(self) -> optimalPositions:
@@ -134,7 +134,7 @@ def list_of_trades_given_optimal_and_actual_positions(
         )
         for instrument_code in list_of_instruments
     ]
-
+    #print(trade_list)
     trade_list = listOfOrders(trade_list)
 
     return trade_list
@@ -150,13 +150,13 @@ def trade_given_optimal_and_actual_positions(
 
     upper_for_instrument = optimal_positions.upper_positions[instrument_code]
     lower_for_instrument = optimal_positions.lower_positions[instrument_code]
-    actual_for_instrument = actual_positions.get(instrument_code, 0.0)
-    print((lower_for_instrument))
-    print((actual_for_instrument))
+    actual_for_instrument = actual_positions.get(instrument_code, 0)
+    #print((lower_for_instrument))
+    #print((actual_for_instrument))
     if type(lower_for_instrument) is NoneType:
-        lower_for_instrument = 0.0
+        lower_for_instrument = 0
     if type(upper_for_instrument) is NoneType:
-        upper_for_instrument = 0.0
+        upper_for_instrument = 0
     if isinstance(lower_for_instrument, str):
         lower_for_instrument = float(lower_for_instrument)
     if isinstance(upper_for_instrument, str):
@@ -203,5 +203,5 @@ def trade_given_optimal_and_actual_positions(
             reference_contract,
         )
     )
-
+    #print(order_required)
     return order_required

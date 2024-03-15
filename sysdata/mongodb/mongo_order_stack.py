@@ -85,7 +85,7 @@ class mongoOrderStackData(orderStackData):
 
     def _put_order_on_stack_no_checking(self, order: Order):
         order_as_dict = order.as_dict()
-        #print(order_as_dict)
+        #print(order)
         self.mongo_data.add_data(
             int(order.order_id), order_as_dict, allow_overwrite=False
         )

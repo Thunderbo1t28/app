@@ -216,6 +216,7 @@ class mongoDataWithSingleKey:
         self.collection.delete()
 
     def add_data(self, key, data_dict: dict, allow_overwrite=False, clean_ints=True):
+
         if clean_ints:
             cleaned_data_dict = self.convert_data_to_json(data_dict) #mongo_clean_ints(data_dict)
         else:
@@ -271,13 +272,22 @@ class mongoDataWithSingleKey:
             processed_dict = {}
             for key, value in data_dict.items():
                 if isinstance(value, float):
-                    processed_dict[key] = str(value)
+                    try:
+                        # Пробуем преобразовать в целое число
+                        int_value = int(value)
+                        # Преобразуем в строку только в том случае, если преобразование в int прошло успешно
+                        processed_dict[key] = str(int_value)
+                        #print(type(item[key]), item[key])
+                    except ValueError:
+                        # Если преобразование в int не удалось, оставляем значение как строку
+                        processed_dict[key] = str(value)
+                        #print(type(item[key]), item[key])
                 elif isinstance(value, datetime.datetime):
                     processed_dict[key] = value.strftime('%Y-%m-%d %H:%M:%S')
                 elif isinstance(value, np.int64):
                     processed_dict[key] = int(value)
                 elif isinstance(value, NoneType):
-                    processed_dict[key] = 0.0
+                    processed_dict[key] = None
                 
                 elif isinstance(value, dict):
                     processed_dict[key] = process_dict(value)
@@ -304,6 +314,7 @@ class mongoDataWithSingleKey:
         # Сериализация данных в JSON-строку
         #print(processed_data)
         json_data = json.dumps(processed_data)
+        #print(json_data)
 
         return json_data
     def parse_json_data(self, json_data):
