@@ -5,10 +5,12 @@ from sysdata.config.production_config import get_production_config
 from sysproduction.data.backtest import get_directory_store_backtests
 
 production_config = get_production_config()
-
+BASEDIR = os.getcwd()
 
 def get_main_backup_directory():
     ans = production_config.get_element("offsystem_backup_directory")
+    
+    ans = f'{BASEDIR}\\private\\offsystem'
     return get_resolved_pathname(ans)
 
 
@@ -21,11 +23,13 @@ def get_csv_backup_directory():
 
 def get_csv_dump_dir():
     ans = production_config.get_element("csv_backup_directory")
+    ans = f'{BASEDIR}\\private\\backups_csv'
     return get_resolved_pathname(ans)
 
 
 def get_mongo_dump_directory():
     ans = production_config.get_element("mongo_dump_directory")
+    ans = f'{BASEDIR}\\private\\mongo_dump'
     return get_resolved_pathname(ans)
 
 
@@ -38,6 +42,7 @@ def get_mongo_backup_directory():
 
 def get_statefile_directory():
     ans = get_directory_store_backtests()
+    ans = f'{BASEDIR}\\private\\backtests'
     return get_resolved_pathname(ans)
 
 
@@ -50,6 +55,7 @@ def get_statefile_backup_directory():
 
 def get_echo_file_directory():
     ans = production_config.get_element("echo_directory")
+    ans = f'{BASEDIR}\\private\\echos'
     return ans
 
 

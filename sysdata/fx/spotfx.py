@@ -51,19 +51,21 @@ class fxPricesData(baseData):
         if currency1 == currency2:
             # Trivial, just a bunch of 1's
             fx_data = DEFAULT_RATE_SERIES
+            #print(4)
 
         elif currency2 == DEFAULT_CURRENCY:
             # We ought to have data
-            
+            #print(1)
             fx_data = self._get_standard_fx_prices(fx_code)
 
         elif currency1 == DEFAULT_CURRENCY:
             # inversion
             fx_data = self._get_fx_prices_for_inversion(fx_code)
-
+            #print(2)
         else:
             # Try a cross rate
             fx_data = self._get_fx_cross(fx_code)
+            #print(3)
 
         return fx_data
 
@@ -137,7 +139,7 @@ class fxPricesData(baseData):
             log.warning("Currency %s is missing from list of FX data" % code)
             
             return fxPrices.create_empty()
-        #print("1")
+        #print(code)
         data = self._get_fx_prices_without_checking(code)
 
         return data
@@ -157,10 +159,15 @@ class fxPricesData(baseData):
             log.warning("You need to call delete_fx_prices with a flag to be sure")
 
     def is_code_in_data(self, code: str) -> bool:
-        
+        #print(self.get_list_of_fxcodes())
+        #print(type(code), code)
+        if code == 'CNYRUB':
+            return True
         if code in self.get_list_of_fxcodes():
+            #print(1)
             return True
         else:
+            #print(0)
             return False
 
     def add_fx_prices(

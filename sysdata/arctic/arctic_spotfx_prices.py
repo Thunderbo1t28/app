@@ -32,7 +32,7 @@ class arcticFxPricesData(fxPricesData):
         fx_data = self.arctic.read(currency_code)
 
         fx_prices = fxPrices(fx_data[fx_data.columns[0]])
-
+        #print(fx_prices)
         return fx_prices
 
     def _delete_fx_prices_without_any_warning_be_careful(self, currency_code: str):

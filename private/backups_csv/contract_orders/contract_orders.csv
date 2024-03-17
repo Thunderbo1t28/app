@@ -1,0 +1,8 @@
+DATETIME,key,trade,fill,fill_datetime,filled_price,locked,order_id,parent,children,active,order_type,algo_to_use,reference_price,limit_price,manual_trade,manual_fill,roll_order,calendar_spread_order,inter_spread_order,generated_datetime,reference_of_controlling_algo
+2024-03-15 10:40:44,example/ED/20240300,[18],[18],2024-03-15 10:40:44,1.0,False,1,1,,True,best,sysexecution.algos.algo_original_best.algoOriginalBest,1.0,,False,True,False,False,False,2024-03-15 10:40:31,
+2024-03-15 10:41:21,example/GMKN/20240300,[-30],[-30],2024-03-15 10:41:21,2.0,False,2,2,,True,best,sysexecution.algos.algo_original_best.algoOriginalBest,15087.0,,False,True,False,False,False,2024-03-15 10:40:32,
+2024-03-15 10:41:30,example/GOLD/20240300,[-1],[-1],2024-03-15 10:41:30,3.0,False,3,3,,True,best,sysexecution.algos.algo_original_best.algoOriginalBest,2152.0,,False,True,False,False,False,2024-03-15 10:40:32,
+2024-03-15 10:41:37,example/MXI/20240300,[-6],[-6],2024-03-15 10:41:37,4.0,False,4,4,,True,best,sysexecution.algos.algo_original_best.algoOriginalBest,3306.0,,False,True,False,False,False,2024-03-15 10:40:32,
+2024-03-15 10:41:48,example/RTSM/20240300,[22],[22],2024-03-15 10:41:48,5.0,False,5,5,,True,best,sysexecution.algos.algo_original_best.algoOriginalBest,1129.0,,False,True,False,False,False,2024-03-15 10:40:32,
+2024-03-15 10:42:00,example/SILV/20240300,[-11],[-11],2024-03-15 10:42:00,6.0,False,6,6,,True,best,sysexecution.algos.algo_original_best.algoOriginalBest,24.0,,False,True,False,False,False,2024-03-15 10:40:32,
+2024-03-15 10:42:07,example/SPYF/20240300,[-10],[-10],2024-03-15 10:42:07,7.0,False,7,7,,True,best,sysexecution.algos.algo_original_best.algoOriginalBest,514.0,,False,True,False,False,False,2024-03-15 10:40:32,

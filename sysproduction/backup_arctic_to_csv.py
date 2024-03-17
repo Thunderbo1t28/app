@@ -96,6 +96,8 @@ class backupArcticToCsv:
 def get_data_and_create_csv_directories(logname):
 
     csv_dump_dir = get_csv_dump_dir()
+    #BASEDIR = os.getcwd()
+    #csv_dump_dir = f'{BASEDIR}\\private\\backups_csv'
 
     class_paths = dict(
         csvBrokerHistoricOrdersData="broker_orders",

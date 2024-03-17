@@ -81,6 +81,7 @@ class dataCurrency(productionDataLayerGeneric):
         :return: float
         """
         fx_data = self.get_fx_prices(currency_pair)
+        #print(fx_data)
         last_fx_rate = fx_data.values[-1]
         return last_fx_rate
 

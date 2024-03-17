@@ -201,6 +201,7 @@ class marketMovers(object):
 def get_price_change_from_series_for_period(
     price_series: pd.Series, start_date: datetime.date, end_date: datetime.date
 ) -> float:
+    #print(start_date)
     price_series_for_period = price_series[start_date:end_date]
     if len(price_series_for_period) == 0:
         return np.nan

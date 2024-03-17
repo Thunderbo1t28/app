@@ -135,6 +135,8 @@ class logToFile(pst_logger):
 def get_logging_directory(data: "dataBlob"):
     config = get_production_config()
     log_dir = config.get_element_or_default("log_directory", None)
+    BASEDIR = os.getcwd()
+    log_dir = f'{BASEDIR}\\private\\log'
     if log_dir is None:
         ## Can't log this but print anyway
         print(
