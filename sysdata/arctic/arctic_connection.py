@@ -80,15 +80,30 @@ class arcticData(object):
                 #print(type(value), value)
                 if isinstance(value, float):
                     try:
-                        # Пробуем преобразовать в целое число
+                        '''# Пробуем преобразовать в целое число
                         int_value = int(value)
                         # Преобразуем в строку только в том случае, если преобразование в int прошло успешно
                         item[key] = str(int_value)
                         #print(type(item[key]), item[key])
-                    except ValueError:
+                    except ValueError:'''
                         # Если преобразование в int не удалось, оставляем значение как строку
                         item[key] = str(value)
                         #print(type(item[key]), item[key])
+                    except ValueError:
+                        pass
+                if isinstance(value, int):
+                    try:
+                        '''# Пробуем преобразовать в целое число
+                        int_value = int(value)
+                        # Преобразуем в строку только в том случае, если преобразование в int прошло успешно
+                        item[key] = str(int_value)
+                        #print(type(item[key]), item[key])
+                    except ValueError:'''
+                        # Если преобразование в int не удалось, оставляем значение как строку
+                        item[key] = str(value)
+                        #print(type(item[key]), item[key])
+                    except ValueError:
+                        pass
                 elif pd.isna(value):
                     item[key] = None
                 
@@ -147,23 +162,28 @@ class arcticData(object):
             for item in parsed_data:
                 for key, value in item.items():
                     if isinstance(value, str):
-                        if '.' in value:  # Если есть десятичная точка
-                            # try:
-                            #     date_value = datetime.strptime(value.split('.')[0], '%Y%m%d')
-                            #     # Проверяем, что дата входит в интервал
-                            #     if 2010 <= date_value.year <= 2025:
-                            #         item[key] = date_value.strftime('%Y%m%d') # Преобразуем в формат без точки
-                            # except ValueError:
-                            try:
-                                item[key] = float(value)  # Попробуем преобразовать в float
-                            except ValueError:
-                                pass  # Если не удалось преобразовать, оставляем как строку
-                        elif value.isdigit():  # Если это целое число
+                        try:
+                            # Преобразуем в строку только в том случае, если преобразование в int прошло успешно
                             item[key] = int(value)
-                        elif value == 'nan':
-                            item[key] = None
-                        elif pd.isna(value):
-                            item[key] = None
+                            #print(type(item[key]), item[key])
+                        except ValueError:
+                            if '.' in value:  # Если есть десятичная точка
+                                # try:
+                                #     date_value = datetime.strptime(value.split('.')[0], '%Y%m%d')
+                                #     # Проверяем, что дата входит в интервал
+                                #     if 2010 <= date_value.year <= 2025:
+                                #         item[key] = date_value.strftime('%Y%m%d') # Преобразуем в формат без точки
+                                # except ValueError:
+                                try:
+                                    item[key] = float(value)  # Попробуем преобразовать в float
+                                except ValueError:
+                                    pass  # Если не удалось преобразовать, оставляем как строку
+                            elif value.isdigit():  # Если это целое число
+                                item[key] = int(value)
+                            elif value == 'nan':
+                                item[key] = None
+                            elif pd.isna(value):
+                                item[key] = None
         
         #print(self.model)
         #print(f"arctic {parsed_data}")

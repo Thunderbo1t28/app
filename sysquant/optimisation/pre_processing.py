@@ -15,6 +15,7 @@ class returnsPreProcessor(object):
     def __init__(
         self,
         dict_of_returns: dictOfReturnsForOptimisationWithCosts,
+        log,
         turnovers: turnoverDataForAGroupOfItems,
         frequency: str = "W",
         pool_gross_returns: bool = True,

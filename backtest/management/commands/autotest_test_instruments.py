@@ -39,7 +39,7 @@ class Command(BaseCommand):
         
         for instrument in instruments:
             print(instrument)
-            my_config = Config(f"{BASEDIR}\\private\\autotest\\config.yaml")
+            my_config = Config(f"{BASEDIR}\\private\\autotest_test_instruments\\config.yaml")
             my_config.instruments = [instrument]
             
             system = System(
@@ -62,7 +62,7 @@ class Command(BaseCommand):
             parsed_result = profits.percent.stats()
             
             sysdiag = systemDiag(system)
-            sysdiag.yaml_config_with_estimated_parameters(f'{BASEDIR}\\private\\autotest\\result.yaml',
+            sysdiag.yaml_config_with_estimated_parameters(f'{BASEDIR}\\private\\autotest_test_instruments\\result.yaml',
                                                         attr_names=['forecast_scalars',
                                                                             'forecast_weights',
                                                                             'forecast_div_multiplier',
@@ -72,21 +72,21 @@ class Command(BaseCommand):
             
 
             # Загрузка содержимого первого YAML файла
-            with open(f'{BASEDIR}\\private\\autotest\\template.yaml', 'r') as file1:
+            with open(f'{BASEDIR}\\private\\autotest_test_instruments\\template.yaml', 'r') as file1:
                 data1 = yaml.safe_load(file1)
 
             # Загрузка содержимого второго YAML файла
-            with open(f'{BASEDIR}\\private\\autotest\\result.yaml', 'r') as file2:
+            with open(f'{BASEDIR}\\private\\autotest_test_instruments\\result.yaml', 'r') as file2:
                 data2 = yaml.safe_load(file2)
 
             # Объединение данных из двух файлов
             combined_data = {**data1, **data2}
 
             # Запись объединенных данных в новый YAML файл
-            with open(f'{BASEDIR}\\private\\autotest\\combine.yaml', 'w') as outfile:
+            with open(f'{BASEDIR}\\private\\autotest_test_instruments\\combine.yaml', 'w') as outfile:
                 yaml.dump(combined_data, outfile)
             
-            my_config = Config(f"{BASEDIR}\\private\\autotest\\combine.yaml")
+            my_config = Config(f"{BASEDIR}\\private\\autotest_test_instruments\\combine.yaml")
             # Получение аргументов из командной строки по их именам
             
             #config = MyConfigModel.objects.get(id=config_id)

@@ -112,6 +112,7 @@ class RawData(SystemStage):
         2015-12-11  0.1075
         """
         instrdailyprice = self.get_daily_prices(instrument_code)
+        #print(instrdailyprice)
         dailyreturns = instrdailyprice.diff()
 
         return dailyreturns

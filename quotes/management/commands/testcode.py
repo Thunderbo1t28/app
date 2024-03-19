@@ -150,7 +150,7 @@ class Command(BaseCommand):
         #run_backups()
         #run_stack_handler()
         #run_cleaners()
-        #run_reports()
+        run_reports()
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))
         
