@@ -1,5 +1,64 @@
+GMT_offset_hours: 0
+average_absolute_forecast: 10.0
+backtest_store_directory: /Users/kairsabiev/code/proj1/app/data/backtests
 base_currency: RUB
+broker_account: U9641370
+broker_factory_func: sysbrokers.broker_factory.get_ib_class_list2
+buffer_method: forecast
+buffer_size: 0.1
+buffer_trade_to_edge: true
+capital_multiplier:
+  func: syscore.capital.fixed_capital
+csv_backup_directory: /Users/kairsabiev/code/proj1/app/data/backups_csv
+duplicate_instruments:
+  exclude:
+    things:
+    - bad_thing
+    - Another_thing
+  include:
+    things: thing_we_want
+echo_directory: /Users/kairsabiev/code/proj1/app/private/echos
+echo_extension: .txt
+email_address: ksabiev@gmail.com
+email_port: 587
+email_pwd: lwxawmrlhhslezga
+email_security: TLS
+email_server: smtp.gmail.com
+email_to: ksabiev@gmail.com
+exclude_instrument_lists:
+  bad_markets:
+  - BAD_EXAMPLE
+  ignore_instruments:
+  - EXAMPLE
+  trading_restrictions:
+  - RESTRICTED_EXAMPLE
+execution_algos:
+  algo_overrides:
+    some_market_name_eg_IRON: sysexecution.algos.algo_market.algoMarket
+  best_algo: sysexecution.algos.algo_original_best.algoOriginalBest
+  default_algo: sysexecution.algos.algo_original_best.algoOriginalBest
+  limit_order_algo: sysexecution.algos.algo_limit_orders.algoLimit
+  market_algo: sysexecution.algos.algo_snaps.algoSnapMkt
 forecast_cap: 20.0
+forecast_correlation_estimate:
+  cleaning: true
+  date_method: expanding
+  ew_lookback: 250
+  floor_at_zero: true
+  forward_fill_data: true
+  frequency: W
+  func: sysquant.estimators.pooled_correlation.pooled_correlation_estimator
+  min_periods: 20
+  pool_instruments: true
+  rollyears: 20
+  using_exponent: true
+forecast_cost_estimates:
+  use_pooled_costs: false
+  use_pooled_turnover: true
+forecast_div_mult_estimate:
+  dm_max: 2.5
+  ewma_span: 125
+  func: sysquant.estimators.diversification_multipliers.diversification_multiplier_from_list
 forecast_div_multiplier:
   AFKS: 2.0285731720108555
   ALRS: 2.0323690840051993
@@ -27,6 +86,14 @@ forecast_div_multiplier:
   Si: 2.280904928804387
   VTBR: 2.28604309104044
 forecast_mapping: {}
+forecast_post_ceiling_cost_SR: 999
+forecast_scalar: 1.0
+forecast_scalar_estimate:
+  backfill: true
+  func: sysquant.estimators.forecast_scalar.forecast_scalar
+  min_periods: 500
+  pool_instruments: true
+  window: 250000
 forecast_scalars:
   accel16: 7.8170710605387095
   accel32: 5.563487137713779
@@ -68,6 +135,41 @@ forecast_scalars:
   skewabs365: 2.351483885205172
   skewrv180: 5.244752769697409
   skewrv365: 3.002222097593425
+forecast_weight_estimate:
+  ann_target_SR: 0.5
+  apply_cost_weight: false
+  ceiling_cost_SR: 9999
+  cleaning: true
+  correlation_estimate:
+    cleaning: false
+    ew_lookback: 50000
+    floor_at_zero: false
+    func: sysquant.estimators.correlation_estimator.correlationEstimator
+    min_periods: 10
+    using_exponent: true
+  cost_multiplier: 2.0
+  date_method: expanding
+  equalise_SR: false
+  equalise_gross: false
+  equalise_vols: true
+  frequency: W
+  func: sysquant.optimisation.generic_optimiser.genericOptimiser
+  mean_estimate:
+    ew_lookback: 50000
+    func: sysquant.estimators.mean_estimator.meanEstimator
+    min_periods: 5
+    using_exponent: true
+  method: handcraft
+  pool_gross_returns: true
+  rollyears: 20
+  shrinkage_SR: 0.9
+  shrinkage_corr: 0.5
+  vol_estimate:
+    ew_lookback: 50000
+    func: sysquant.estimators.stdev_estimator.stdevEstimator
+    min_periods: 5
+    using_exponent: true
+forecast_weight_ewma_span: 125
 forecast_weights:
   AFKS:
     accel16: 0.030980670636126858
@@ -1094,7 +1196,78 @@ forecast_weights:
     skewabs365: 0.04020108087030969
     skewrv180: 0.04098157002545328
     skewrv365: 0.045092827557455244
+ib_idoffset: 100
+ib_ipaddress: 127.0.0.1
+ib_port: 4001
+ignore_future_prices: true
+ignore_negative_prices: false
+ignore_prices_with_zero_volumes_daily: false
+ignore_prices_with_zero_volumes_intraday: true
+ignore_zero_prices: true
+instrument_correlation_estimate:
+  cleaning: true
+  date_method: expanding
+  ew_lookback: 25
+  floor_at_zero: true
+  forward_fill_price_index: true
+  frequency: W
+  func: sysquant.estimators.correlation_over_time.correlation_over_time_for_returns
+  min_periods: 20
+  rollyears: 20
+  using_exponent: true
+instrument_div_mult_estimate:
+  dm_max: 2.5
+  ewma_span: 125
+  func: sysquant.estimators.diversification_multipliers.diversification_multiplier_from_list
 instrument_div_multiplier: 2.4932020440659683
+instrument_returns_correlation:
+  cleaning: true
+  clip: 0.99
+  date_method: rolling
+  ew_lookback: 75
+  floor_at_zero: false
+  forward_fill_price_index: true
+  frequency: 7D
+  func: sysquant.estimators.correlation_over_time.correlation_over_time_for_returns
+  interval_frequency: W
+  min_periods: 10
+  offdiag: 0.0
+  rollyears: 5
+  using_exponent: true
+instrument_weight_estimate:
+  ann_target_SR: 0.5
+  apply_cost_weight: false
+  cleaning: true
+  correlation_estimate:
+    cleaning: false
+    ew_lookback: 500000
+    floor_at_zero: true
+    func: sysquant.estimators.correlation_estimator.correlationEstimator
+    min_periods: 10
+    using_exponent: true
+  cost_multiplier: 1.0
+  date_method: expanding
+  equalise_SR: true
+  equalise_gross: false
+  equalise_vols: true
+  frequency: W
+  func: sysquant.optimisation.generic_optimiser.genericOptimiser
+  mean_estimate:
+    ew_lookback: 50000
+    func: sysquant.estimators.mean_estimator.meanEstimator
+    min_periods: 5
+    using_exponent: true
+  method: handcraft
+  monte_runs: 100
+  rollyears: 20
+  shrinkage_corr: 0.5
+  shrinkage_mean: 1.0
+  vol_estimate:
+    ew_lookback: 50000
+    func: sysquant.estimators.stdev_estimator.stdevEstimator
+    min_periods: 5
+    using_exponent: true
+instrument_weight_ewma_span: 125
 instrument_weights:
   AFKS: 0.02857017075713786
   ALRS: 0.030578354765297612
@@ -1121,14 +1294,56 @@ instrument_weights:
   SNGR: 0.04889079238812326
   Si: 0.05466732119550399
   VTBR: 0.029822271785809276
-notional_trading_capital: 4000000
+instruments_with_threshold: []
+intraday_frequency: H
+log_directory: /Users/kairsabiev/code/proj1/app/data/log
+long_only_instruments:
+- an_instrument
+- another_instrument
+max_price_spike: 8.0
+mongo_db: '05'
+mongo_dump_directory: /Users/kairsabiev/code/proj1/app/data/mongo_dump
+mongo_host: 127.0.0.1
+mongo_port: 27017
+multiply_roll_costs_by: 0.5
+notional_trading_capital: 4000000.0
+offsystem_backup_directory: /Users/kairsabiev/code/proj1/app/data/offsystem
 percentage_vol_target: 25.0
+production_capital_method: full
+reporting_directory: /Users/kairsabiev/code/proj1/app/data/reports
 risk_overlay:
   max_risk_fraction_normal_risk: 1.75
   max_risk_fraction_stdev_risk: 4.0
   max_risk_leverage: 20.0
   max_risk_limit_sum_abs_risk: 4.0
+roll_status_auto_update:
+  auto_roll_expired: true
+  auto_roll_if_relative_volume_higher_than: 1.0
+  default_roll_state_if_undecided: Ask
+  min_absolute_volume: 100
+  min_relative_volume: 0.01
+  near_expiry_days: 10
+small_system:
+  cost_multiplier: 1.0
+  shadow_cost: 50
+  shrink_instrument_returns_correlation: 0.5
+  tracking_error_buffer: 0.0125
+stale_instruments:
+- an_instrument_i_no_longer_trade_or_sample
+stale_strategies:
+- a strat we no longer run
 start_date: 2020-01-01
+strategy_capital_allocation:
+  function: sysproduction.strategy_code.strategy_allocation.weighted_strategy_allocation
+  strategy_weights:
+    example: 100.0
+strategy_list:
+  example:
+    load_backtests:
+      function: system_method
+      object: sysproduction.strategy_code.run_system_classic.runSystemClassic
+    reporting_code:
+      function: sysproduction.strategy_code.report_system_classic.report_system_classic
 trading_rules:
   accel16:
     data:
@@ -1411,6 +1626,7 @@ trading_rules:
       _factor_name: neg_skew
       _lookback_days: 365
       smooth: 90
+use_SR_costs: false
 use_attenuation:
 - breakout10
 - breakout20
@@ -1443,11 +1659,14 @@ use_forecast_scale_estimates: false
 use_forecast_weight_estimates: false
 use_instrument_div_mult_estimates: false
 use_instrument_weight_estimates: false
+vol_normalise_currency_costs: true
 volatility_calculation:
   backfill: true
   days: 35
   func: sysquant.estimators.vol.mixed_vol_calc
   min_periods: 10
+  multiplier_to_get_daily_vol: 1.0
+  name_returns_attr_in_rawdata: daily_returns
   proportion_of_slow_vol: 0.35
   slow_vol_years: 20
   vol_abs_min: 1.0e-10

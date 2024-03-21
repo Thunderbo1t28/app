@@ -198,7 +198,7 @@ class controlProcess(object):
     def from_dict(controlProcess, input_dict):
         #print(controlProcess)
         #print(input_dict)
-        if "running_methods" in input_dict:
+        if input_dict is not None and "running_methods" in input_dict:
             input_dict["running_methods"] = dictOfRunningMethods(
                 input_dict.get("running_methods", {})
             )

@@ -34,7 +34,7 @@ class Command(BaseCommand):
         
         #config = MyConfigModel.objects.get(id=config_id)
         # Создание объекта Config с полученными параметрами
-        instruments = ['RVI', 'SGZH', 'NASD', 'SIBN', 'WHEAT', 'KMAZ', 'POLY', 'MTLR', 'DAX', 'MAGN', 'AFKS', 'PLZL', 'HKD', 'NG', 'GMKN', 'MVID', 'STOX', 'OZON', 'Eu', 'SBPR', 'CHMF', 'BELU', 'TRY', 'Si', 'PLD', 'NLMK', 'SBRF', 'HANG', 'AFLT', 'CNY', 'MIX', 'SNGP', 'YNDF', 'RTKM', 'ALRS', 'RTS', 'FIVE', 'TRNF', 'MGNT', 'ROSN', 'MTSI', 'RUAL', 'GAZR', 'NOTK', 'MXI', 'SNGR']#"PIKK", "SMLT","HANG","NASD","ED","SILV","SPYF","GOLD","BR","MOEX","SBPR","SPBE","CNY","YNDF","MTSI","NG","CHMF","MXI","MIX","PLT","AFKS","SNGR","OZON","Si"]
+        instruments = ['MGNT', 'NG', 'PLZL', 'ALRS', 'AFKS', 'VTBR', 'Eu', 'SNGR', 'Si', 'GMKN', 'SNGP', 'GAZR', 'RTKM', 'MXI', 'ROSN', 'SBPR', 'SBRF', 'LKOH', 'SILV', 'MOEX', 'PLT', 'HYDR', 'ED', 'GBPU', 'AUDU']
         print(instruments)
         
             
@@ -68,29 +68,55 @@ class Command(BaseCommand):
         
 
         sysdiag = systemDiag(system)
-        sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}\\private\\test_single\\result.yaml",
+        
+        
+        # Определение базового каталога
+        if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+            sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}/private/test_single/result.yaml",
                                                     attr_names=['forecast_scalars',
                                                                         'forecast_weights',
                                                                         'forecast_div_multiplier',
                                                                         'forecast_mapping',
                                                                         'instrument_weights',
                                                                         'instrument_div_multiplier'])
+            # Загрузка содержимого первого YAML файла
+            with open(f"{BASEDIR}/private/test_single/template.yaml", 'r') as file1:
+                data1 = yaml.safe_load(file1)
+
+            # Загрузка содержимого второго YAML файла
+            with open(f'{BASEDIR}/private/test_single/result.yaml', 'r') as file2:
+                data2 = yaml.safe_load(file2)
+
+            # Объединение данных из двух файлов
+            combined_data = {**data1, **data2}
+
+            # Запись объединенных данных в новый YAML файл
+            with open(f'{BASEDIR}/private/test_single/combined.yaml', 'w') as outfile:
+                yaml.dump(combined_data, outfile)
+        elif os.name == 'nt':   # для Windows
+            sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}\\private\\test_single\\result.yaml",
+                                                    attr_names=['forecast_scalars',
+                                                                        'forecast_weights',
+                                                                        'forecast_div_multiplier',
+                                                                        'forecast_mapping',
+                                                                        'instrument_weights',
+                                                                        'instrument_div_multiplier'])
+            with open(f"{BASEDIR}\\private\\test_single\\template.yaml", 'r') as file1:
+                data1 = yaml.safe_load(file1)
+
+            # Загрузка содержимого второго YAML файла
+            with open(f'{BASEDIR}\\private\\test_single\\result.yaml', 'r') as file2:
+                data2 = yaml.safe_load(file2)
+
+            # Объединение данных из двух файлов
+            combined_data = {**data1, **data2}
+
+            # Запись объединенных данных в новый YAML файл
+            with open(f'{BASEDIR}\\private\\test_single\\combined.yaml', 'w') as outfile:
+                yaml.dump(combined_data, outfile)
+        else:
+            raise NotImplementedError("Unsupported operating system")
         
-
-        # Загрузка содержимого первого YAML файла
-        with open(f"{BASEDIR}\\private\\test_single\\template.yaml", 'r') as file1:
-            data1 = yaml.safe_load(file1)
-
-        # Загрузка содержимого второго YAML файла
-        with open(f'{BASEDIR}\\private\\test_single\\result.yaml', 'r') as file2:
-            data2 = yaml.safe_load(file2)
-
-        # Объединение данных из двух файлов
-        combined_data = {**data1, **data2}
-
-        # Запись объединенных данных в новый YAML файл
-        with open(f'{BASEDIR}\\private\\test_single\\combined.yaml', 'w') as outfile:
-            yaml.dump(combined_data, outfile)
         
         my_config = Config(f"{BASEDIR}\\private\\test_single\\combined.yaml")
         # Получение аргументов из командной строки по их именам
@@ -124,7 +150,7 @@ class Command(BaseCommand):
 
         parsed_result = profits.percent.stats()
         get_weights = system.portfolio.get_instrument_weights()
-        get_weights.to_csv(f"{BASEDIR}\\private\\test_single\\instrument_weights.csv", encoding="utf-8")
+        #get_weights.to_csv(f"{BASEDIR}\\private\\test_single\\instrument_weights.csv", encoding="utf-8")
         backtest_result = BacktestResult2(
             instruments = instruments,
             min=float(parsed_result[0][0][1]),

@@ -228,6 +228,7 @@ def fix_weights_vs_position_or_forecast(
     pdm_ffill[p_or_f_notnan.sum(axis=1) == 0] = 0
 
     # resample weights
+    #print(weights)
     adj_weights = uniquets(weights)
     adj_weights = adj_weights.reindex(pdm_ffill.index, method="ffill")
 

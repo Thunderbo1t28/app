@@ -503,7 +503,12 @@ class mongoDataWithMultipleKeys:
         return list_of_result_dicts
 
     def key_dict_is_in_data(self, dict_of_keys: dict) -> bool:
-        return self._mongo.key_is_in_data(dict_of_keys)
+        try:
+            self.get_result_dict_for_dict_keys(dict_of_keys)
+        except missingData:
+            return False
+        else:
+            return True
 
     def add_data(
         self,

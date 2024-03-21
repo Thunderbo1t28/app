@@ -31,15 +31,15 @@ strategy_capital_allocation:
     example: 100.0
 #
 ## Where do we save backtests
-backtest_store_directory: '/home/ksabiev/data/backtests'
+backtest_store_directory: '/Users/kairsabiev/code/proj1/app/data/backtests'
 #
 # And backups
-csv_backup_directory: '/home/ksabiev/data/backups_csv'
-mongo_dump_directory: '/home/ksabiev/data/mongo_dump'
-echo_directory: 'private/echos'
-log_directory: '/home/ksabiev/data/log'
-offsystem_backup_directory: '/home/ksabiev/data/offsystem'
-reporting_directory: '/home/ksabiev/data/reports'
+csv_backup_directory: '/Users/kairsabiev/code/proj1/app/data/backups_csv'
+mongo_dump_directory: '/Users/kairsabiev/code/proj1/app/data/mongo_dump'
+echo_directory: '/Users/kairsabiev/code/proj1/app/private/echos'
+log_directory: '/Users/kairsabiev/code/proj1/app/data/log'
+offsystem_backup_directory: '/Users/kairsabiev/code/proj1/app/data/offsystem'
+reporting_directory: '/Users/kairsabiev/code/proj1/app/data/reports'
 #
 # Interactive brokers
 ib_ipaddress: 127.0.0.1

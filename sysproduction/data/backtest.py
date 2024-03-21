@@ -211,8 +211,13 @@ def store_backtest_state(data, system, strategy_name="default_strategy"):
 def ensure_backtest_directory_exists(strategy_name):
     full_directory = get_backtest_directory_for_strategy(strategy_name)
     try:
+        #full_directory = os.getcwd()
         os.makedirs(full_directory)
+
     except FileExistsError:
+        pass
+    except OSError as e:
+        #full_directory = os.getcwd()
         pass
 
 

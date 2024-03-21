@@ -55,7 +55,7 @@ class Command(BaseCommand):
         datapath = BASEDIR + "/downloadData"
         csv_multiple_data_path = f"{BASEDIR}\\data\\futures\\multiple_prices_csv"
         csv_roll_data_path = f"{BASEDIR}\\data\\futures\\roll_calendars_csv"
-
+        #print(os.)
 
         #data = init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)
 
@@ -146,11 +146,11 @@ class Command(BaseCommand):
         #interactive_manual_check_fx_prices()
         #interactive_manual_check_historical_prices()
         #update_sampled_contracts()
-        #interactive_order_stack()
+        interactive_order_stack()
         #run_backups()
         #run_stack_handler()
         #run_cleaners()
-        run_reports()
+        #run_reports()
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))
         
