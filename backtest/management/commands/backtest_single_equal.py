@@ -29,12 +29,12 @@ class Command(BaseCommand):
         #logging.info("Starting backtest_test command...")
         data = dbFuturesSimData()
         BASEDIR = os.getcwd()
-        my_config = Config(f"{BASEDIR}\\private\\test_single\\config.yaml")
+        my_config = Config(f"{BASEDIR}\\private\\test_single\\config_equal.yaml")
         # Получение аргументов из командной строки по их именам
         
         #config = MyConfigModel.objects.get(id=config_id)
         # Создание объекта Config с полученными параметрами
-        instruments = ['MGNT', 'NG', 'PLZL', 'ALRS', 'AFKS', 'VTBR', 'Eu', 'SNGR', 'Si', 'GMKN', 'SNGP', 'GAZR', 'RTKM', 'MXI', 'ROSN', 'SBPR', 'SBRF', 'LKOH', 'SILV', 'MOEX', 'PLT', 'HYDR', 'ED']
+        instruments = ['MGNT', 'NG', 'PLZL', 'ALRS', 'AFKS', 'VTBR', 'Eu', 'SNGR', 'Si', 'GMKN', 'SNGP', 'GAZR', 'RTKM', 'MXI', 'ROSN', 'SBPR', 'SBRF', 'LKOH', 'SILV', 'MOEX', 'PLT', 'HYDR', 'ED', 'GBPU', 'AUDU']
         print(instruments)
         
             
@@ -72,7 +72,7 @@ class Command(BaseCommand):
         
         # Определение базового каталога
         if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
-            sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}/private/test_single/result.yaml",
+            sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}/private/test_single/result_equal.yaml",
                                                     attr_names=['forecast_scalars',
                                                                         'forecast_weights',
                                                                         'forecast_div_multiplier',
@@ -80,18 +80,18 @@ class Command(BaseCommand):
                                                                         'instrument_weights',
                                                                         'instrument_div_multiplier'])
             # Загрузка содержимого первого YAML файла
-            with open(f"{BASEDIR}/private/test_single/template.yaml", 'r') as file1:
+            with open(f"{BASEDIR}/private/test_single/template_equal.yaml", 'r') as file1:
                 data1 = yaml.safe_load(file1)
 
             # Загрузка содержимого второго YAML файла
-            with open(f'{BASEDIR}/private/test_single/result.yaml', 'r') as file2:
+            with open(f'{BASEDIR}/private/test_single/result_equal.yaml', 'r') as file2:
                 data2 = yaml.safe_load(file2)
 
             # Объединение данных из двух файлов
             combined_data = {**data1, **data2}
 
             # Запись объединенных данных в новый YAML файл
-            with open(f'{BASEDIR}/private/test_single/combined.yaml', 'w') as outfile:
+            with open(f'{BASEDIR}/private/test_single/combined_equal.yaml', 'w') as outfile:
                 yaml.dump(combined_data, outfile)
         elif os.name == 'nt':   # для Windows
             sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}\\private\\test_single\\result.yaml",
@@ -118,7 +118,7 @@ class Command(BaseCommand):
             raise NotImplementedError("Unsupported operating system")
         
         
-        my_config = Config(f"{BASEDIR}\\private\\test_single\\combined.yaml")
+        my_config = Config(f"{BASEDIR}\\private\\test_single\\combined_equal.yaml")
         # Получение аргументов из командной строки по их именам
         
         #config = MyConfigModel.objects.get(id=config_id)
@@ -177,4 +177,4 @@ class Command(BaseCommand):
         )
         # Сохранение экземпляра в базе данных
         backtest_result.save()
-        self.stdout.write(self.style.SUCCESS('Successfully tested EWMA Trading Rule.'))
+        self.stdout.write(self.style.SUCCESS('Successfully Becktest Single Equal.'))
