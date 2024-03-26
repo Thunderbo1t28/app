@@ -53,7 +53,11 @@ class Command(BaseCommand):
                 #return (0,)
             
             instruments = [all_instruments[i] for i, gene in enumerate(individual) if gene]
-            my_config = Config(f"{BASEDIR}\\private\\autotest\\config.yaml")
+            if os.name == 'posix':
+
+                my_config = Config(f"{BASEDIR}/private/autotest/config.yaml")
+            elif os.name == 'nt': 
+                my_config = Config(f"{BASEDIR}\\private\\autotest\\config.yaml")
             my_config.instruments = instruments
             system = System([
                 Risk(),
@@ -70,31 +74,59 @@ class Command(BaseCommand):
             parsed_result = profits.percent.stats()
 
             sysdiag = systemDiag(system)
-            sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}\\private\\autotest\\result.yaml",
+            
+            
+
+            if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+                sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}/private/autotest/result.yaml",
                                                         attr_names=['forecast_scalars',
                                                                             'forecast_weights',
                                                                             'forecast_div_multiplier',
                                                                             'forecast_mapping',
                                                                             'instrument_weights',
                                                                             'instrument_div_multiplier'])
+                # Загрузка содержимого первого YAML файла
+                with open(f"{BASEDIR}/private/autotest/template.yaml", 'r') as file1:
+                    data1 = yaml.safe_load(file1)
+
+                # Загрузка содержимого второго YAML файла
+                with open(f'{BASEDIR}/private/autotest/result.yaml', 'r') as file2:
+                    data2 = yaml.safe_load(file2)
+
+                # Объединение данных из двух файлов
+                combined_data = {**data1, **data2}
+
+                # Запись объединенных данных в новый YAML файл
+                with open(f'{BASEDIR}/private/autotest/combined.yaml', 'w') as outfile:
+                    yaml.dump(combined_data, outfile)
+                my_config = Config(f"{BASEDIR}/private/autotest/combined.yaml")
+            elif os.name == 'nt':   # для Windows
+                sysdiag.yaml_config_with_estimated_parameters(f"{BASEDIR}\\private\\autotest\\result.yaml",
+                                                        attr_names=['forecast_scalars',
+                                                                            'forecast_weights',
+                                                                            'forecast_div_multiplier',
+                                                                            'forecast_mapping',
+                                                                            'instrument_weights',
+                                                                            'instrument_div_multiplier'])
+                with open(f"{BASEDIR}\\private\\autotest\\template.yaml", 'r') as file1:
+                    data1 = yaml.safe_load(file1)
+
+                # Загрузка содержимого второго YAML файла
+                with open(f'{BASEDIR}\\private\\autotest\\result.yaml', 'r') as file2:
+                    data2 = yaml.safe_load(file2)
+
+                # Объединение данных из двух файлов
+                combined_data = {**data1, **data2}
+
+                # Запись объединенных данных в новый YAML файл
+                with open(f'{BASEDIR}\\private\\autotest\\combined.yaml', 'w') as outfile:
+                    yaml.dump(combined_data, outfile)
+                my_config = Config(f"{BASEDIR}\\private\\autotest\\combined.yaml")
+            else:
+                raise NotImplementedError("Unsupported operating system")
             
-
-            # Загрузка содержимого первого YAML файла
-            with open(f"{BASEDIR}\\private\\autotest\\template.yaml", 'r') as file1:
-                data1 = yaml.safe_load(file1)
-
-            # Загрузка содержимого второго YAML файла
-            with open(f"{BASEDIR}\\private\\autotest\\result.yaml", 'r') as file2:
-                data2 = yaml.safe_load(file2)
-
-            # Объединение данных из двух файлов
-            combined_data = {**data1, **data2}
-
-            # Запись объединенных данных в новый YAML файл
-            with open(f"{BASEDIR}\\private\\autotest\\combined.yaml", 'w') as outfile:
-                yaml.dump(combined_data, outfile)
             
-            my_config = Config(f"{BASEDIR}\\private\\autotest\\combined.yaml")
+            
             
             # Создание объекта Config с полученными параметрами
             my_config.instruments = instruments
