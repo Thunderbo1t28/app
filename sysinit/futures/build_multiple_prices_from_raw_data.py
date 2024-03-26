@@ -85,8 +85,11 @@ def create_multiple_price_stack_from_raw_data(
 
     # end of loop
     all_price_data_stack = pd.concat(all_price_data_stack, axis=0)
-
+    all_price_data_stack['PRICE'].fillna(all_price_data_stack['FORWARD'], inplace=True)
+    all_price_data_stack['FORWARD'].fillna(all_price_data_stack['PRICE'], inplace=True)
+    all_price_data_stack['CARRY'].fillna(all_price_data_stack['FORWARD'], inplace=True)
     return all_price_data_stack
+    
 
 
 def _get_price_data_between_rolls(
@@ -338,5 +341,5 @@ def _build_all_price_data(set_of_price_data, contract_date_info):
     all_price_data[
         contract_name_from_column_name(carry_name)
     ] = contract_date_info.carry_contract
-
+    all_price_data = all_price_data.fillna(method='ffill')
     return all_price_data
