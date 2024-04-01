@@ -20,8 +20,8 @@ class Command(BaseCommand):
         current_date = datetime.now().date() #datetime.strptime("2024-01-01", "%Y-%m-%d").date()  #datetime.now().date()
 
         # Задаем конечную дату (например, "2024-01-01")
-        end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
-        #end_date = FxPriceData.objects.all().order_by('timestamp').last().timestamp.date()
+        #end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
+        end_date = FxPriceData.objects.all().order_by('timestamp').last().timestamp.date()
         # Инициализируем список дат, начиная от текущей и идя к заданной конечной дате
         date_list = []
         while current_date >= end_date:

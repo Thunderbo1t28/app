@@ -136,19 +136,25 @@ class Command(BaseCommand):
         #update_capital_pd_df_for_strategy()
         #interactive_update_capital_manual()
         #run_capital_update()
-        #run_systems()
+        
         #update_total_capital()
         #update_strategy_capital()
-        #run_strategy_order_generator()
+        
         #interactive_controls()
         #interactive_update_roll_status()
         #interactive_diagnostics()
         #interactive_manual_check_fx_prices()
         #interactive_manual_check_historical_prices()
         #update_sampled_contracts()
-        #interactive_order_stack()
-        #run_backups()
+        
+        
         #run_stack_handler()
+        
+
+        #run_systems()
+        #run_strategy_order_generator()
+        interactive_order_stack()
+        #run_backups()
         #run_cleaners()
         #run_reports()
         # Выведите результаты в консоль или сделайте что-то еще
