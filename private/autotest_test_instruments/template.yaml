@@ -32,16 +32,6 @@ use_attenuation:
    - 'breakout40'
    - 'breakout80'
    - 'breakout160'
-   - 'relmomentum10'
-   - 'relmomentum20'
-   - 'relmomentum40'
-   - 'relmomentum80'
-   - 'assettrend2'
-   - 'assettrend4'
-   - 'assettrend8'
-   - 'assettrend16'
-   - 'assettrend32'
-   - 'assettrend64'
    - 'normmom2'
    - 'normmom4'
    - 'normmom8'
@@ -92,41 +82,6 @@ trading_rules:
          - "rawdata.get_daily_prices"
      other_args:
        lookback: 320
-  relmomentum10:
-     function: systems.provided.rules.rel_mom.relative_momentum
-     data:
-         - "rawdata.get_cumulative_daily_vol_normalised_returns"
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-       horizon: 10
-  relmomentum20:
-     function: systems.provided.rules.rel_mom.relative_momentum
-     data:
-         - "rawdata.get_cumulative_daily_vol_normalised_returns"
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-       horizon: 20
-  relmomentum40:
-     function: systems.provided.rules.rel_mom.relative_momentum
-     data:
-         - "rawdata.get_cumulative_daily_vol_normalised_returns"
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-       horizon: 40
-  relmomentum80:
-     function: systems.provided.rules.rel_mom.relative_momentum
-     data:
-         - "rawdata.get_cumulative_daily_vol_normalised_returns"
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-       horizon: 80
-  mrinasset1000:
-     function: systems.provided.rules.cs_mr.cross_sectional_mean_reversion
-     data:
-         - "rawdata.get_cumulative_daily_vol_normalised_returns"
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-       horizon: 1000
   carry10:
      function: systems.provided.rules.carry.carry
      data:
@@ -151,48 +106,6 @@ trading_rules:
          - "rawdata.raw_carry"
      other_args:
          smooth_days: 125
-  assettrend2:
-     function: systems.provided.rules.ewmac.ewmac_calc_vol
-     data:
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-         Lfast: 2
-         Lslow: 8
-  assettrend4:
-     function: systems.provided.rules.ewmac.ewmac_calc_vol
-     data:
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-         Lfast: 4
-         Lslow: 16
-  assettrend8:
-     function: systems.provided.rules.ewmac.ewmac_calc_vol
-     data:
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-         Lfast: 8
-         Lslow: 32
-  assettrend16:
-     function: systems.provided.rules.ewmac.ewmac_calc_vol
-     data:
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-         Lfast: 16
-         Lslow: 64
-  assettrend32:
-     function: systems.provided.rules.ewmac.ewmac_calc_vol
-     data:
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-         Lfast: 32
-         Lslow: 128
-  assettrend64:
-     function: systems.provided.rules.ewmac.ewmac_calc_vol
-     data:
-         - "rawdata.normalised_price_for_asset_class"
-     other_args:
-         Lfast: 64
-         Lslow: 256
   normmom2:
      function: systems.provided.rules.ewmac.ewmac_calc_vol
      data:
@@ -275,11 +188,6 @@ trading_rules:
      other_args:
          Lfast: 64
          Lslow: 256
-  relcarry:
-     function: systems.provided.rules.carry.relative_carry
-     data:
-          - "rawdata.smoothed_carry"
-          - "rawdata.median_carry_for_asset_class"
   skewabs365:
      function: systems.provided.rules.factors.factor_trading_rule
      data:
@@ -297,24 +205,6 @@ trading_rules:
           smooth: 45
           _factor_name: 'neg_skew'
           _demean_method: 'historic_average_factor_value_all_assets'
-          _lookback_days: 180
-  skewrv365:
-     function: systems.provided.rules.factors.factor_trading_rule
-     data:
-          - 'rawdata.get_demeanded_factor_value'
-     other_args:
-          smooth: 90
-          _factor_name: 'neg_skew'
-          _demean_method: 'average_factor_value_in_asset_class_for_instrument'
-          _lookback_days: 365
-  skewrv180:
-     function: systems.provided.rules.factors.factor_trading_rule
-     data:
-          - 'rawdata.get_demeanded_factor_value'
-     other_args:
-          smooth: 45
-          _factor_name: 'neg_skew'
-          _demean_method: 'average_factor_value_in_asset_class_for_instrument'
           _lookback_days: 180
   accel16:
     function: systems.provided.rules.accel.accel
@@ -344,12 +234,6 @@ forecast_scalars:
   accel16: 7.8170710605387095
   accel32: 5.563487137713779
   accel64: 3.896720541225276
-  assettrend16: 3.549452858682833
-  assettrend2: 10.846520114531351
-  assettrend32: 2.3449234496490723
-  assettrend4: 7.572334583056326
-  assettrend64: 1.5465144366886119
-  assettrend8: 5.190470936448635
   breakout10: 0.6031025130185256
   breakout160: 0.7388310187414805
   breakout20: 0.6742627921625178
@@ -365,29 +249,21 @@ forecast_scalars:
   momentum4: 8.539940954709955
   momentum64: 1.9093945630747895
   momentum8: 5.949404365193165
-  mrinasset1000: 653.253194
   normmom16: 4.116536590599602
   normmom2: 12.388305650778637
   normmom32: 2.758872936017786
   normmom4: 8.614429965006694
   normmom64: 1.8706800701120874
   normmom8: 5.979138542342214
-  relcarry: 49.44179741391023
-  relmomentum10: 61.24026078373817
-  relmomentum20: 86.50746400987076
-  relmomentum40: 117.77937298659975
-  relmomentum80: 159.87802982511536
   skewabs180: 4.590246757939031
   skewabs365: 2.351483885205172
-  skewrv180: 5.244752769697409
-  skewrv365: 3.002222097593425
 #
 # forecast combination
 #
 # Capital correction
 #
 percentage_vol_target: 25.0
-notional_trading_capital: 50000000
+notional_trading_capital: 2000000
 base_currency: "RUB"
 #
 # Portfolio creation

@@ -12,3 +12,4 @@ db.sqlite3-journal
 fixtures/quotes/quote.json
 private/autotest
 private/test_single
+db.json

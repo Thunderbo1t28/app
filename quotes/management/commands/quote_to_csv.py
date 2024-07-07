@@ -1,3 +1,4 @@
+import json
 import os
 from django.db.models import Max, F
 from django.core.management.base import BaseCommand
@@ -17,7 +18,7 @@ class Command(BaseCommand):
             max_trading_date=Max('last_download_date')
         ).values('id', 'contract', 'max_trading_date')
         contract_date = datetime.now().date()
-        contract_date -= timedelta(days=60)
+        contract_date -= timedelta(days=180)
         # Обновляем is_active для контрактов, у которых последняя дата торгов совпадает с именем контракта
         for contract_data in last_trading_dates:
             contract_name = contract_data['contract']
@@ -76,3 +77,4 @@ class Command(BaseCommand):
                         contract=contract,
                         defaults={'last_download_date': last_date}
                     )
+        return json.dumps('success') 

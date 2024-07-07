@@ -1,0 +1,119 @@
+// Automatic FlutterFlow imports
+import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/actions/index.dart'; // Imports other custom actions
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
+import 'package:flutter/material.dart';
+// Begin custom action code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
+
+// Set your action name, define your arguments and return parameter,
+// and then add the boilerplate code using the green button on the right!
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+Future<String?> fetchWithAuth(String? url) async {
+  const storage = FlutterSecureStorage();
+  String? accessToken = await storage.read(key: 'access');
+  if (accessToken == null) {
+    throw Exception('No access token found');
+  }
+
+  Map<String, String> headers = {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer $accessToken',
+  };
+  //headers['Authorization'] = 'Bearer $accessToken';
+
+  final response = await http.get(Uri.parse(url!), headers: headers);
+
+  if (response.statusCode == 401) {
+    accessToken = await _refreshToken();
+    if (accessToken != null) {
+      headers['Authorization'] = 'Bearer $accessToken';
+      final result = await http.get(Uri.parse(url), headers: headers);
+      final data = jsonDecode(result.body);
+      return data;
+    }
+  }
+
+  return jsonDecode(response.body);
+}
+
+Future<String?> _refreshToken() async {
+  const storage = FlutterSecureStorage();
+  const baseUrl = 'http://92.124.139.47:8000/api';
+  final refreshToken = await storage.read(key: 'refresh');
+
+  if (refreshToken == null) {
+    throw Exception('No refresh token found');
+  }
+
+  final response = await http.post(
+    Uri.parse('$baseUrl/token/refresh/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{'refresh': refreshToken}),
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    await storage.write(key: 'access', value: data['access']);
+    return data['access'];
+  } else {
+    throw Exception('Failed to refresh token');
+  }
+}
+
+//fetchWithAuth
+
+// Automatic FlutterFlow imports
+import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/actions/index.dart'; // Imports other custom actions
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
+import 'package:flutter/material.dart';
+// Begin custom action code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
+
+// Set your action name, define your arguments and return parameter,
+// and then add the boilerplate code using the green button on the right!
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+Future<String?> refreshToken() async {
+  const storage = FlutterSecureStorage();
+  const baseUrl = 'http://92.124.139.47:8000/api';
+  final refreshToken = await storage.read(key: 'refresh');
+
+  if (refreshToken == null) {
+    throw Exception('No refresh token found');
+  }
+
+  final response = await http.post(
+    Uri.parse('$baseUrl/token/refresh/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{'refresh': refreshToken}),
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    await storage.write(key: 'access', value: data['access']);
+    return data['access'];
+  } else {
+    throw Exception('Failed to refresh token');
+  }
+}
+
+
+//refreshToken
+http: ^1.2.1

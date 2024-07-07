@@ -3,6 +3,7 @@ from copy import copy
 from datetime import date, time
 import json
 from types import NoneType
+from unittest import result
 from django.db import models
 import numpy as np
 import pandas as pd
@@ -108,7 +109,9 @@ class mongoDataWithSingleKey:
 
     def get_list_of_keys(self) -> list:
         #print(self._mongo.model)
-        return list(self._mongo.model.objects.values_list('ident', flat=True))
+        result = list(self._mongo.model.objects.values_list('ident', flat=True))
+        print(result)
+        return result
 
     def get_max_of_keys(self) -> int:
         doc = self.collection.order_by('-ident').first()

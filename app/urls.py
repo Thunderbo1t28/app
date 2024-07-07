@@ -16,7 +16,8 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from api.views import check_task_status, run_management_command
 from backtest.views import backtest_main, backtest_view, select_instruments_view, select_rules_view
 from main import views
 from quotes.views import (adjusted_prices_view, 
@@ -28,7 +29,10 @@ from quotes.views import (adjusted_prices_view,
                           multiple_price_data, 
                           roll_calendar, select_exchange_view, select_instrument_view, 
                           update_multiple_price_data)
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -58,5 +62,10 @@ urlpatterns = [
     path('autotest/', backtest_view, name='backtest_view'),
     path('select-rules/', select_rules_view, name='select_rules'),
     path('select-instruments/', select_instruments_view, name='select_instruments'),
+    path('api/', include('api.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('run-command/', run_management_command, name='run_command'),
+    path('check-task-status/', check_task_status, name='check_task_status'),
 
 ]

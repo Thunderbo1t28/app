@@ -236,6 +236,7 @@ class Portfolios(SystemStage):
         notional_position_without_idm = self.get_notional_position_without_idm(
             instrument_code
         )
+        #print(notional_position_without_idm)
 
         ## daily
         idm = self.get_instrument_diversification_multiplier()
@@ -492,6 +493,7 @@ class Portfolios(SystemStage):
         if self.use_estimated_instrument_weights():
             ## will probably be annnual
             raw_instrument_weights = self.get_raw_estimated_instrument_weights()
+            #print(raw_instrument_weights)
         else:
             ## will be 2*N
             raw_instrument_weights = self.get_raw_fixed_instrument_weights()
@@ -569,6 +571,8 @@ class Portfolios(SystemStage):
     @dont_cache
     def get_equal_instrument_weights_dict(self) -> dict:
         instruments_with_weights = self.get_instrument_list(for_instrument_weights=True)
+        '''if len(instruments_with_weights) == 0:
+            instruments_with_weights = [1.0,]'''
         weight = 1.0 / len(instruments_with_weights)
 
         warn_msg = (
@@ -643,6 +647,7 @@ class Portfolios(SystemStage):
 
         # these will probably be annual
         optimiser = self.calculation_of_raw_instrument_weights()
+        #print(optimiser.weights())
         weights_of_instruments_with_weights = optimiser.weights()
 
         instrument_weights = self._add_zero_weights_to_instrument_weights_df(
@@ -1289,7 +1294,7 @@ class Portfolios(SystemStage):
     def get_instrument_list(
         self, for_instrument_weights=False, auto_remove_bad_instruments=False
     ) -> list:
-
+        
         instrument_list = self.parent.get_instrument_list()
         if for_instrument_weights:
             instrument_list = copy(instrument_list)

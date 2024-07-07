@@ -9,4 +9,6 @@ disable = missing-function-docstring,
         wildcard-import,
         unused-wildcard-import,
         consider-using-f-string,
-        no-member
+        no-member,
+        import-error,
+        no-name-in-module

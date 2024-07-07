@@ -66,7 +66,9 @@ class mongoOrderStackData(orderStackData):
         order_class = self._order_class()
         #print(result_dict)
         order = order_class.from_dict(result_dict)
-
+        #if order.fill[0] != 0:
+            #return None
+        #print(type(order.order_id))
         return order
 
     def _get_list_of_all_order_ids(self) -> list:
