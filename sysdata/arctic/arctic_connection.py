@@ -36,6 +36,8 @@ class arcticData(object):
         self.manager = ArcticDataManager()
 
     def read(self, ident):
+        #print(self.collection_name)
+        #print(self.model)
         try:
             #print(ident)
             arctic_data = self.model.objects.get(ident=ident)
@@ -59,8 +61,10 @@ class arcticData(object):
             data_copy.set_index('index', inplace=True)
             
             return data_copy
-        except self.model.DoesNotExist:
-            raise ValueError(f"Data with ident={ident} not found")
+        except KeyError:
+            raise KeyError(f"KeyError {ident}")
+        #except self.model.DoesNotExist:
+            #raise ValueError(f"Data with ident={ident} not found")
         
     def convert_data_to_json(self, data):
         """

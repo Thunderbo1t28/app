@@ -267,6 +267,9 @@ class contract_positions(models.Model):
     
     objects = ArcticDataManager()
 
+    def __str__(self):
+        return self.ident
+
 class overide_status(models.Model):
     ident = models.CharField(max_length=255)
     data = models.JSONField(null=True, blank=True)

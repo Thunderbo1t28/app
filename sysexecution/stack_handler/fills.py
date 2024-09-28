@@ -134,11 +134,11 @@ class stackHandlerForFills(stackHandlerForCompletions):
         )
 
     def apply_contract_order_fill_to_database(self, contract_order: contractOrder):
-        #print(contract_order)
+        #print(f"This print {str(contract_order)}")
         contract_order_before_fill = self.contract_stack.get_order_with_id_from_stack(
             contract_order.order_id
         )
-        #print(contract_order_before_fill)
+        #print(f"This print {str(contract_order_before_fill)}")
         self.apply_fills_to_contract_order(
             contract_order_before_fill=contract_order_before_fill,
             filled_qty=contract_order.fill,
@@ -160,6 +160,7 @@ class stackHandlerForFills(stackHandlerForCompletions):
     ):
 
         contract_order_id = contract_order_before_fill.order_id
+        #print(f"This print {contract_order_id}")
         self.contract_stack.change_fill_quantity_for_order(
             contract_order_id,
             filled_qty,
@@ -233,12 +234,16 @@ class stackHandlerForFills(stackHandlerForCompletions):
             instrument_order_id
         )
         list_of_contract_order_ids = instrument_order.children
+        #print(len(list_of_contract_order_ids))
         if list_of_contract_order_ids is no_children:
             return None
 
         if len(list_of_contract_order_ids) == 1:
             # easy, only one child
+            #print(list_of_contract_order_ids)
             contract_order_id = list_of_contract_order_ids[0]
+            contract_order_id = int(contract_order_id)
+            #print(contract_order_id)
             self.apply_contract_fill_to_parent_order_single_child(
                 contract_order_id, instrument_order
             )

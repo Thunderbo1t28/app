@@ -1,0 +1,75 @@
+python manage.py dumpdata --indent=2 --exclude auth.permission --exclude contenttypes -o db.json
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE5NDA0ODg2LCJpYXQiOjE3MTk0MDEyODYsImp0aSI6IjBiZWNiY2EyZTdjMzRkMWE4ZjUwYTIxNTA0NDEzZGM3IiwidXNlcl9pZCI6MX0.KAL1wdkiI8xA0PJWBF6n085h1S5xpnJrftnaSL7ecvk" -d '{"command": "makemigrations"}' http://localhost:8000/run-command/
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE5NDA0ODg2LCJpYXQiOjE3MTk0MDEyODYsImp0aSI6IjBiZWNiY2EyZTdjMzRkMWE4ZjUwYTIxNTA0NDEzZGM3IiwidXNlcl9pZCI6MX0.KAL1wdkiI8xA0PJWBF6n085h1S5xpnJrftnaSL7ecvk" -d '{"command": "makemigrations"}' http://localhost:8000/run-command/
+{"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxOTQ4NzY4NiwiaWF0IjoxNzE5NDAxMjg2LCJqdGkiOiI4Yjk5N2I2NDRkYmY0NGE0YmY5MzlhMTE5MmQyOGI5ZCIsInVzZXJfaWQiOjF9.oaOWmEiwUugjP0zDINmMGYo5iwWWqQRmXAWfbaH4-bE",
+"access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE5NDA0ODg2LCJpYXQiOjE3MTk0MDEyODYsImp0aSI6IjBiZWNiY2EyZTdjMzRkMWE4ZjUwYTIxNTA0NDEzZGM3IiwidXNlcl9pZCI6MX0.KAL1wdkiI8xA0PJWBF6n085h1S5xpnJrftnaSL7ecvk"}% 
+92.124.139.47:8000
+
+ // Automatic FlutterFlow imports
+import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/actions/index.dart'; // Imports other custom actions
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
+import 'package:flutter/material.dart';
+// Begin custom action code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
+
+// Set your action name, define your arguments and return parameter,
+// and then add the boilerplate code using the green button on the right!
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+Future<http.Response> fetchWithAuth(String url,
+    {Map<String, String>? headers}) async {
+  const storage = FlutterSecureStorage();
+  String? accessToken = await storage.read(key: 'access');
+  if (accessToken == null) {
+    throw Exception('No access token found');
+  }
+
+  headers = headers ?? {};
+  headers['Authorization'] = 'Bearer $accessToken';
+
+  final response = await http.get(Uri.parse(url), headers: headers);
+
+  if (response.statusCode == 401) {
+    accessToken = await _refreshToken();
+    if (accessToken != null) {
+      headers['Authorization'] = 'Bearer $accessToken';
+      return http.get(Uri.parse(url), headers: headers);
+    }
+  }
+
+  return response;
+}
+
+Future<String?> _refreshToken() async {
+  const storage = FlutterSecureStorage();
+  const baseUrl = 'http://92.124.139.47:8000/api';
+  final refreshToken = await storage.read(key: 'refresh');
+
+  if (refreshToken == null) {
+    throw Exception('No refresh token found');
+  }
+
+  final response = await http.post(
+    Uri.parse('$baseUrl/token/refresh/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{'refresh': refreshToken}),
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    await storage.write(key: 'access', value: data['access']);
+    return data['access'];
+  } else {
+    throw Exception('Failed to refresh token');
+  }
+}
+
+

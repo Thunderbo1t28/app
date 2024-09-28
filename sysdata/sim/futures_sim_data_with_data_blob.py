@@ -1,5 +1,9 @@
 
 
+import datetime
+import os
+
+import pandas as pd
 from sysdata.sim.futures_sim_data import futuresSimData
 
 from sysdata.futures.adjusted_prices import futuresAdjustedPricesData
@@ -36,22 +40,43 @@ class genericBlobUsingFuturesSimData(futuresSimData):
     def _get_fx_data_from_start_date(
         self, currency1: str, currency2: str, start_date
     ) -> fxPrices:
-        #print(f"{currency1} {currency2}")
+    
         fx_code = currency1 + currency2
-        #print(fx_code)
         data = self.db_fx_prices_data.get_fx_prices(fx_code)
-        #print(fx_code)
+        
+        # Преобразуем индекс в формат datetime
+        data.index = pd.to_datetime(data.index)
+
+        # Преобразуем start_date в формат datetime
+        if not isinstance(start_date, pd.Timestamp):
+            start_date = pd.to_datetime(start_date)
+
         specific_date = start_date
+
         if specific_date not in data.index:
             # Если дата отсутствует, устанавливаем самую раннюю дату DataFrame в качестве start_date
             start_date = data.index.min()
-            #print(f"Данных для {start_date} нет. Установлен стартовый дата: {start_date}")
         else:
-            # Иначе используем конкретную дату
+            # Используем конкретную дату
             start_date = specific_date
-            #print(f"Используем конкретную дату: {start_date}")
-        data_after_start = data[start_date:]
 
+        if start_date is None:
+            start_date = datetime.datetime(1970, 1, 1, 0, 0, 0)
+
+        # Выполняем срез данных после start_date
+        data_after_start = data[start_date:]
+        # Создание каталога, если его нет
+        BASEDIR = os.getcwd()
+        if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+            directory = f"{BASEDIR}/private/data/testdata"
+        elif os.name == 'nt':   # для Windows
+            directory = f"{BASEDIR}\\private\\data\\testdata"
+        os.makedirs(directory, exist_ok=True)
+        
+        
+        # Сохранение в CSV-файл только если есть данные
+        #if not data.empty:
+        data.to_csv(f'{directory}/{fx_code}.csv')
         return data_after_start
 
     def get_instrument_asset_classes(self) -> assetClassesAndInstruments:

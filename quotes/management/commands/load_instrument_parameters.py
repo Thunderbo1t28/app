@@ -20,7 +20,7 @@ class Command(BaseCommand):
             
     
         else:
-            print(f"Failed to fetch data for {ticker}. Status code: {response.status_code}")
+            print(f"Failed to fetch data for. Status code: {response.status_code}")
         
         # Предполагаем, что combined_df - это ваш DataFrame, а api_data - это ваш словарь данных
         # Это просто пример, и вам нужно адаптировать код к вашему случаю

@@ -66,7 +66,9 @@ class mongoOrderStackData(orderStackData):
         order_class = self._order_class()
         #print(result_dict)
         order = order_class.from_dict(result_dict)
-
+        #if order.fill[0] != 0:
+            #return None
+        #print(type(order.order_id))
         return order
 
     def _get_list_of_all_order_ids(self) -> list:
@@ -80,7 +82,8 @@ class mongoOrderStackData(orderStackData):
 
     def _change_order_on_stack_no_checking(self, order_id: int, order):
         order_as_dict = order.as_dict()
-
+        order_id = int(order_id)
+        #print(f"This order {order_as_dict}")
         self.mongo_data.add_data(order_id, order_as_dict, allow_overwrite=True)
 
     def _put_order_on_stack_no_checking(self, order: Order):

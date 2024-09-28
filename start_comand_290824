@@ -1,0 +1,2 @@
+python manage.py load_to_database
+python manage.py testcode  

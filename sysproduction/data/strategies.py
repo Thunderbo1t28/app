@@ -38,7 +38,7 @@ class diagStrategiesConfig(productionDataLayerGeneric):
 
     def get_all_strategy_dict(self) -> dict:
         strategy_dict = self.config.get_element("strategy_list")
-
+        #print(strategy_dict)
         return strategy_dict
 
     @property
@@ -47,7 +47,9 @@ class diagStrategiesConfig(productionDataLayerGeneric):
 
 
 def get_list_of_strategies(data: dataBlob = arg_not_supplied, source="config") -> list:
+    #print(source)
     if source == "config":
+        
         return get_list_of_strategies_from_config(data)
     elif source == "positions":
         return get_list_of_strategies_from_positions(data)
@@ -59,6 +61,7 @@ def get_list_of_strategies(data: dataBlob = arg_not_supplied, source="config") -
 
 def get_list_of_strategies_from_config(data: dataBlob = arg_not_supplied) -> list:
     diag_strategies_config = diagStrategiesConfig(data)
+    #print("1")
     list_of_strategies = diag_strategies_config.get_list_of_strategies()
 
     return list_of_strategies
@@ -92,6 +95,7 @@ def get_valid_strategy_name_from_user(
     if allow_all:
         default_strategy = all_code
     else:
+        #print(all_strategies)
         default_strategy = all_strategies[0]
 
     strategy_name = print_menu_of_values_and_get_response(

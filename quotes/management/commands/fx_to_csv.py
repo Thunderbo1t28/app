@@ -50,7 +50,10 @@ class Command(BaseCommand):
             print(f"{instrument}")
             print(df)
             # Создание каталога, если его нет
-            directory = f"{BASEDIR}\\data\\futures\\fx_prices_csv"
+            if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+                directory = f"{BASEDIR}/data/futures/fx_prices_csv"
+            elif os.name == 'nt':   # для Windows
+                directory = f"{BASEDIR}\\data\\futures\\fx_prices_csv"
             os.makedirs(directory, exist_ok=True)
             
             

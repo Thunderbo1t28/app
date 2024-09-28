@@ -3,6 +3,7 @@ from copy import copy
 from datetime import date, time
 import json
 from types import NoneType
+from unittest import result
 from django.db import models
 import numpy as np
 import pandas as pd
@@ -108,7 +109,9 @@ class mongoDataWithSingleKey:
 
     def get_list_of_keys(self) -> list:
         #print(self._mongo.model)
-        return list(self._mongo.model.objects.values_list('ident', flat=True))
+        result = list(self._mongo.model.objects.values_list('ident', flat=True))
+        print(result)
+        return result
 
     def get_max_of_keys(self) -> int:
         doc = self.collection.order_by('-ident').first()
@@ -216,7 +219,7 @@ class mongoDataWithSingleKey:
         self.collection.delete()
 
     def add_data(self, key, data_dict: dict, allow_overwrite=False, clean_ints=True):
-
+        
         if clean_ints:
             cleaned_data_dict = self.convert_data_to_json(data_dict) #mongo_clean_ints(data_dict)
         else:
@@ -270,6 +273,7 @@ class mongoDataWithSingleKey:
         # Рекурсивная функция для обработки каждого уровня вложенности
         def process_dict(data_dict):
             processed_dict = {}
+            #print(data_dict)
             for key, value in data_dict.items():
                 if isinstance(value, float):
                     try:

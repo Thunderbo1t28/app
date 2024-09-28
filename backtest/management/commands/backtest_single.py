@@ -34,7 +34,7 @@ class Command(BaseCommand):
         
         #config = MyConfigModel.objects.get(id=config_id)
         # Создание объекта Config с полученными параметрами
-        instruments = ['MGNT', 'NG', 'PLZL', 'ALRS', 'AFKS', 'VTBR', 'Eu', 'Si', 'GMKN', 'SNGP', 'NLMK', 'GAZR', 'RTKM', 'MAGN', 'MXI', 'ROSN', 'SBPR', 'SBRF', 'MTSI', 'FEES', 'TATN', 'SILV', 'MOEX','HYDR', 'ED']
+        instruments = ['Si','Eu','CNY']
         print(instruments)
         
             

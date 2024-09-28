@@ -3,6 +3,7 @@ import os
 from django.core.management.base import BaseCommand
 import yaml
 from backtest.models import BacktestResult, BacktestResult2
+from quotes.models import Quote
 from systems.attenuate_vol.vol_attenuation_forecast_scale_cap import volAttenForecastScaleCap
 from systems.provided.dynamic_small_system_optimise.accounts_stage import accountForOptimisedStage
 from systems.provided.dynamic_small_system_optimise.optimised_positions_stage import optimisedPositions
@@ -38,8 +39,17 @@ class Command(BaseCommand):
         instruments = data.get_instrument_list()
         
         for instrument in instruments:
+            
+            countQuote = data.get_backadjusted_futures_price(instrument_code=instrument).count()
+            if countQuote < 500:
+                continue
+            print(countQuote)
             print(instrument)
-            my_config = Config(f"{BASEDIR}\\private\\autotest_test_instruments\\config.yaml")
+            if os.name == 'posix':
+                my_config = Config(f"{BASEDIR}/private/autotest_test_instruments/config.yaml")
+            elif os.name == 'nt': 
+                my_config = Config(f"{BASEDIR}\\private\\autotest_test_instruments\\config.yaml")
+
             my_config.instruments = [instrument]
             
             system = System(
@@ -62,31 +72,60 @@ class Command(BaseCommand):
             parsed_result = profits.percent.stats()
             
             sysdiag = systemDiag(system)
-            sysdiag.yaml_config_with_estimated_parameters(f'{BASEDIR}\\private\\autotest_test_instruments\\result.yaml',
-                                                        attr_names=['forecast_scalars',
-                                                                            'forecast_weights',
-                                                                            'forecast_div_multiplier',
-                                                                            'forecast_mapping',
-                                                                            'instrument_weights',
-                                                                            'instrument_div_multiplier'])
-            
+            if os.name == 'posix': 
+                sysdiag.yaml_config_with_estimated_parameters(f'{BASEDIR}/private/autotest_test_instruments/result.yaml',
+                                                            attr_names=['forecast_scalars',
+                                                                                'forecast_weights',
+                                                                                'forecast_div_multiplier',
+                                                                                'forecast_mapping',
+                                                                                'instrument_weights',
+                                                                                'instrument_div_multiplier'])
+                
 
-            # Загрузка содержимого первого YAML файла
-            with open(f'{BASEDIR}\\private\\autotest_test_instruments\\template.yaml', 'r') as file1:
-                data1 = yaml.safe_load(file1)
+                # Загрузка содержимого первого YAML файла
+                with open(f'{BASEDIR}/private/autotest_test_instruments/template.yaml', 'r') as file1:
+                    data1 = yaml.safe_load(file1)
 
-            # Загрузка содержимого второго YAML файла
-            with open(f'{BASEDIR}\\private\\autotest_test_instruments\\result.yaml', 'r') as file2:
-                data2 = yaml.safe_load(file2)
+                # Загрузка содержимого второго YAML файла
+                with open(f'{BASEDIR}/private/autotest_test_instruments/result.yaml', 'r') as file2:
+                    data2 = yaml.safe_load(file2)
 
-            # Объединение данных из двух файлов
-            combined_data = {**data1, **data2}
+                # Объединение данных из двух файлов
+                combined_data = {**data1, **data2}
 
-            # Запись объединенных данных в новый YAML файл
-            with open(f'{BASEDIR}\\private\\autotest_test_instruments\\combine.yaml', 'w') as outfile:
-                yaml.dump(combined_data, outfile)
-            
-            my_config = Config(f"{BASEDIR}\\private\\autotest_test_instruments\\combine.yaml")
+                # Запись объединенных данных в новый YAML файл
+                with open(f'{BASEDIR}/private/autotest_test_instruments/combine.yaml', 'w') as outfile:
+                    yaml.dump(combined_data, outfile)
+            elif os.name == 'nt': 
+
+                sysdiag.yaml_config_with_estimated_parameters(f'{BASEDIR}\\private\\autotest_test_instruments\\result.yaml',
+                                                            attr_names=['forecast_scalars',
+                                                                                'forecast_weights',
+                                                                                'forecast_div_multiplier',
+                                                                                'forecast_mapping',
+                                                                                'instrument_weights',
+                                                                                'instrument_div_multiplier'])
+                
+
+                # Загрузка содержимого первого YAML файла
+                with open(f'{BASEDIR}\\private\\autotest_test_instruments\\template.yaml', 'r') as file1:
+                    data1 = yaml.safe_load(file1)
+
+                # Загрузка содержимого второго YAML файла
+                with open(f'{BASEDIR}\\private\\autotest_test_instruments\\result.yaml', 'r') as file2:
+                    data2 = yaml.safe_load(file2)
+
+                # Объединение данных из двух файлов
+                combined_data = {**data1, **data2}
+
+                # Запись объединенных данных в новый YAML файл
+                with open(f'{BASEDIR}\\private\\autotest_test_instruments\\combine.yaml', 'w') as outfile:
+                    yaml.dump(combined_data, outfile)
+            if os.name == 'posix':
+                my_config = Config(f"{BASEDIR}/private/autotest_test_instruments/combine.yaml")
+            elif os.name == 'nt': 
+                my_config = Config(f"{BASEDIR}\\private\\autotest_test_instruments\\combine.yaml")
+            #my_config = Config(f"{BASEDIR}\\private\\autotest_test_instruments\\combine.yaml")
             # Получение аргументов из командной строки по их именам
             
             #config = MyConfigModel.objects.get(id=config_id)

@@ -128,11 +128,15 @@ process_configuration_methods:
 # You need to create an entry in private control config that looks like this for each strategy
 process_configuration_methods:
   run_systems:
-    example:
+    first:
       max_executions: 1
       object: sysproduction.strategy_code.run_system_classic.runSystemClassic
       backtest_config_filename: private.rob_system.config.yaml
+    second:
+      max_executions: 1
+      object: sysproduction.strategy_code.run_system_classic.runSystemClassic
+      backtest_config_filename: private.second_system.config.yaml
   run_strategy_order_generator:
-    example:
+    first:
       object: sysexecution.strategies.classic_buffered_positions.orderGeneratorForBufferedPositions
       max_executions: 1

@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import datetime
+from quotes.models import AdjustedPrice
 from sysdata.csv.csv_multiple_prices import csvFuturesMultiplePricesData
 from sysdata.csv.csv_adjusted_prices import csvFuturesAdjustedPricesData
 from sysdata.csv.csv_spot_fx import csvFxPricesData
@@ -29,8 +29,8 @@ class CsvFuturesSimTestData(genericBlobUsingFuturesSimData):
         data = dataBlob(
             log=log,
             csv_data_paths=dict(
-                csvFuturesAdjustedPricesData="data.test.adjusted_prices_csv",
-                csvFuturesInstrumentData="data.test.csvconfig",
+                csvFuturesAdjustedPricesData="data.futures.adjusted_prices_csv",
+                csvFuturesInstrumentData="data.futures.csvconfig",
             ),
             class_list=[
                 csvFuturesAdjustedPricesData,

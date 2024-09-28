@@ -1,3 +1,4 @@
+import json
 import os
 from django.db.models import Max, F
 from django.core.management.base import BaseCommand
@@ -17,7 +18,7 @@ class Command(BaseCommand):
             max_trading_date=Max('last_download_date')
         ).values('id', 'contract', 'max_trading_date')
         contract_date = datetime.now().date()
-        contract_date -= timedelta(days=60)
+        contract_date -= timedelta(days=180)
         # Обновляем is_active для контрактов, у которых последняя дата торгов совпадает с именем контракта
         for contract_data in last_trading_dates:
             contract_name = contract_data['contract']
@@ -33,13 +34,22 @@ class Command(BaseCommand):
         instruments = Instrument.objects.all()
         for instrument in instruments:
             # Получаем активные контракты для данного инструмента
-            active_contracts = LastDownloadDate.objects.filter(instrument=instrument, is_active=True).values_list('contract', flat=True)
-            #active_contracts = Quote.objects.filter(instrument=instrument).values_list('contract', flat=True)
+            #active_contracts = LastDownloadDate.objects.filter(instrument=instrument, is_active=True).values_list('contract', flat=True)
+            active_contracts = Quote.objects.filter(instrument=instrument).values_list('contract', flat=True)
             quotes = Quote.objects.filter(instrument=instrument).order_by('timestamp')
             contract_list = quotes.values_list('contract', flat=True).distinct()
             contract_list = list(set(contract_list))
             active_contracts = list(set(active_contracts))
-            for contract in active_contracts:
+            adjusted_active_contracts = []
+            for item in active_contracts:
+                item_adjust = item[:-2]
+                item_to_date = datetime.strptime(item_adjust,'%Y%m').date()
+                contract_date = datetime.now().date()
+                contract_date -= timedelta(days=180)
+                if item_to_date >= contract_date:
+                    adjusted_active_contracts.append(item)
+
+            for contract in adjusted_active_contracts:
                 quotes_contract = quotes.filter(contract=contract)
                 #timestamp_dates = quotes_contract.values_list('timestamp__date', flat=True)
                 
@@ -76,3 +86,4 @@ class Command(BaseCommand):
                         contract=contract,
                         defaults={'last_download_date': last_date}
                     )
+        return json.dumps('success') 

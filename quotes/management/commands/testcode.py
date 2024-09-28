@@ -1,24 +1,16 @@
 import os
 from django.core.management.base import BaseCommand
-from sysdata.arctic.arctic_adjusted_prices import arcticFuturesAdjustedPricesData
 from sysdata.sim.db_futures_sim_data import dbFuturesSimData
-from sysproduction.data.prices import get_valid_instrument_code_from_user
-from sysproduction.interactive_controls import interactive_controls
-from sysproduction.interactive_diagnostics import interactive_diagnostics
-from sysproduction.interactive_manual_check_fx_prices import interactive_manual_check_fx_prices
-from sysproduction.interactive_order_stack import interactive_order_stack
-from sysproduction.interactive_update_capital_manual import interactive_update_capital_manual
-from sysdata.arctic.arctic_futures_per_contract_prices import arcticFuturesContractPriceData
-from sysdata.arctic.arctic_spotfx_prices import arcticFxPricesData
 from sysdata.csv.csv_futures_contract_prices import ConfigCsvFuturesPrices
-from sysdata.csv.csv_spot_fx import csvFxPricesData
-from sysdata.data_blob import dataBlob
 from sysinit.futures.adjustedprices_from_mongo_multiple_to_mongo import process_adjusted_prices_all_instruments
 
 from sysinit.futures.contract_prices_from_csv_to_arctic import init_arctic_with_csv_futures_contract_prices, init_arctic_with_csv_futures_contract_prices_for_code
 from sysinit.futures.multipleprices_from_arcticprices_and_csv_calendars_to_arctic import process_multiple_prices_all_instruments, process_multiple_prices_single_instrument
 from sysinit.futures.repocsv_spread_costs import copy_spread_costs_from_csv_to_mongo
 from sysinit.futures.rollcalendars_from_arcticprices_to_csv import build_and_write_roll_calendar
+from sysproduction.interactive_diagnostics import interactive_diagnostics
+from sysproduction.interactive_order_stack import interactive_order_stack
+from sysproduction.interactive_update_capital_manual import interactive_update_capital_manual
 from sysproduction.interactive_update_roll_status import interactive_update_roll_status
 from sysproduction.run_backups import run_backups
 from sysproduction.run_capital_update import run_capital_update
@@ -38,6 +30,11 @@ class Command(BaseCommand):
 
     
     def handle(self, *args, **options):
+        
+        
+
+
+
         barchart_csv_config = ConfigCsvFuturesPrices(
             input_date_index_name="<DATE>",
             input_skiprows=0,
@@ -48,17 +45,23 @@ class Command(BaseCommand):
             ),
         )
         BASEDIR = os.getcwd()
-
-
-
-        print(BASEDIR)
         datapath = BASEDIR + "/downloadData"
         csv_multiple_data_path = f"{BASEDIR}\\data\\futures\\multiple_prices_csv"
         csv_roll_data_path = f"{BASEDIR}\\data\\futures\\roll_calendars_csv"
-        #print(os.)
+        
+        '''init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)
+        process_multiple_prices_all_instruments(
+            csv_multiple_data_path=csv_multiple_data_path,
+            csv_roll_data_path=csv_roll_data_path,
+        )
 
-        #data = init_arctic_with_csv_futures_contract_prices(datapath, csv_config=barchart_csv_config)
+        process_adjusted_prices_all_instruments(
+            ADD_TO_ARCTIC=True, ADD_TO_CSV=True, csv_adj_data_path=f"{BASEDIR}\\data\\futures\\adjusted_prices_csv"
+        )'''
 
+
+
+        ####
 
         '''init_arctic_with_csv_futures_contract_prices_for_code(
             'AUDU', datapath, csv_config=barchart_csv_config
@@ -86,16 +89,7 @@ class Command(BaseCommand):
 
         
 
-        # modify flags as required
-        '''process_multiple_prices_all_instruments(
-            csv_multiple_data_path=csv_multiple_data_path,
-            csv_roll_data_path=csv_roll_data_path,
-        )'''
-        
-
-        '''process_adjusted_prices_all_instruments(
-            ADD_TO_ARCTIC=True, ADD_TO_CSV=True, csv_adj_data_path=f"{BASEDIR}\\data\\futures\\adjusted_prices_csv"
-        )'''
+       
 
         #copy_spread_costs_from_csv_to_mongo(dataBlob())
 
@@ -120,37 +114,56 @@ class Command(BaseCommand):
 
 
 
-        #sim_data = dbFuturesSimData()
-        #print(sim_data.get_merged_prices_for_instrument(instrument_code="AFKS"))
+        sim_data = dbFuturesSimData()
+        instrument_code = 'AFKS'
+        #result = sim_data.get_value_of_block_price_move(instrument_code=instrument_code)
+        #print(result)
+        #print(sim_data.get_merged_prices_for_instrument(instrument_code=instrument_code))
         #multiple_prices = sim_data.get_multiple_prices_from_start_date(instrument_code, start_date)
         #spread_cost = sim_data.get_spread_cost(instrument_code)
-        #backadjusted_prices = sim_data.get_backadjusted_futures_price(instrument_code="AFKS")
+        #print(spread_cost)
+        #backadjusted_prices = sim_data.get_backadjusted_futures_price(instrument_code=instrument_code)
+        #print(backadjusted_prices)
         #instrument_meta_data = sim_data.get_instrument_meta_data(instrument_code)
+        #print(instrument_meta_data)
         #roll_parameters = sim_data.get_roll_parameters(instrument_code)
         #instrument_with_meta_data = sim_data.get_instrument_object_with_meta_data(instrument_code)
+        #print(instrument_with_meta_data)
         #raw_carry_data = sim_data.get_instrument_raw_carry_data(instrument_code="AFKS")
         #current_forward_price_data = sim_data.get_current_and_forward_price_data(instrument_code)
         #print(backadjusted_prices)
 
         
         #update_capital_pd_df_for_strategy()
-        #interactive_update_capital_manual()
         #run_capital_update()
-        #run_systems()
+        
         #update_total_capital()
-        #update_strategy_capital()
-        #run_strategy_order_generator()
+        
+        
         #interactive_controls()
         #interactive_update_roll_status()
-        #interactive_diagnostics()
         #interactive_manual_check_fx_prices()
         #interactive_manual_check_historical_prices()
         #update_sampled_contracts()
-        #interactive_order_stack()
-        #run_backups()
+        
+        
         #run_stack_handler()
+        
+        
+
+        #interactive_update_capital_manual()
+        #update_strategy_capital()
+
+        #run_systems()
+        #run_strategy_order_generator()
+        #interactive_order_stack()
+        
+        interactive_diagnostics()
+        
+        #run_backups()
         #run_cleaners()
         #run_reports()
+
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))
         

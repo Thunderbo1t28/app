@@ -1,7 +1,8 @@
 from audioop import reverse
+import json
 import time
 from django.core.management.base import BaseCommand
-from django.utils import timezone
+#from django.utils import timezone
 import pandas as pd
 import requests
 from datetime import datetime, timedelta
@@ -19,23 +20,23 @@ class Command(BaseCommand):
         #end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
         end_date = Quote.objects.all().order_by('timestamp').last().timestamp.date()
         contracts_to_instruments = {'ED': 'ED',   'Eu': 'Eu', 
-                                     'FL': 'FLOT', 'FN': 'FNI',  'FV': 'FIVE',
+                                     'FL': 'FLOT', 'FN': 'FNI',  
                                       'GD': 'GOLD', 'GK': 'GMKN',  'GU': 'GBPU', 'GZ': 'GAZR',
                                         'HK': 'HKD', 'HO': 'HOME', 'HS': 'HANG', 'HY': 'HYDR', 'I2': 'INR',
                                             'IS': 'ISKJ',  'KM': 'KMAZ', 
                                           'KZ': 'KZT', 'LK': 'LKOH',  'MC': 'MTLR', 'ME': 'MOEX', 
                                            'MG': 'MAGN', 'MM': 'MXI', 'MN': 'MGNT', 'MT': 'MTSI', 
                                           'MV': 'MVID', 'MX': 'MIX',  'NA': 'NASD', 'NG': 'NG', 
-                                          'NK': 'NOTK',  'NM': 'NLMK', 'OG': 'OGI', 'OZ': 'OZON', 
+                                          'NK': 'NOTK',  'NM': 'NLMK', 'OG': 'OGI',  
                                           'PD': 'PLD', 'PH': 'PHOR', 'PI': 'PIKK', 'PO': 'POLY', 'PS': 'POSI', 
                                           'PT': 'PLT', 'PZ': 'PLZL', 'RB': 'RGBI', 'RI': 'RTS', 'RL': 'RUAL', 
                                           'RM': 'RTSM', 'RN': 'ROSN',  'RT': 'RTKM',  
                                            'SE': 'SPBE', 'SF': 'SPYF', 'SG': 'SNGP', 'Si': 'Si', 
                                           'SN': 'SNGR', 'SO': 'SIBN', 'SP': 'SBPR', 'SR': 'SBRF', 'SS': 'SMLT', 
-                                          'Su': 'SUGAR', 'SV': 'SILV', 'SX': 'STOX', 'SZ': 'SGZH', #'JP': 'UJPY',
+                                          'Su': 'SUGAR', 'SV': 'SILV', 'SX': 'STOX', 'SZ': 'SGZH', #'JP': 'UJPY', 'OZ': 'OZON', 'YN': 'YNDF', 'FV': 'FIVE',
                                             'TT': 'TATN', 'TY': 'TRY', 'UC': 'UCNY', #'MA': 'MMI','RR': 'RUON','N2': 'NIKK','CF': 'UCHF',
                                             'VK': 'VKCO', 'W4': 'WHEAT', #'EG': 'EGBP','IR': 'IRAO','EJ': 'EJPY','Co': 'Co','MF': '1MFR','TR': 'UTRY',
-                                          'WU': 'WUSH', 'YN': 'YNDF', 'AE': 'AED', 'AF': 'AFLT', #'SA': 'SUGR','TI': 'TCSI', 'TN': 'TRNF',
+                                          'WU': 'WUSH',  'AE': 'AED', 'AF': 'AFLT', #'SA': 'SUGR','TI': 'TCSI', 'TN': 'TRNF',
                                           'AK': 'AFKS', 'AL': 'ALRS',    #'AM': 'ALMN','AR': 'AMD','AS': 'ASTR','Nl': 'Nl','VI': 'RVI','S0': 'SOFL',
                                           'AU': 'AUDU', 'BE': 'BELU', 'BN': 'BANE', 'BR': 'BR', 'BS': 'BSPB', #'CA': 'UCAD',
                                             'CH': 'CHMF', 'CM': 'CBOM', #'CN': 'CNYRUBTOM', 'EC': 'ECAD','Zn': 'Zn',
@@ -183,3 +184,4 @@ class Command(BaseCommand):
                 start += 100
 
                 time.sleep(1)
+        return json.dumps('success') 

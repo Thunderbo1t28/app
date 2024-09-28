@@ -1,5 +1,5 @@
 # YAML
-broker_account: 'U9641370' # your account number at IB
+#broker_account: 'U9641370' # your account number at IB
 email_address: 'ksabiev@gmail.com' # add your address here
 email_to: 'ksabiev@gmail.com' # add your address here
 email_pwd: 'lwxawmrlhhslezga' # your password
@@ -16,7 +16,13 @@ email_security: 'TLS' # for future use
 ## Strategy configuration
 # This won't actually work unless you have a strategy called example.. so don't uncomment use as a template
 strategy_list:
-  example:
+  first:
+    load_backtests:
+      object: sysproduction.strategy_code.run_system_classic.runSystemClassic
+      function: system_method
+    reporting_code:
+      function: sysproduction.strategy_code.report_system_classic.report_system_classic
+  second:
     load_backtests:
       object: sysproduction.strategy_code.run_system_classic.runSystemClassic
       function: system_method
@@ -28,7 +34,8 @@ strategy_list:
 strategy_capital_allocation:
   function: sysproduction.strategy_code.strategy_allocation.weighted_strategy_allocation
   strategy_weights:
-    example: 100.0
+    first: 50.0
+    second: 50.0
 #
 ## Where do we save backtests
 backtest_store_directory: '/Users/kairsabiev/code/proj1/app/data/backtests'
@@ -42,12 +49,12 @@ offsystem_backup_directory: '/Users/kairsabiev/code/proj1/app/data/offsystem'
 reporting_directory: '/Users/kairsabiev/code/proj1/app/data/reports'
 #
 # Interactive brokers
-ib_ipaddress: 127.0.0.1
-ib_port: 4001
-ib_idoffset: 100
+#ib_ipaddress: 127.0.0.1
+#ib_port: 4001
+#ib_idoffset: 100
 #
 # Broker class list resolution function
-broker_factory_func: 'sysbrokers.broker_factory.get_ib_class_list2'
+#broker_factory_func: 'sysbrokers.broker_factory.get_ib_class_list2'
 #
 # Mongo DB
 mongo_host: 127.0.0.1
@@ -73,7 +80,7 @@ GMT_offset_hours: 0
 intraday_frequency: H
 #
 percentage_vol_target: 25.0
-notional_trading_capital: 2500000
+notional_trading_capital: 4000000
 base_currency: "RUB"
 # Capital calculation
 production_capital_method: 'full'

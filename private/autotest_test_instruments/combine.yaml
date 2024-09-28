@@ -1,95 +1,154 @@
 base_currency: RUB
 forecast_cap: 20.0
 forecast_div_multiplier:
-  MIX: 1.8358401716989723
+  CNY: 1.6104545350229256
+  Eu: 1.621836781203357
+  MXI: 1.6240787785378619
+  Si: 1.6059614347988462
 forecast_mapping: {}
 forecast_scalars:
-  accel16: 6.375571691984089
-  accel32: 4.535349329052078
-  accel64: 2.8906414256834507
-  assettrend16: 10.22840677059504
-  assettrend2: 24.327570765201756
-  assettrend32: 6.684508249755912
-  assettrend4: 18.414618551287173
-  assettrend64: 4.347192478984777
-  assettrend8: 14.195319902912578
-  breakout10: 0.5493575991091164
-  breakout160: 0.6536698657598066
-  breakout20: 0.6028769242094205
-  breakout320: 0.9947771134411116
-  breakout40: 0.640364758002694
-  breakout80: 0.6710619638088005
-  carry10: 51.830236572373565
-  carry125: 74.98168091432282
-  carry30: 59.16443151153704
-  carry60: 67.52459868464392
-  momentum16: 3.0621433807001153
-  momentum32: 2.0572040075666873
-  momentum4: 6.254437103003635
-  momentum64: 1.4226259445538565
-  momentum8: 4.453651535327476
-  mrinasset1000: .nan
-  normmom16: 10.25612612283086
-  normmom2: 24.60878699768637
-  normmom32: 6.714785197148294
-  normmom4: 18.492130898086664
-  normmom64: 4.357202617373943
-  normmom8: 14.224625438418869
-  relcarry: .nan
-  relmomentum10: .nan
-  relmomentum20: .nan
-  relmomentum40: .nan
-  relmomentum80: .nan
-  skewabs180: 3.4663972964335077
-  skewabs365: 1.7526449816960217
-  skewrv180: 2.313527313324012
-  skewrv365: 1.2614124937419724
+  accel16: 7.8170710605387095
+  accel32: 5.563487137713779
+  accel64: 3.896720541225276
+  breakout10: 0.6031025130185256
+  breakout160: 0.7388310187414805
+  breakout20: 0.6742627921625178
+  breakout320: 0.7366197028421859
+  breakout40: 0.7036929411910525
+  breakout80: 0.726260784624834
+  carry10: 27.815707053556984
+  carry125: 29.366474500729886
+  carry30: 28.384062881349813
+  carry60: 28.40072429176199
+  momentum16: 4.104172020369661
+  momentum32: 2.786994330124792
+  momentum4: 8.539940954709955
+  momentum64: 1.9093945630747895
+  momentum8: 5.949404365193165
+  normmom16: 4.116536590599602
+  normmom2: 12.388305650778637
+  normmom32: 2.758872936017786
+  normmom4: 8.614429965006694
+  normmom64: 1.8706800701120874
+  normmom8: 5.979138542342214
+  skewabs180: 4.590246757939031
+  skewabs365: 2.351483885205172
 forecast_weights:
-  MIX:
-    accel16: 0.0652344602522627
-    accel32: 0.06749844253872624
-    accel64: 0.15861053237788306
-    assettrend16: 0.03191352243523103
-    assettrend2: 0.014257955250580115
-    assettrend32: 0.012752773663914977
-    assettrend4: 0.010630174510869216
-    assettrend64: 0.010946788648190403
-    assettrend8: 0.011255392326733
-    breakout10: 0.045688637758696436
-    breakout160: 0.020020215428786174
-    breakout20: 0.010829052103443227
-    breakout320: 0.013842967096961242
-    breakout40: 0.012201962776127687
-    breakout80: 0.036457863831455245
-    carry10: 0.012521328368944965
-    carry125: 0.02431178113019924
-    carry30: 0.019116213561051597
-    carry60: 0.0264728017560872
-    momentum16: 0.03638619622037651
-    momentum32: 0.01478269254162311
-    momentum4: 0.011513493548844775
-    momentum64: 0.012233251173178918
-    momentum8: 0.011408045501540317
-    mrinasset1000: 0.0
-    normmom16: 0.032670166383987606
-    normmom2: 0.013593150970076205
-    normmom32: 0.012845954187422983
-    normmom4: 0.010632884743175924
-    normmom64: 0.011037929226501061
-    normmom8: 0.011746851387747677
-    relcarry: 0.0
-    relmomentum10: 0.0
-    relmomentum20: 0.0
-    relmomentum40: 0.0
-    relmomentum80: 0.0
-    skewabs180: 0.04957117928538724
-    skewabs365: 0.06432718795382535
-    skewrv180: 0.035969813053865325
-    skewrv365: 0.06671833800630325
-instrument_div_multiplier: 1.0
+  CNY:
+    accel16: 0.13174510258740066
+    accel32: 0.13731437193426502
+    accel64: 0.22451791309546845
+    breakout10: 0.03586909491050436
+    breakout160: 0.01481070249553764
+    breakout20: 0.02059988200647054
+    breakout320: 0.0003374309047228573
+    breakout40: 0.020617892306178998
+    breakout80: 0.019703720298983925
+    carry10: 0.00013611329585385865
+    carry125: 0.00012005290130013157
+    carry30: 4.460659499807992e-05
+    carry60: 5.853424096859121e-05
+    momentum16: 0.02033815017610081
+    momentum32: 0.014863061838350417
+    momentum4: 0.02145385153567913
+    momentum64: 0.01238126192800499
+    momentum8: 0.02131967460002508
+    normmom16: 0.04051297224080511
+    normmom2: 0.027860895054787425
+    normmom32: 0.03311586909818214
+    normmom4: 0.03645446880033901
+    normmom64: 0.014220297942572008
+    normmom8: 0.041320701681850806
+    skewabs180: 0.10927990091064219
+    skewabs365: 0.001003476620007731
+  Eu:
+    accel16: 0.13240061789866783
+    accel32: 0.13805593696584148
+    accel64: 0.2285993842663335
+    breakout10: 0.03220809264490784
+    breakout160: 0.014845192063787037
+    breakout20: 0.01993552602282411
+    breakout320: 0.00041344511150863964
+    breakout40: 0.020252967110825606
+    breakout80: 0.01951141208906517
+    carry10: 0.00018550107625464176
+    carry125: 0.0001399906285110548
+    carry30: 5.608219181095457e-05
+    carry60: 6.928175846986914e-05
+    momentum16: 0.02025587568239828
+    momentum32: 0.015102805885292708
+    momentum4: 0.021137249036165377
+    momentum64: 0.01349164152171589
+    momentum8: 0.02115465452280333
+    normmom16: 0.039605751728183154
+    normmom2: 0.022642136038992608
+    normmom32: 0.03229188974622511
+    normmom4: 0.033997242995052614
+    normmom64: 0.014782042094952964
+    normmom8: 0.04013495762286718
+    skewabs180: 0.11765441827356539
+    skewabs365: 0.0010759050229777504
+  MXI:
+    accel16: 0.13321176788974878
+    accel32: 0.1374931764608598
+    accel64: 0.22824874141198648
+    breakout10: 0.031872400078144174
+    breakout160: 0.014878099368913949
+    breakout20: 0.01976542062181789
+    breakout320: 0.00043086214068093615
+    breakout40: 0.020094789983949656
+    breakout80: 0.019355858049270012
+    carry10: 0.00018514983482314818
+    carry125: 0.00011750476253695679
+    carry30: 5.2818279530882506e-05
+    carry60: 6.239049401263915e-05
+    momentum16: 0.02002285411683785
+    momentum32: 0.015153914576643788
+    momentum4: 0.020898760130913133
+    momentum64: 0.014243473867609383
+    momentum8: 0.020868887491085515
+    normmom16: 0.039381684738526546
+    normmom2: 0.021019048485884224
+    normmom32: 0.03232728881940109
+    normmom4: 0.03315011833442689
+    normmom64: 0.015347900559851064
+    normmom8: 0.039667586743325885
+    skewabs180: 0.12106254825328913
+    skewabs365: 0.0010869545059303115
+  Si:
+    accel16: 0.1355933199159797
+    accel32: 0.13822666117683527
+    accel64: 0.22433672080199327
+    breakout10: 0.03709774050706583
+    breakout160: 0.014313921420116192
+    breakout20: 0.020696355228481168
+    breakout320: 0.00035269556183755357
+    breakout40: 0.020508759450096104
+    breakout80: 0.01949032983214362
+    carry10: 0.00011266708956882303
+    carry125: 9.805668630460361e-05
+    carry30: 3.414866638424692e-05
+    carry60: 4.839768002734063e-05
+    momentum16: 0.020288908954343998
+    momentum32: 0.014783779829447164
+    momentum4: 0.021850214336036705
+    momentum64: 0.01184914505083286
+    momentum8: 0.021416921152457795
+    normmom16: 0.04031225982514767
+    normmom2: 0.03012050259214131
+    normmom32: 0.032476950582772376
+    normmom4: 0.03700489616158568
+    normmom64: 0.013841305534115016
+    normmom8: 0.041372845297220205
+    skewabs180: 0.10281563905234062
+    skewabs365: 0.0009568576147250603
+instrument_div_multiplier: 1.1186017198249008
 instrument_weights:
-  MIX: 1.0
-notional_trading_capital: 50000000
+  CNY: 0.26628835378436705
+  Eu: 0.14802494940926547
+  MXI: 0.4376617473971019
+  Si: 0.14802494940926547
+notional_trading_capital: 2000000
 percentage_vol_target: 25.0
 risk_overlay:
   max_risk_fraction_normal_risk: 1.75
@@ -118,48 +177,6 @@ trading_rules:
     function: systems.provided.rules.accel.accel
     other_args:
       Lfast: 64
-  assettrend16:
-    data:
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.ewmac.ewmac_calc_vol
-    other_args:
-      Lfast: 16
-      Lslow: 64
-  assettrend2:
-    data:
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.ewmac.ewmac_calc_vol
-    other_args:
-      Lfast: 2
-      Lslow: 8
-  assettrend32:
-    data:
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.ewmac.ewmac_calc_vol
-    other_args:
-      Lfast: 32
-      Lslow: 128
-  assettrend4:
-    data:
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.ewmac.ewmac_calc_vol
-    other_args:
-      Lfast: 4
-      Lslow: 16
-  assettrend64:
-    data:
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.ewmac.ewmac_calc_vol
-    other_args:
-      Lfast: 64
-      Lslow: 256
-  assettrend8:
-    data:
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.ewmac.ewmac_calc_vol
-    other_args:
-      Lfast: 8
-      Lslow: 32
   breakout10:
     data:
     - rawdata.get_daily_prices
@@ -260,13 +277,6 @@ trading_rules:
     other_args:
       Lfast: 8
       Lslow: 32
-  mrinasset1000:
-    data:
-    - rawdata.get_cumulative_daily_vol_normalised_returns
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.cs_mr.cross_sectional_mean_reversion
-    other_args:
-      horizon: 1000
   normmom16:
     data:
     - rawdata.get_cumulative_daily_vol_normalised_returns
@@ -309,39 +319,6 @@ trading_rules:
     other_args:
       Lfast: 8
       Lslow: 32
-  relcarry:
-    data:
-    - rawdata.smoothed_carry
-    - rawdata.median_carry_for_asset_class
-    function: systems.provided.rules.carry.relative_carry
-  relmomentum10:
-    data:
-    - rawdata.get_cumulative_daily_vol_normalised_returns
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.rel_mom.relative_momentum
-    other_args:
-      horizon: 10
-  relmomentum20:
-    data:
-    - rawdata.get_cumulative_daily_vol_normalised_returns
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.rel_mom.relative_momentum
-    other_args:
-      horizon: 20
-  relmomentum40:
-    data:
-    - rawdata.get_cumulative_daily_vol_normalised_returns
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.rel_mom.relative_momentum
-    other_args:
-      horizon: 40
-  relmomentum80:
-    data:
-    - rawdata.get_cumulative_daily_vol_normalised_returns
-    - rawdata.normalised_price_for_asset_class
-    function: systems.provided.rules.rel_mom.relative_momentum
-    other_args:
-      horizon: 80
   skewabs180:
     data:
     - rawdata.get_demeanded_factor_value
@@ -360,40 +337,12 @@ trading_rules:
       _factor_name: neg_skew
       _lookback_days: 365
       smooth: 90
-  skewrv180:
-    data:
-    - rawdata.get_demeanded_factor_value
-    function: systems.provided.rules.factors.factor_trading_rule
-    other_args:
-      _demean_method: average_factor_value_in_asset_class_for_instrument
-      _factor_name: neg_skew
-      _lookback_days: 180
-      smooth: 45
-  skewrv365:
-    data:
-    - rawdata.get_demeanded_factor_value
-    function: systems.provided.rules.factors.factor_trading_rule
-    other_args:
-      _demean_method: average_factor_value_in_asset_class_for_instrument
-      _factor_name: neg_skew
-      _lookback_days: 365
-      smooth: 90
 use_attenuation:
 - breakout10
 - breakout20
 - breakout40
 - breakout80
 - breakout160
-- relmomentum10
-- relmomentum20
-- relmomentum40
-- relmomentum80
-- assettrend2
-- assettrend4
-- assettrend8
-- assettrend16
-- assettrend32
-- assettrend64
 - normmom2
 - normmom4
 - normmom8
