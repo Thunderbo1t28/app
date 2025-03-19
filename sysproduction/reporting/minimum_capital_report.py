@@ -35,7 +35,7 @@ def minimum_capital_report(
     formatted_output.append(reporting_api.table_of_minimum_capital())
 
     formatted_output.append(reporting_api.footer())
-
+    #print(type(formatted_output))
     return formatted_output
 
 

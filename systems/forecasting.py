@@ -5,7 +5,12 @@ from syscore.constants import arg_not_supplied
 
 from systems.system_cache import output, dont_cache
 from systems.trading_rules import TradingRule
-
+import os
+BASEDIR = os.getcwd()
+if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+    directory = f"{BASEDIR}/private/system_log/rules"
+elif os.name == 'nt':   # для Windows
+    directory = f"{BASEDIR}\\private\\system_log\\rules"
 
 class Rules(SystemStage):
     """
@@ -100,6 +105,9 @@ class Rules(SystemStage):
 
         result = trading_rule.call(system, instrument_code)
         result = pd.Series(result)
+
+        os.makedirs(directory, exist_ok=True)
+        result.to_csv(f'{directory}/get_raw_forecast_{rule_variation_name}_{instrument_code}.csv')
 
         return result
 

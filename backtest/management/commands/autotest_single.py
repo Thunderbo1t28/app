@@ -39,8 +39,35 @@ class Command(BaseCommand):
         #config = MyConfigModel.objects.get(id=config_id)
         # Создание объекта Config с полученными параметрами
         
-        instrument = ['Si', 'Eu', 'CNY', 'MXI']
-        
+        instrument = [
+                                    'ALRS',
+                                    'AFKS',
+                                    'BSPB',
+                                    'GL',
+                                    'GAZR',
+                                    'MTLR',
+                                    'MOEX',
+                                    'MGNT',
+                                    'MVID',
+                                    'PHOR',
+                                    'PIKK',
+                                    'POSI',
+                                    'RTSM',
+                                    'SGZH',
+                                    'MOEX',
+                                    'HYDR',
+                                    'ASTR',
+                                    'SOFL',
+                                    'SVCB',
+                                    'VKCO',
+                                    'RNFT',
+                                    'CNY',
+                                    'SIBN',
+                                    'SBRF',
+                                    'SMLT',
+                                    'WUSH',]
+        # ['Si', 'Eu', 'CNY','MXI', 'ALRS', 'FEES', 'MTLR', 'MGNT', 'NLMK', 'SBPR', 'SMLT']
+        # ['Si', 'MXI', 'MTLR', 'MGNT', 'NLMK', 'SMLT']
         if os.name == 'posix':
             my_config = Config(f"{BASEDIR}/private/autotest_test_instruments/config.yaml")
         elif os.name == 'nt': 
@@ -154,11 +181,16 @@ class Command(BaseCommand):
         additional_info_json = json.dumps(profits.gross.percent.stats())
 
         parsed_result = profits.percent.stats()
-        BASEDIR = os.getcwd()
-
-        for i in instrument:
-            correlation_matrix = system.accounts.get_daily_returns_volatility(instrument = i)
-
+        #BASEDIR = os.getcwd()
+        #ans=system.portfolio.get_instrument_correlation_matrix()
+        
+        #for i in instrument:
+            ##if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+                #directory = f"{BASEDIR}/data/test/get_daily_returns_vol"
+            #elif os.name == 'nt':   # для Windows
+                #directory = f"{BASEDIR}\\data\\test\\get_daily_returns_vol"
+            #os.makedirs(directory, exist_ok=True)
+            #correlation_matrix.to_csv(f'{directory}/{i}.csv')
         
 
         backtest_result = BacktestResult2(
@@ -205,5 +237,21 @@ class Command(BaseCommand):
                                                                             'forecast_mapping',
                                                                             'instrument_weights',
                                                                             'instrument_div_multiplier'])
-                                                                            
+                                                                        
+        #print(ans.corr_list[-1])
+        if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+            directory = f"{BASEDIR}/data/test/get_daily_returns_vol"
+        elif os.name == 'nt':   # для Windows
+            directory = f"{BASEDIR}\\data\\test\\get_daily_returns_vol"
+        os.makedirs(directory, exist_ok=True)
+        profits.percent.to_csv(f'{directory}/portfolio_pandl.csv')
+        #ans.corr_list[10].to_csv(f'{directory}/corr_list.csv')
+        #system.config.forecast_weight_estimate["method"]="shrinkage" ## speed things up
+        #system.config.forecast_weight_estimate["date_method"]="in_sample" ## speed things up
+        #system.config.instrument_weight_estimate["date_method"]="in_sample" ## speed things up
+        #system.config.instrument_weight_estimate["method"]="shrinkage" ## speed things up
+        #ans=system.portfolio.get_instrument_correlation_matrix()
+        #print(ans.corr_list[-1])
+        #print(system.positionSize.get_fx_rate("SPYF").tail(2))
+        #print(system.positionSize.get_subsystem_position('SPYF'))
         self.stdout.write(self.style.SUCCESS('Successfully tested EWMA Trading Rule.'))

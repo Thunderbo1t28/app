@@ -1,0 +1,58 @@
+# Конфигурация управления системой
+system:
+  auto_start: true
+  trading_hours:
+    start: "10:00"
+    end: "18:50"
+  max_positions: 10
+  risk_management:
+    max_position_size: 100000
+    max_drawdown: 0.02
+    stop_loss: 0.01
+
+instruments:
+  - symbol: "SBER"
+    type: "stock"
+    exchange: "MOEX"
+    enabled: true
+  - symbol: "GAZP"
+    type: "stock"
+    exchange: "MOEX"
+    enabled: true
+
+strategies:
+  - name: "momentum"
+    timeframe: "1h"
+    parameters:
+      lookback: 20
+      threshold: 0.02
+  - name: "mean_reversion"
+    timeframe: "4h"
+    parameters:
+      lookback: 30
+      std_dev: 2.0
+
+strategy_list:
+  first:
+    load_backtests:
+      object: sysproduction.strategy_code.run_system_classic.runSystemClassic
+      function: system_method
+    reporting_code:
+      function: sysproduction.strategy_code.report_system_classic.report_system_classic
+  second:
+    load_backtests:
+      object: sysproduction.strategy_code.run_system_classic.runSystemClassic
+      function: system_method
+    reporting_code:
+      function: sysproduction.strategy_code.report_system_classic.report_system_classic
+
+strategy_capital_allocation:
+  function: sysproduction.strategy_code.strategy_allocation.weighted_strategy_allocation
+  strategy_weights:
+    first: 25.0
+    second: 75.0
+
+percentage_vol_target: 25.0
+notional_trading_capital: 15000000
+base_currency: "RUB"
+production_capital_method: 'full' 

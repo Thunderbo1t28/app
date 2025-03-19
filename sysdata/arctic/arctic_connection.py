@@ -130,10 +130,10 @@ class arcticData(object):
             list: Список словарей с восстановленными данными.
         """
         # Удаление дополнительных обратных слешей из JSON-строки
-        json_data = json_data.replace("\\", "")
+        #json_data = json_data.replace("\\", "")
         # Разбор JSON-строки
-        parsed_data = json.loads(json_data)
-
+        #parsed_data = json.loads(json_data)
+        parsed_data = json_data
         if self.model == quotes.models.optimal_positions:
             for item in parsed_data:
                 for key, value in item.items():
@@ -155,15 +155,16 @@ class arcticData(object):
                                     item[key] = float(value)  # Попробуем преобразовать в float
                                 except ValueError:
                                     pass  # Если не удалось преобразовать, оставляем как строку
-                    elif value.isdigit():  # Если это целое число
-                        item[key] = int(value)
+                    #elif value.isdigit():  # Если это целое число
+                        #item[key] = int(value)
                     elif value == 'nan':
                         item[key] = None
                     elif pd.isna(value):
                         item[key] = None
         # Преобразование строковых значений обратно в float
-        else:
+        elif self.model == quotes.models.spotfx_prices:
             for item in parsed_data:
+                #print(item)
                 for key, value in item.items():
                     if isinstance(value, str):
                         try:
@@ -188,7 +189,34 @@ class arcticData(object):
                                 item[key] = None
                             elif pd.isna(value):
                                 item[key] = None
-        
+                
+        else:
+            for item in parsed_data:
+                #print(item)
+                for key, value in item.items():
+                    if isinstance(value, str):
+                        try:
+                            # Преобразуем в строку только в том случае, если преобразование в int прошло успешно
+                            item[key] = int(value)
+                            #print(type(item[key]), item[key])
+                        except ValueError:
+                            if '.' in value:  # Если есть десятичная точка
+                                # try:
+                                #     date_value = datetime.strptime(value.split('.')[0], '%Y%m%d')
+                                #     # Проверяем, что дата входит в интервал
+                                #     if 2010 <= date_value.year <= 2025:
+                                #         item[key] = date_value.strftime('%Y%m%d') # Преобразуем в формат без точки
+                                # except ValueError:
+                                try:
+                                    item[key] = float(value)  # Попробуем преобразовать в float
+                                except ValueError:
+                                    pass  # Если не удалось преобразовать, оставляем как строку
+                            elif value.isdigit():  # Если это целое число
+                                item[key] = int(value)
+                            elif value == 'nan':
+                                item[key] = None
+                            elif pd.isna(value):
+                                item[key] = None
         #print(self.model)
         #print(f"arctic {parsed_data}")
         return parsed_data
@@ -207,8 +235,11 @@ class arcticData(object):
         #print(data_present)
         #print(data)
         data_dict = data_copy.to_dict(orient='records')
-        data_dict = self.convert_data_to_json(data_dict)
-        
+        #print('Point 1')
+        #print(data_dict)
+        #data_dict = self.convert_data_to_json(data_dict)
+        #print('Point 2')
+        #print(data_dict)
         self.manager.create_arctic_data(model=self.model, ident=ident, data=data_dict)
 
     def delete(self, ident: str):

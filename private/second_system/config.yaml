@@ -119,8 +119,8 @@ instrument_weights:
   CNY: 0.47159715970538757
   Eu: 0.2642014201473063
   Si: 0.2642014201473063
-notional_trading_capital: 2000000
-percentage_vol_target: 25.0
+notional_trading_capital: 12000000
+percentage_vol_target: 10.0
 risk_overlay:
   max_risk_fraction_normal_risk: 1.75
   max_risk_fraction_stdev_risk: 4.0

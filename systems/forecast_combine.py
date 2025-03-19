@@ -40,7 +40,12 @@ from systems.tools.autogroup import (
     config_is_auto_group,
     resolve_config_into_parameters_and_weights_for_autogrouping,
 )
-
+import os
+BASEDIR = os.getcwd()
+if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+    directory = f"{BASEDIR}/private/system_log/forecast_combine"
+elif os.name == 'nt':   # для Windows
+    directory = f"{BASEDIR}\\private\\system_log\\forecast_combine"
 
 class ForecastCombine(SystemStage):
     """
@@ -102,6 +107,9 @@ class ForecastCombine(SystemStage):
         combined_forecast = mapping_and_capping_function(
             raw_multiplied_combined_forecast, **mapping_and_capping_kwargs
         )
+
+        os.makedirs(directory, exist_ok=True)
+        combined_forecast.to_csv(f'{directory}/get_combined_forecast_{instrument_code}.csv')
 
         return combined_forecast
 

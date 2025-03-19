@@ -1,0 +1,775 @@
+base_currency: RUB
+forecast_cap: 20.0
+forecast_div_multiplier:
+  AFKS: 1.8480851071354425
+  AFLT: 1.8388589108484716
+  ALRS: 1.8445727841976036
+  CNY: 1.7695588795290171
+  Eu: 1.794197841660347
+  FEES: 1.8474663025998044
+  GAZR: 1.8012444871085795
+  MGNT: 1.8583983181369799
+  MOEX: 1.8400464489712856
+  MTLR: 1.8531108596752401
+  MXI: 1.801585907978689
+  NLMK: 1.8573260414167045
+  RTKM: 1.8356634704108445
+  SBPR: 1.8424227294122149
+  SBRF: 1.7821969593702554
+  SMLT: 1.7856538794583157
+  SNGP: 1.8357744299170347
+  Si: 1.761225178085068
+forecast_mapping: {}
+forecast_scalars:
+  accel16: 7.8170710605387095
+  accel32: 5.563487137713779
+  accel64: 3.896720541225276
+  breakout10: 0.6031025130185256
+  breakout160: 0.7388310187414805
+  breakout20: 0.6742627921625178
+  breakout320: 0.7366197028421859
+  breakout40: 0.7036929411910525
+  breakout80: 0.726260784624834
+  carry10: 27.815707053556984
+  carry125: 29.366474500729886
+  carry30: 28.384062881349813
+  carry60: 28.40072429176199
+  momentum16: 4.104172020369661
+  momentum32: 2.786994330124792
+  momentum4: 8.539940954709955
+  momentum64: 1.9093945630747895
+  momentum8: 5.949404365193165
+  normmom16: 4.116536590599602
+  normmom2: 12.388305650778637
+  normmom32: 2.758872936017786
+  normmom4: 8.614429965006694
+  normmom64: 1.8706800701120874
+  normmom8: 5.979138542342214
+  skewabs180: 4.590246757939031
+  skewabs365: 2.351483885205172
+forecast_weights:
+  AFKS:
+    accel16: 0.055365259817061384
+    accel32: 0.09152024645207547
+    accel64: 0.1282302483454125
+    breakout10: 0.01816258719960427
+    breakout160: 0.018496370858725995
+    breakout20: 0.01600104088737673
+    breakout320: 0.04375926930135087
+    breakout40: 0.033073735492975556
+    breakout80: 0.01870355613561189
+    carry10: 0.010262327080943122
+    carry125: 0.01332316299918509
+    carry30: 0.015446525872486742
+    carry60: 0.014362161304523651
+    momentum16: 0.018468270136090925
+    momentum32: 0.01787798176703917
+    momentum4: 0.016039735833471024
+    momentum64: 0.052866804765732675
+    momentum8: 0.033186380572651115
+    normmom16: 0.03444048787800106
+    normmom2: 0.006796454637877756
+    normmom32: 0.03246393604120321
+    normmom4: 0.0270612806426088
+    normmom64: 0.0965392981727286
+    normmom8: 0.06215398617522491
+    skewabs180: 0.07617367421921466
+    skewabs365: 0.04922521741082287
+  AFLT:
+    accel16: 0.06155352406223543
+    accel32: 0.09430955166110344
+    accel64: 0.13036523417515036
+    breakout10: 0.023862435075801575
+    breakout160: 0.01898577388090789
+    breakout20: 0.01711010105612048
+    breakout320: 0.04289951300018961
+    breakout40: 0.03486294817480042
+    breakout80: 0.01935808970166115
+    carry10: 0.002230337326814364
+    carry125: 0.007694155974166204
+    carry30: 0.0058882969053055375
+    carry60: 0.008075884071607002
+    momentum16: 0.018874684940531843
+    momentum32: 0.018074484626083534
+    momentum4: 0.0166747176099826
+    momentum64: 0.05441187162286293
+    momentum8: 0.03436712895040647
+    normmom16: 0.03586451506388517
+    normmom2: 0.014611912249120817
+    normmom32: 0.03390437708740836
+    normmom4: 0.029080049660542177
+    normmom64: 0.1008177971582038
+    normmom8: 0.06449268346473237
+    skewabs180: 0.07239936075127626
+    skewabs365: 0.03923057174910027
+  ALRS:
+    accel16: 0.05532479951636717
+    accel32: 0.09026078595973802
+    accel64: 0.12296449943504027
+    breakout10: 0.002470437626547602
+    breakout160: 0.017938849592618933
+    breakout20: 0.014153978394107829
+    breakout320: 0.04353243449178195
+    breakout40: 0.031177037463188874
+    breakout80: 0.017896202317789427
+    carry10: 0.03890731622744262
+    carry125: 0.016279659001978985
+    carry30: 0.029976184162723914
+    carry60: 0.019761815573568063
+    momentum16: 0.017484288395268957
+    momentum32: 0.017076309742377234
+    momentum4: 0.01439660371492947
+    momentum64: 0.052249969777535335
+    momentum8: 0.031110945084449608
+    normmom16: 0.03215799413376035
+    normmom2: 6.495872018430191e-09
+    normmom32: 0.030310811996225904
+    normmom4: 0.021752356742481837
+    normmom64: 0.08257271318474686
+    normmom8: 0.05579073214375312
+    skewabs180: 0.08639818663605088
+    skewabs365: 0.05805508218965487
+  CNY:
+    accel16: 0.06787060344502058
+    accel32: 0.09661558293834593
+    accel64: 0.13569797132151892
+    breakout10: 0.03583804039439402
+    breakout160: 0.01987610360035631
+    breakout20: 0.019772836821976565
+    breakout320: 0.03964735059069803
+    breakout40: 0.037583534489663666
+    breakout80: 0.02047602424434138
+    carry10: 0.0015610343888556204
+    carry125: 0.00531538335796179
+    carry30: 0.004555501841875019
+    carry60: 0.0066836897821497595
+    momentum16: 0.02013892056323976
+    momentum32: 0.018719640486821194
+    momentum4: 0.020162240913265937
+    momentum64: 0.052168096109051806
+    momentum8: 0.03791938388136862
+    normmom16: 0.03958997315227068
+    normmom2: 0.03362678980708755
+    normmom32: 0.036640352376274755
+    normmom4: 0.038496771044362284
+    normmom64: 0.10371492198150266
+    normmom8: 0.07518704694422235
+    skewabs180: 0.029933341292798288
+    skewabs365: 0.002208864230576401
+  Eu:
+    accel16: 0.07265274706109132
+    accel32: 0.09980816372455947
+    accel64: 0.13515589395925917
+    breakout10: 0.030566580330272722
+    breakout160: 0.019399372716844533
+    breakout20: 0.01857021880148244
+    breakout320: 0.04060405230907355
+    breakout40: 0.036104649949366546
+    breakout80: 0.019906914024631666
+    carry10: 0.0027976548545587867
+    carry125: 0.006679698884449192
+    carry30: 0.0062241328638668525
+    carry60: 0.008391884991502395
+    momentum16: 0.019766103442098944
+    momentum32: 0.018475952701784874
+    momentum4: 0.019552349026708927
+    momentum64: 0.05240247759636062
+    momentum8: 0.03710573663726466
+    normmom16: 0.03786255501193159
+    normmom2: 0.0276453934185856
+    normmom32: 0.03509247967918134
+    normmom4: 0.03503478237497795
+    normmom64: 0.10166830136329641
+    normmom8: 0.07083431671932307
+    skewabs180: 0.03987962479797064
+    skewabs365: 0.007817962759556906
+  FEES:
+    accel16: 0.01750541942125906
+    accel32: 0.06773294194789026
+    accel64: 0.11585523704176738
+    breakout10: 0.014521797642310973
+    breakout160: 0.018242307665688382
+    breakout20: 0.015460223484997272
+    breakout320: 0.04184087420174634
+    breakout40: 0.032612028641808385
+    breakout80: 0.01849471651958031
+    carry10: 0.03929810637952605
+    carry125: 0.015246395746766903
+    carry30: 0.02891603985121801
+    carry60: 0.018747453491576197
+    momentum16: 0.0174287498058956
+    momentum32: 0.016973426230687278
+    momentum4: 0.013049959296461385
+    momentum64: 0.050889111031656546
+    momentum8: 0.030370702756960417
+    normmom16: 0.033658234239712904
+    normmom2: 0.005877021837604203
+    normmom32: 0.03290442899325726
+    normmom4: 0.025573190956031628
+    normmom64: 0.1048294443275135
+    normmom8: 0.05918165170832597
+    skewabs180: 0.09698645287764715
+    skewabs365: 0.06780408390211068
+  GAZR:
+    accel16: 0.06760701100929233
+    accel32: 0.09766270602984883
+    accel64: 0.13300335550665773
+    breakout10: 0.03133423897913553
+    breakout160: 0.019373330647254022
+    breakout20: 0.01862779521278943
+    breakout320: 0.04039413873725697
+    breakout40: 0.03637863406554737
+    breakout80: 0.019901494050951013
+    carry10: 0.005251314815139755
+    carry125: 0.004810110690653728
+    carry30: 0.008133512120211215
+    carry60: 0.007900734704893456
+    momentum16: 0.01962583960268215
+    momentum32: 0.01840252961523212
+    momentum4: 0.019049531024855577
+    momentum64: 0.05250556532233579
+    momentum8: 0.036582680876836735
+    normmom16: 0.03793740053200393
+    normmom2: 0.0289148428181286
+    normmom32: 0.03491679687190927
+    normmom4: 0.03544296653623927
+    normmom64: 0.0999141074173461
+    normmom8: 0.07117190804732915
+    skewabs180: 0.04286965028864726
+    skewabs365: 0.012287804476822688
+  MGNT:
+    accel16: 0.053824414184720844
+    accel32: 0.08467914234419703
+    accel64: 0.12729260611241747
+    breakout10: 0.016217151820055956
+    breakout160: 0.018809751185532294
+    breakout20: 0.0163339079844498
+    breakout320: 0.044037784961887635
+    breakout40: 0.03341482433333408
+    breakout80: 0.018872373852330294
+    carry10: 0.009536328806077734
+    carry125: 0.002439507435400175
+    carry30: 0.008295871226409336
+    carry60: 0.00503787355618521
+    momentum16: 0.018226010326597753
+    momentum32: 0.017736103450152245
+    momentum4: 0.015637430304305408
+    momentum64: 0.053098663480372996
+    momentum8: 0.0327237333802294
+    normmom16: 0.03458886107975502
+    normmom2: 0.017027896648130682
+    normmom32: 0.03328212639208328
+    normmom4: 0.02966824749533061
+    normmom64: 0.10024691515669558
+    normmom8: 0.06213465226606612
+    skewabs180: 0.08644537061835572
+    skewabs365: 0.0603924515989274
+  MOEX:
+    accel16: 0.05259068903925413
+    accel32: 0.08766518593923123
+    accel64: 0.12368643085565756
+    breakout10: 0.0026960814879485404
+    breakout160: 0.017868366080709793
+    breakout20: 0.014188221283386954
+    breakout320: 0.04295238267634646
+    breakout40: 0.03098295699100025
+    breakout80: 0.017775045416271926
+    carry10: 0.03928181621267073
+    carry125: 0.01285176437095194
+    carry30: 0.028160360082245314
+    carry60: 0.017493639157317532
+    momentum16: 0.017426265827687134
+    momentum32: 0.016990024508822747
+    momentum4: 0.014348752867260948
+    momentum64: 0.05244130147868763
+    momentum8: 0.030911911968113673
+    normmom16: 0.03203898548779158
+    normmom2: 4.214000631570152e-09
+    normmom32: 0.031709566444305934
+    normmom4: 0.02111885161611377
+    normmom64: 0.10075408155644676
+    normmom8: 0.05507144587335823
+    skewabs180: 0.08563849964568986
+    skewabs365: 0.0533573689187289
+  MTLR:
+    accel16: 0.04122108256907284
+    accel32: 0.08188572510561035
+    accel64: 0.11741952529536369
+    breakout10: 0.0009932234190399745
+    breakout160: 0.017621267982049115
+    breakout20: 0.012280264315683088
+    breakout320: 0.04468360258777665
+    breakout40: 0.02923489046388596
+    breakout80: 0.01715048603278178
+    carry10: 0.03946502268310703
+    carry125: 0.017343911080257856
+    carry30: 0.02642373977442779
+    carry60: 0.0174635507118623
+    momentum16: 0.016654952154985508
+    momentum32: 0.016251109706185575
+    momentum4: 0.011853434604790871
+    momentum64: 0.05113446352171707
+    momentum8: 0.028937481571835386
+    normmom16: 0.03134405980805191
+    normmom2: 1.5004743927222196e-18
+    normmom32: 0.03178646246068561
+    normmom4: 0.019350594907314708
+    normmom64: 0.09915094578644244
+    normmom8: 0.05295121614107672
+    skewabs180: 0.100918639686011
+    skewabs365: 0.07648034762998465
+  MXI:
+    accel16: 0.07658516019878751
+    accel32: 0.09964494050744545
+    accel64: 0.13408077066272067
+    breakout10: 0.03018861705044457
+    breakout160: 0.019246137096731838
+    breakout20: 0.018366446425450562
+    breakout320: 0.04104373481860321
+    breakout40: 0.03567288752196321
+    breakout80: 0.01967191693271685
+    carry10: 0.0031251530239157915
+    carry125: 0.0032895597949531524
+    carry30: 0.004148024742929528
+    carry60: 0.005249234089346636
+    momentum16: 0.019441773632776337
+    momentum32: 0.018348133539505554
+    momentum4: 0.019221692146963752
+    momentum64: 0.05287873236371929
+    momentum8: 0.03635216774753165
+    normmom16: 0.037514407711849135
+    normmom2: 0.025955941756202982
+    normmom32: 0.0349173079295021
+    normmom4: 0.03399302803448903
+    normmom64: 0.10229255300776025
+    normmom8: 0.06960200718578599
+    skewabs180: 0.044852594943091954
+    skewabs365: 0.014317077134812938
+  NLMK:
+    accel16: 0.05814158847201561
+    accel32: 0.08893006316450724
+    accel64: 0.11815806507168024
+    breakout10: 1.592272734146123e-07
+    breakout160: 0.017119716748119067
+    breakout20: 0.012256649768404291
+    breakout320: 0.043014691957773334
+    breakout40: 0.028927835336374965
+    breakout80: 0.016990133044459812
+    carry10: 0.05135626008554257
+    carry125: 0.014984370245129242
+    carry30: 0.03119191168448754
+    carry60: 0.018624898071169817
+    momentum16: 0.016702242436994162
+    momentum32: 0.016490730905394907
+    momentum4: 0.01275206229552614
+    momentum64: 0.051634555132429906
+    momentum8: 0.0290575041937561
+    normmom16: 0.029810951981520947
+    normmom2: 4.824541131365951e-18
+    normmom32: 0.029485873621163932
+    normmom4: 0.01044621834471827
+    normmom64: 0.09005804069462868
+    normmom8: 0.047171495822976674
+    skewabs180: 0.09460281513760592
+    skewabs365: 0.07209116655634724
+  RTKM:
+    accel16: 0.018810222597657078
+    accel32: 0.07278013711245739
+    accel64: 0.11474881754284381
+    breakout10: 0.002270296623964461
+    breakout160: 0.01707311209581683
+    breakout20: 0.013270166428744509
+    breakout320: 0.043064834251196435
+    breakout40: 0.029628517326690397
+    breakout80: 0.01705085854138057
+    carry10: 0.06422316269077501
+    carry125: 0.020836322307269006
+    carry30: 0.03957871861806335
+    carry60: 0.023546506540122376
+    momentum16: 0.0161627574528763
+    momentum32: 0.015979484068086296
+    momentum4: 0.010973644212091627
+    momentum64: 0.05011754529126708
+    momentum8: 0.027922606363236912
+    normmom16: 0.03011137541454872
+    normmom2: 5.634289180998459e-09
+    normmom32: 0.029516118288942475
+    normmom4: 0.020106075329783882
+    normmom64: 0.09266242230526096
+    normmom8: 0.05208450355249205
+    skewabs180: 0.10122088733965189
+    skewabs365: 0.07626090207049155
+  SBPR:
+    accel16: 0.05800795946192534
+    accel32: 0.09182943268962325
+    accel64: 0.12675255925260534
+    breakout10: 0.014073531002677941
+    breakout160: 0.018089402587675742
+    breakout20: 0.01519265234883011
+    breakout320: 0.04233636863383554
+    breakout40: 0.0322204037031182
+    breakout80: 0.018275234025792442
+    carry10: 0.02438852669203838
+    carry125: 0.0121096690906979
+    carry30: 0.022197665095854663
+    carry60: 0.016483145981745825
+    momentum16: 0.017963051412533126
+    momentum32: 0.017254669828689062
+    momentum4: 0.015513247785487882
+    momentum64: 0.051818099748921834
+    momentum8: 0.0324395962066292
+    normmom16: 0.033548256361842756
+    normmom2: 0.0016550451144275858
+    normmom32: 0.03283324963655202
+    normmom4: 0.023315488726342967
+    normmom64: 0.10239716570164085
+    normmom8: 0.05849454639400373
+    skewabs180: 0.07730886667028124
+    skewabs365: 0.043502165846227084
+  SBRF:
+    accel16: 0.07391546095974902
+    accel32: 0.09715589093635237
+    accel64: 0.13470997574294233
+    breakout10: 0.03404777958547545
+    breakout160: 0.019451685779409915
+    breakout20: 0.019303182009246078
+    breakout320: 0.039298503941408
+    breakout40: 0.036810529654908226
+    breakout80: 0.020089516045937693
+    carry10: 0.00037481128248808865
+    carry125: 0.0034991872145735247
+    carry30: 0.004314183519616387
+    carry60: 0.005727429143259872
+    momentum16: 0.01980631317638249
+    momentum32: 0.018497168827778052
+    momentum4: 0.019788856020552664
+    momentum64: 0.052012735617428384
+    momentum8: 0.03732416766906635
+    normmom16: 0.038694621216045756
+    normmom2: 0.03243924172617877
+    normmom32: 0.03589277784135729
+    normmom4: 0.037121252375095594
+    normmom64: 0.10494247747697012
+    normmom8: 0.07318576069688729
+    skewabs180: 0.03420614335204647
+    skewabs365: 0.007390348188843788
+  SMLT:
+    accel16: 0.012951438989941128
+    accel32: 0.07417477573054249
+    accel64: 0.1143871639487638
+    breakout10: 0.005573543600495002
+    breakout160: 0.01926735916342087
+    breakout20: 0.01579751214409535
+    breakout320: 0.047667305723550546
+    breakout40: 0.03415158658361401
+    breakout80: 0.019493585677486644
+    carry10: 0.06139531691480613
+    carry125: 0.027386897131394323
+    carry30: 0.044316427472089547
+    carry60: 0.028787726599137878
+    momentum16: 0.018726697001269773
+    momentum32: 0.017937797696903904
+    momentum4: 0.01400250166000977
+    momentum64: 0.05085137989531265
+    momentum8: 0.0332386045552509
+    normmom16: 0.03479437268793424
+    normmom2: 0.006791804934198707
+    normmom32: 0.03227335576594454
+    normmom4: 0.02862487797652226
+    normmom64: 0.09133838141574811
+    normmom8: 0.06344239296665881
+    skewabs180: 0.08740643419602359
+    skewabs365: 0.015220759568884884
+  SNGP:
+    accel16: 0.05046177904108118
+    accel32: 0.08866786829939015
+    accel64: 0.12381183362020343
+    breakout10: 0.009201772412380809
+    breakout160: 0.017910939747690775
+    breakout20: 0.014447267945363081
+    breakout320: 0.04101943393680611
+    breakout40: 0.031464554874369506
+    breakout80: 0.018078509565401357
+    carry10: 0.03916337775552318
+    carry125: 0.019222258379611813
+    carry30: 0.03128121286627075
+    carry60: 0.02133228953531331
+    momentum16: 0.017707990294229647
+    momentum32: 0.017061132729347856
+    momentum4: 0.014811950555933323
+    momentum64: 0.05197685412063939
+    momentum8: 0.031474104219936024
+    normmom16: 0.03269294743394583
+    normmom2: 0.006159704749781945
+    normmom32: 0.031017768598377578
+    normmom4: 0.024664219031790332
+    normmom64: 0.09504167444736417
+    normmom8: 0.057469019829764496
+    skewabs180: 0.07734781503688337
+    skewabs365: 0.03651172097260064
+  Si:
+    accel16: 0.07673533145795883
+    accel32: 0.09773747581088739
+    accel64: 0.13538288653143637
+    breakout10: 0.037774632895603316
+    breakout160: 0.019563451262915824
+    breakout20: 0.02002831595248474
+    breakout320: 0.03774993330933676
+    breakout40: 0.03750772708094228
+    breakout80: 0.020276946899228588
+    carry10: 0.0015116732556811044
+    carry125: 0.0033191727466538763
+    carry30: 0.0035568931490497935
+    carry60: 0.005043705548907077
+    momentum16: 0.020073858969989995
+    momentum32: 0.018592519470485586
+    momentum4: 0.02076247961857552
+    momentum64: 0.051269917135601036
+    momentum8: 0.03822514634012122
+    normmom16: 0.03949254769415341
+    normmom2: 0.03626040706794878
+    normmom32: 0.03617544256768762
+    normmom4: 0.03936347608039788
+    normmom64: 0.10355046925257677
+    normmom8: 0.07574880585688476
+    skewabs180: 0.022531547032427955
+    skewabs365: 0.0017652370120635659
+instrument_div_multiplier: 1.9633631475607696
+instrument_weights:
+  AFKS: 0.03770914347560389
+  AFLT: 0.03718611826968014
+  ALRS: 0.04148628545671961
+  CNY: 0.06827949572647193
+  Eu: 0.038287596203318994
+  FEES: 0.03719093154280746
+  GAZR: 0.05746136574067229
+  MGNT: 0.06343187625846369
+  MOEX: 0.0377056043216715
+  MTLR: 0.1122028305685001
+  MXI: 0.052733619292357786
+  NLMK: 0.04148632202135776
+  RTKM: 0.05746136574067234
+  SBPR: 0.02849931579491629
+  SBRF: 0.02849931579491626
+  SMLT: 0.1122028305685001
+  SNGP: 0.1098883870200508
+  Si: 0.038287596203318994
+notional_trading_capital: 2000000
+percentage_vol_target: 25.0
+risk_overlay:
+  max_risk_fraction_normal_risk: 1.75
+  max_risk_fraction_stdev_risk: 4.0
+  max_risk_leverage: 20.0
+  max_risk_limit_sum_abs_risk: 4.0
+trading_rules:
+  accel16:
+    data:
+    - rawdata.get_daily_prices
+    - rawdata.daily_returns_volatility
+    function: systems.provided.rules.accel.accel
+    other_args:
+      Lfast: 16
+  accel32:
+    data:
+    - rawdata.get_daily_prices
+    - rawdata.daily_returns_volatility
+    function: systems.provided.rules.accel.accel
+    other_args:
+      Lfast: 32
+  accel64:
+    data:
+    - rawdata.get_daily_prices
+    - rawdata.daily_returns_volatility
+    function: systems.provided.rules.accel.accel
+    other_args:
+      Lfast: 64
+  breakout10:
+    data:
+    - rawdata.get_daily_prices
+    function: systems.provided.rules.breakout.breakout
+    other_args:
+      lookback: 10
+  breakout160:
+    data:
+    - rawdata.get_daily_prices
+    function: systems.provided.rules.breakout.breakout
+    other_args:
+      lookback: 160
+  breakout20:
+    data:
+    - rawdata.get_daily_prices
+    function: systems.provided.rules.breakout.breakout
+    other_args:
+      lookback: 20
+  breakout320:
+    data:
+    - rawdata.get_daily_prices
+    function: systems.provided.rules.breakout.breakout
+    other_args:
+      lookback: 320
+  breakout40:
+    data:
+    - rawdata.get_daily_prices
+    function: systems.provided.rules.breakout.breakout
+    other_args:
+      lookback: 40
+  breakout80:
+    data:
+    - rawdata.get_daily_prices
+    function: systems.provided.rules.breakout.breakout
+    other_args:
+      lookback: 80
+  carry10:
+    data:
+    - rawdata.raw_carry
+    function: systems.provided.rules.carry.carry
+    other_args:
+      smooth_days: 10
+  carry125:
+    data:
+    - rawdata.raw_carry
+    function: systems.provided.rules.carry.carry
+    other_args:
+      smooth_days: 125
+  carry30:
+    data:
+    - rawdata.raw_carry
+    function: systems.provided.rules.carry.carry
+    other_args:
+      smooth_days: 30
+  carry60:
+    data:
+    - rawdata.raw_carry
+    function: systems.provided.rules.carry.carry
+    other_args:
+      smooth_days: 60
+  momentum16:
+    data:
+    - rawdata.get_daily_prices
+    - rawdata.daily_returns_volatility
+    function: systems.provided.rules.ewmac.ewmac
+    other_args:
+      Lfast: 16
+      Lslow: 64
+  momentum32:
+    data:
+    - rawdata.get_daily_prices
+    - rawdata.daily_returns_volatility
+    function: systems.provided.rules.ewmac.ewmac
+    other_args:
+      Lfast: 32
+      Lslow: 128
+  momentum4:
+    data:
+    - rawdata.get_daily_prices
+    - rawdata.daily_returns_volatility
+    function: systems.provided.rules.ewmac.ewmac
+    other_args:
+      Lfast: 4
+      Lslow: 16
+  momentum64:
+    data:
+    - rawdata.get_daily_prices
+    - rawdata.daily_returns_volatility
+    function: systems.provided.rules.ewmac.ewmac
+    other_args:
+      Lfast: 64
+      Lslow: 256
+  momentum8:
+    data:
+    - rawdata.get_daily_prices
+    - rawdata.daily_returns_volatility
+    function: systems.provided.rules.ewmac.ewmac
+    other_args:
+      Lfast: 8
+      Lslow: 32
+  normmom16:
+    data:
+    - rawdata.get_cumulative_daily_vol_normalised_returns
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
+    other_args:
+      Lfast: 16
+      Lslow: 64
+  normmom2:
+    data:
+    - rawdata.get_cumulative_daily_vol_normalised_returns
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
+    other_args:
+      Lfast: 2
+      Lslow: 8
+  normmom32:
+    data:
+    - rawdata.get_cumulative_daily_vol_normalised_returns
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
+    other_args:
+      Lfast: 32
+      Lslow: 128
+  normmom4:
+    data:
+    - rawdata.get_cumulative_daily_vol_normalised_returns
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
+    other_args:
+      Lfast: 4
+      Lslow: 16
+  normmom64:
+    data:
+    - rawdata.get_cumulative_daily_vol_normalised_returns
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
+    other_args:
+      Lfast: 64
+      Lslow: 256
+  normmom8:
+    data:
+    - rawdata.get_cumulative_daily_vol_normalised_returns
+    function: systems.provided.rules.ewmac.ewmac_calc_vol
+    other_args:
+      Lfast: 8
+      Lslow: 32
+  skewabs180:
+    data:
+    - rawdata.get_demeanded_factor_value
+    function: systems.provided.rules.factors.factor_trading_rule
+    other_args:
+      _demean_method: historic_average_factor_value_all_assets
+      _factor_name: neg_skew
+      _lookback_days: 180
+      smooth: 45
+  skewabs365:
+    data:
+    - rawdata.get_demeanded_factor_value
+    function: systems.provided.rules.factors.factor_trading_rule
+    other_args:
+      _demean_method: historic_average_factor_value_all_assets
+      _factor_name: neg_skew
+      _lookback_days: 365
+      smooth: 90
+use_attenuation:
+- breakout10
+- breakout20
+- breakout40
+- breakout80
+- breakout160
+- normmom2
+- normmom4
+- normmom8
+- normmom16
+- normmom32
+- normmom64
+- momentum4
+- momentum8
+- momentum16
+- momentum32
+- momentum64
+use_forecast_div_mult_estimates: false
+use_forecast_scale_estimates: false
+use_forecast_weight_estimates: false
+use_instrument_div_mult_estimates: false
+use_instrument_weight_estimates: false
+volatility_calculation:
+  backfill: true
+  days: 35
+  func: sysquant.estimators.vol.mixed_vol_calc
+  min_periods: 10
+  proportion_of_slow_vol: 0.35
+  slow_vol_years: 20
+  vol_abs_min: 1.0e-10

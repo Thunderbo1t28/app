@@ -7,6 +7,8 @@ from systems.system_cache import diagnostic, output
 from syscore.dateutils import BUSINESS_DAYS_IN_YEAR
 
 
+
+
 class myFuturesRawData(RawData):
     """
     A SubSystem that does futures specific raw data calculations
@@ -25,6 +27,8 @@ class myFuturesRawData(RawData):
         lookback = "%dD" % lookback_days
         perc_returns = self.get_daily_percentage_returns(instrument_code)
         skew = perc_returns.rolling(lookback).skew()
+
+
 
         return skew
 

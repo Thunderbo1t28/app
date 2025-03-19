@@ -158,11 +158,11 @@ class Command(BaseCommand):
         #run_strategy_order_generator()
         #interactive_order_stack()
         
-        interactive_diagnostics()
+        #interactive_diagnostics()
         
         #run_backups()
         #run_cleaners()
-        #run_reports()
+        run_reports()
 
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))

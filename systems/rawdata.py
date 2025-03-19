@@ -1,5 +1,6 @@
 from copy import copy
 
+
 import pandas as pd
 
 from systems.stage import SystemStage
@@ -14,6 +15,12 @@ from sysdata.config.configdata import Config
 
 from sysobjects.carry_data import rawCarryData
 
+import os
+BASEDIR = os.getcwd()
+if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+    directory = f"{BASEDIR}/private/system_log/rawdata"
+elif os.name == 'nt':   # для Windows
+    directory = f"{BASEDIR}\\private\\system_log\\rawdata"
 
 class RawData(SystemStage):
     """
@@ -65,6 +72,9 @@ class RawData(SystemStage):
                 "Data for %s not found! Remove from instrument list, or add to config.ignore_instruments"
                 % instrument_code
             )
+        
+        os.makedirs(directory, exist_ok=True)
+        dailyprice.to_csv(f'{directory}/get_daily_prices_{instrument_code}.csv')
 
         return dailyprice
 
@@ -81,6 +91,9 @@ class RawData(SystemStage):
             raise Exception(
                 "Data for %s not found! Remove from instrument list, or add to config.ignore_instruments"
             )
+        
+        os.makedirs(directory, exist_ok=True)
+        natural_prices.to_csv(f'{directory}/get_natural_frequency_prices_{instrument_code}.csv')
 
         return natural_prices
 
@@ -115,6 +128,10 @@ class RawData(SystemStage):
         #print(instrdailyprice)
         dailyreturns = instrdailyprice.diff()
 
+        
+        os.makedirs(directory, exist_ok=True)
+        dailyreturns.to_csv(f'{directory}/daily_returns_{instrument_code}.csv')
+
         return dailyreturns
 
     @output()
@@ -138,7 +155,13 @@ class RawData(SystemStage):
     def annualised_returns_volatility(self, instrument_code: str) -> pd.Series:
         daily_returns_volatility = self.daily_returns_volatility(instrument_code)
 
-        return daily_returns_volatility * ROOT_BDAYS_INYEAR
+        result = daily_returns_volatility * ROOT_BDAYS_INYEAR
+
+        
+        os.makedirs(directory, exist_ok=True)
+        result.to_csv(f'{directory}/annualised_returns_volatility_{instrument_code}.csv')
+
+        return result
 
     @output()
     def daily_returns_volatility(self, instrument_code: str) -> pd.Series:
@@ -206,6 +229,10 @@ class RawData(SystemStage):
 
         vol = vol_multiplier * raw_vol
 
+        
+        os.makedirs(directory, exist_ok=True)
+        vol.to_csv(f'{directory}/daily_returns_volatility_{instrument_code}.csv')
+
         return vol
 
     @output()
@@ -226,6 +253,10 @@ class RawData(SystemStage):
         denom_price = self.daily_denominator_price(instrument_code)
         num_returns = self.daily_returns(instrument_code)
         perc_returns = num_returns / denom_price.ffill()
+
+        
+        os.makedirs(directory, exist_ok=True)
+        perc_returns.to_csv(f'{directory}/get_daily_percentage_returns_{instrument_code}.csv')
 
         return perc_returns
 
@@ -256,6 +287,11 @@ class RawData(SystemStage):
         return_vol = self.daily_returns_volatility(instrument_code)
         (denom_price, return_vol) = denom_price.align(return_vol, join="right")
         perc_vol = 100.0 * (return_vol / denom_price.ffill().abs())
+
+
+        
+        os.makedirs(directory, exist_ok=True)
+        perc_vol.to_csv(f'{directory}/get_daily_percentage_volatility_{instrument_code}.csv')
 
         return perc_vol
 
@@ -291,6 +327,10 @@ class RawData(SystemStage):
         dailyreturns = self.daily_returns(instrument_code)
         norm_return = dailyreturns / returnvol
 
+        
+        os.makedirs(directory, exist_ok=True)
+        norm_return.to_csv(f'{directory}/get_daily_vol_normalised_returns_{instrument_code}.csv')
+
         return norm_return
 
     @diagnostic()
@@ -313,6 +353,10 @@ class RawData(SystemStage):
         norm_returns = self.get_daily_vol_normalised_returns(instrument_code)
 
         cum_norm_returns = norm_returns.cumsum()
+
+        
+        os.makedirs(directory, exist_ok=True)
+        cum_norm_returns.to_csv(f'{directory}/get_cumulative_daily_vol_normalised_returns_{instrument_code}.csv')
 
         return cum_norm_returns
 
@@ -399,6 +443,10 @@ class RawData(SystemStage):
             ).ffill()
         )
 
+        
+        os.makedirs(directory, exist_ok=True)
+        normalised_price_for_asset_class_aligned.to_csv(f'{directory}/normalised_price_for_asset_class_{instrument_code}.csv')
+
         return normalised_price_for_asset_class_aligned
 
     @diagnostic()
@@ -444,6 +492,9 @@ class RawData(SystemStage):
                 "Data for %s not found! Remove from instrument list, or add to config.ignore_instruments"
                 % instrument_code
             )
+        
+        os.makedirs(directory, exist_ok=True)
+        instrcarrydata.to_csv(f'{directory}/get_instrument_raw_carry_data_{instrument_code}.csv')
 
         instrcarrydata = rawCarryData(instrcarrydata)
 
@@ -472,6 +523,10 @@ class RawData(SystemStage):
         carrydata = self.get_instrument_raw_carry_data(instrument_code)
         raw_roll = carrydata.raw_futures_roll()
 
+
+        os.makedirs(directory, exist_ok=True)
+        raw_roll.to_csv(f'{directory}/raw_futures_roll_{instrument_code}.csv')
+
         return raw_roll
 
     @diagnostic()
@@ -495,6 +550,9 @@ class RawData(SystemStage):
         """
         carrydata = self.get_instrument_raw_carry_data(instrument_code)
         roll_diff = carrydata.roll_differentials()
+
+        os.makedirs(directory, exist_ok=True)
+        roll_diff.to_csv(f'{directory}/roll_differentials_{instrument_code}.csv')
 
         return roll_diff
 
@@ -528,6 +586,9 @@ class RawData(SystemStage):
 
         annroll = rawrollvalues / rolldiffs
 
+        os.makedirs(directory, exist_ok=True)
+        annroll.to_csv(f'{directory}/annualised_roll_{instrument_code}.csv')
+
         return annroll
 
     @diagnostic()
@@ -557,6 +618,9 @@ class RawData(SystemStage):
         annroll = self.annualised_roll(instrument_code)
         annroll = annroll.resample("1B").mean()
 
+        os.makedirs(directory, exist_ok=True)
+        annroll.to_csv(f'{directory}/daily_annualised_roll_{instrument_code}.csv')
+
         return annroll
 
     @output()
@@ -578,6 +642,9 @@ class RawData(SystemStage):
         ann_stdev = vol * ROOT_BDAYS_INYEAR
         raw_carry = daily_ann_roll / ann_stdev
 
+        os.makedirs(directory, exist_ok=True)
+        raw_carry.to_csv(f'{directory}/raw_carry_{instrument_code}.csv')
+
         return raw_carry
 
     @output()
@@ -593,6 +660,9 @@ class RawData(SystemStage):
 
         raw_carry = self.raw_carry(instrument_code)
         smooth_carry = raw_carry.ewm(smooth_days).mean()
+
+        os.makedirs(directory, exist_ok=True)
+        smooth_carry.to_csv(f'{directory}/smoothed_carry_{instrument_code}.csv')
 
         return smooth_carry
 
@@ -645,6 +715,9 @@ class RawData(SystemStage):
         # As usual forward fill at last moment
         median_carry = median_carry.reindex(instrument_carry.index).ffill()
 
+        os.makedirs(directory, exist_ok=True)
+        median_carry.to_csv(f'{directory}/median_carry_for_asset_class_{instrument_code}.csv')
+
         return median_carry
 
     # sys.data.get_instrument_asset_classes()
@@ -683,6 +756,9 @@ class RawData(SystemStage):
         
         #print(prices)
         daily_prices = prices.resample("1B").last()
+
+        os.makedirs(directory, exist_ok=True)
+        daily_prices.to_csv(f'{directory}/daily_denominator_price_{instrument_code}.csv')
 
         return daily_prices
 

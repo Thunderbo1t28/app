@@ -3,21 +3,11 @@ URL configuration for app project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
 from django.contrib import admin
 from django.urls import include, path
-from api.views import check_task_status, run_management_command
+from api.views import check_task_status
 from backtest.views import backtest_main, backtest_view, select_instruments_view, select_rules_view
 from main import views
 from quotes.views import (adjusted_prices_view, 
@@ -32,6 +22,22 @@ from quotes.views import (adjusted_prices_view,
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+)
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Systematic Trading API",
+        default_version='v1',
+        description="API для платформы систематической торговли",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@systematictrading.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
@@ -50,22 +56,23 @@ urlpatterns = [
     path('exchanges/<str:exchange>/<str:instrument>/multiple_price_data', multiple_price_data, name='multiple_price_data'),
     path('exchanges/<str:exchange>/<str:instrument>/adjusted_prices/', adjusted_prices_view, name='adjusted_prices_view'),
     path('exchanges/<str:exchange>/<str:instrument>/<str:contract>/', contract_detail_view, name='contract_detail_view'),
-
     
     path('data/multiprice/update/', update_multiple_price_data, name='update_multiple_price_data'),
-
     path('select_instrument/<str:exchange>/', select_instrument_view, name='select_instrument_view'),
     path('fx_price_data/<str:exchange>/<str:instrument>/', fx_price_data_view, name='fx_price_data_view'),
-
     path('create_instrument/', create_instrument, name='create_instrument'),
     
     path('autotest/', backtest_view, name='backtest_view'),
     path('select-rules/', select_rules_view, name='select_rules'),
     path('select-instruments/', select_instruments_view, name='select_instruments'),
+    
+    # API маршруты
     path('api/', include('api.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('run-command/', run_management_command, name='run_command'),
-    path('check-task-status/', check_task_status, name='check_task_status'),
-
+    path('api/tasks/status/<str:task_id>/', check_task_status, name='check_task_status'),
+    
+    # Документация API
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

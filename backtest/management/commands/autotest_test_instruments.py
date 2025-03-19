@@ -37,11 +37,12 @@ class Command(BaseCommand):
         #config = MyConfigModel.objects.get(id=config_id)
         # Создание объекта Config с полученными параметрами
         instruments = data.get_instrument_list()
+        instruments.sort()
         
         for instrument in instruments:
             
             countQuote = data.get_backadjusted_futures_price(instrument_code=instrument).count()
-            if countQuote < 500:
+            if countQuote < 10:
                 continue
             print(countQuote)
             print(instrument)

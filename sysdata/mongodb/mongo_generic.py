@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from pymongo import ASCENDING
 from quotes.models import MyData
-
+from datetime import datetime
 from syscore.constants import arg_not_supplied
 from syscore.exceptions import missingData, existingData
 from sysdata.arctic.arctic_connection import arcticData
@@ -130,7 +130,7 @@ class mongoDataWithSingleKey:
                 
                 result_dict = data.data
                 #print(result_dict)
-                result_dict = self.parse_json_data(result_dict)
+                #result_dict = self.parse_json_data(result_dict)
                 #print(result_dict)
                 return result_dict
         
@@ -167,9 +167,9 @@ class mongoDataWithSingleKey:
             json_data = self._mongo.model.objects.get()
                             
             #print(json_data)
-            json_data = self.parse_json_data(json_data.data)
+            #json_data = self.parse_json_data(json_data.data)
             # Преобразуйте данные JSON в словарь Python
-            data_dict = json.loads(json_data)
+            data_dict = json.loads(json_data.data)
 
             # Создайте объект MyData и сохраните его в базе данных
             my_data = MyData.objects.create(
@@ -218,12 +218,12 @@ class mongoDataWithSingleKey:
         #self.collection.filter(**custom_dict).delete()
         self.collection.delete()
 
-    def add_data(self, key, data_dict: dict, allow_overwrite=False, clean_ints=True):
-        
-        if clean_ints:
-            cleaned_data_dict = self.convert_data_to_json(data_dict) #mongo_clean_ints(data_dict)
-        else:
-            cleaned_data_dict = copy(data_dict)
+    def add_data(self, key, data_dict: dict, allow_overwrite=False, clean_ints=False):
+        cleaned_data_dict = self.convert_datetime(data_dict)
+        #if clean_ints:
+            #cleaned_data_dict = self.convert_data_to_json(data_dict) #mongo_clean_ints(data_dict)
+        #else:
+            #cleaned_data_dict = copy(data_dict)
         #print(data_dict)
         if self.key_is_in_data(key):
             if allow_overwrite:
@@ -246,7 +246,8 @@ class mongoDataWithSingleKey:
 
     def _update_existing_data_with_cleaned_dict(self, key, cleaned_data_dict):
         #key_name = self.key_name
-        self.collection.filter(ident=key).update(data=cleaned_data_dict)
+        cleaned_data_dict = self.convert_datetime(cleaned_data_dict)
+        self._mongo.manager.create_arctic_data(model=self._mongo.model, ident=key, data=cleaned_data_dict) 
 
     '''def _add_new_cleaned_dict(self, key, cleaned_data_dict):
         self.manager.create_arctic_data(model=self.model, ident=key, data=cleaned_data_dict)'''
@@ -255,6 +256,7 @@ class mongoDataWithSingleKey:
         key_name = self.key_name
         #print(cleaned_data_dict)
         #cleaned_data_dict[key_name] = key
+        cleaned_data_dict = self.convert_datetime(cleaned_data_dict)
         self._mongo.manager.create_arctic_data(model=self._mongo.model, ident=key, data=cleaned_data_dict) 
 
     
@@ -321,6 +323,15 @@ class mongoDataWithSingleKey:
         #print(json_data)
 
         return json_data
+    
+    def convert_datetime(self, obj):
+        if isinstance(obj, dict):
+            return {k: self.convert_datetime(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [self.convert_datetime(v) for v in obj]
+        elif isinstance(obj, datetime.datetime):
+            return obj.isoformat()  # Преобразует в строку "YYYY-MM-DDTHH:MM:SS"
+        return obj
     def parse_json_data(self, json_data):
         """
         Функция для разбора JSON-строки и восстановления данных.
@@ -350,7 +361,8 @@ class mongoDataWithSingleKey:
             return json_data
         # Разбор JSON-строки
         #print(json_data)
-        parsed_data = json.loads(json_data)
+        # // parsed_data = json.loads(json_data)
+        parsed_data = json_data
         #print(parsed_data)
         # Функция для восстановления вложенных словарей и списков
         def restore_values(value):

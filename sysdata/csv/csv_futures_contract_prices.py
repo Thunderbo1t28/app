@@ -177,17 +177,17 @@ class csvFuturesContractPriceData(futuresContractPriceData):
 
         :return: list of contracts
         """
-
+        
         return self.get_contracts_with_price_data_for_frequency(frequency=MIXED_FREQ)
 
     def get_contracts_with_price_data_for_frequency(
         self, frequency: Frequency
     ) -> listOfFuturesContracts:
-
+        
         list_of_contract_and_freq_tuples = (
             self._get_contract_freq_tuples_with_price_data()
         )
-
+        
         list_of_contracts = [
             futuresContract(contract_freq_tuple[1], contract_freq_tuple[2])
             for contract_freq_tuple in list_of_contract_and_freq_tuples
@@ -203,13 +203,14 @@ class csvFuturesContractPriceData(futuresContractPriceData):
 
         :return: list of futures contracts as tuples
         """
-
+        
         all_keynames = self._all_keynames_in_library()
+        
         list_of_contract_and_freq_tuples = [
             self._contract_tuple_and_freq_given_keyname(keyname)
             for keyname in all_keynames
         ]
-
+        
         return list_of_contract_and_freq_tuples
 
     def _keyname_given_contract_object_and_freq(
@@ -241,6 +242,7 @@ class csvFuturesContractPriceData(futuresContractPriceData):
         :return: tuple instrument_code, contract_date
         """
         first_split_keyname_as_list = keyname.split("/")
+        
         if len(first_split_keyname_as_list) == 2:
             ## has frequency
             frequency = Frequency[first_split_keyname_as_list[0]]

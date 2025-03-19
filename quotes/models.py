@@ -1,6 +1,7 @@
 from email.policy import default
 from django.db import models
 import pandas as pd
+from django.contrib.auth.models import User
 
 class Instrument(models.Model):
     instrument = models.CharField(max_length=50, unique=True)
@@ -92,7 +93,7 @@ class SpreadCosts(models.Model):
     spreadcost = models.FloatField()
 
 class LastDownloadDate(models.Model):
-    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE, null=True)
     contract = models.CharField(max_length=100)  # Имя контракта - дата последнего торгового дня
     last_download_date = models.DateTimeField()
     is_active = models.BooleanField(default=True)  # Статус контракта (торгуется или закрыт)
@@ -331,3 +332,46 @@ class MyData(models.Model):
 
     class Meta:
         ordering = ['fill_datetime']
+
+class Strategy(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    parameters = models.JSONField(default=dict)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Strategies"
+
+class Portfolio(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    instruments = models.ManyToManyField(Instrument)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+class Trade(models.Model):
+    TRADE_TYPES = (
+        ('BUY', 'Buy'),
+        ('SELL', 'Sell'),
+    )
+
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    strategy = models.ForeignKey(Strategy, on_delete=models.CASCADE)
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    type = models.CharField(max_length=4, choices=TRADE_TYPES)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.type} {self.quantity} {self.instrument} at {self.price}"

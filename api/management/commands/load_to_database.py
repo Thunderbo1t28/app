@@ -13,8 +13,9 @@ import requests
 from datetime import datetime, timedelta
 from quotes.models import Instrument, LastDownloadDate, Quote
 from django.db.models import Max
-
-
+from quotes.models import FxPriceData
+import xml.etree.ElementTree as ET
+from sysinit.futures.spotfx_from_csvAndInvestingDotCom_to_arctic import spotfx_from_csv_and_investing_dot_com
 
 
 # Настройка логирования
@@ -35,29 +36,136 @@ class Command(BaseCommand):
             # Задаем конечную дату (например, "2024-01-01")
             #end_date = datetime.strptime("2010-01-01", "%Y-%m-%d").date()
             end_date = Quote.objects.all().order_by('timestamp').last().timestamp.date()
-            contracts_to_instruments = {'ED': 'ED',   'Eu': 'Eu', 
-                                        'FL': 'FLOT', 'FN': 'FNI',  
-                                        'GD': 'GOLD', 'GK': 'GMKN',  'GU': 'GBPU', 'GZ': 'GAZR',
-                                            'HK': 'HKD', 'HO': 'HOME', 'HS': 'HANG', 'HY': 'HYDR', 'I2': 'INR',
-                                                'IS': 'ISKJ',  'KM': 'KMAZ', 
-                                            'KZ': 'KZT', 'LK': 'LKOH',  'MC': 'MTLR', 'ME': 'MOEX', 
-                                            'MG': 'MAGN', 'MM': 'MXI', 'MN': 'MGNT', 'MT': 'MTSI', 
-                                            'MV': 'MVID', 'MX': 'MIX',  'NA': 'NASD', 'NG': 'NG', 
-                                            'NK': 'NOTK',  'NM': 'NLMK', 'OG': 'OGI',  
-                                            'PD': 'PLD', 'PH': 'PHOR', 'PI': 'PIKK', 'PO': 'POLY', 'PS': 'POSI', 
-                                            'PT': 'PLT', 'PZ': 'PLZL', 'RB': 'RGBI', 'RI': 'RTS', 'RL': 'RUAL', 
-                                            'RM': 'RTSM', 'RN': 'ROSN',  'RT': 'RTKM',  
-                                            'SE': 'SPBE', 'SF': 'SPYF', 'SG': 'SNGP', 'Si': 'Si', 
-                                            'SN': 'SNGR', 'SO': 'SIBN', 'SP': 'SBPR', 'SR': 'SBRF', 'SS': 'SMLT', 
-                                            'Su': 'SUGAR', 'SV': 'SILV', 'SX': 'STOX', 'SZ': 'SGZH', #'JP': 'UJPY', 'OZ': 'OZON', 'YN': 'YNDF', 'FV': 'FIVE',
-                                                'TT': 'TATN', 'TY': 'TRY', 'UC': 'UCNY', #'MA': 'MMI','RR': 'RUON','N2': 'NIKK','CF': 'UCHF',
-                                                'VK': 'VKCO', 'W4': 'WHEAT', #'EG': 'EGBP','IR': 'IRAO','EJ': 'EJPY','Co': 'Co','MF': '1MFR','TR': 'UTRY',
-                                            'WU': 'WUSH',  'AE': 'AED', 'AF': 'AFLT', #'SA': 'SUGR','TI': 'TCSI', 'TN': 'TRNF',
-                                            'AK': 'AFKS', 'AL': 'ALRS',    #'AM': 'ALMN','AR': 'AMD','AS': 'ASTR','Nl': 'Nl','VI': 'RVI','S0': 'SOFL',
-                                            'AU': 'AUDU', 'BE': 'BELU', 'BN': 'BANE', 'BR': 'BR', 'BS': 'BSPB', #'CA': 'UCAD',
-                                                'CH': 'CHMF', 'CM': 'CBOM', #'CN': 'CNYRUBTOM', 'EC': 'ECAD','Zn': 'Zn',
-                                            'CR': 'CNY', 'CS': 'CNI', 'DX': 'DAX', 'VB': 'VTBR','FS': 'FEES',} 
-
+            contracts_to_instruments = {'AE': 'AED', 
+                                                        'AF': 'AFLT',
+                                                        'AK': 'AFKS', 
+                                                        'AL': 'ALRS', 
+                                                        'AN': 'ALUM',
+                                                        'AR': 'AMD',                                        
+                                                        'AU': 'AUDU',
+                                                        'AS': 'ASTR',
+                                                        'BB': 'ALIBABA',
+                                                        'BD': 'BAIDU',
+                                                        'BM': 'BRM',
+                                                        'BN': 'BANE', 
+                                                        'BR': 'BR', 
+                                                        'BS': 'BSPB',
+                                                        'BY': 'BYN',
+                                                        'CA': 'UCAD',
+                                                        'CC': 'COCOA',
+                                                        'CE': 'COPPER',
+                                                        'CF': 'UCHF',
+                                                        'CH': 'CHMF', 
+                                                        'CM': 'CBOM', 
+                                                        'CN': 'CNYRUBTOM', 
+                                                        'CR': 'CNY', 
+                                                        'CS': 'CNI',
+                                                        'DJ': 'DJ30', 
+                                                        'DX': 'DAX', 
+                                                        'EC': 'ECAD',
+                                                        'ED': 'ED',   
+                                                        'EG': 'EGBP',
+                                                        'EJ': 'EJPY',
+                                                        'EM': 'EM',
+                                                        'Eu': 'Eu',
+                                                        'EU': 'EURRUBTOM',
+                                                        'FE': 'FESH', 
+                                                        'FL': 'FLOT', 
+                                                        'FN': 'FNI',  
+                                                        'FS': 'FEES',
+                                                        'GA': 'GAZPF',
+                                                        'GD': 'GOLD', 
+                                                        'GK': 'GMKN',
+                                                        'GL': 'GL',
+                                                        'GU': 'GBPU', 
+                                                        'GZ': 'GAZR',
+                                                        'HK': 'HKD', 
+                                                        'HO': 'HOME', 
+                                                        'HS': 'HANG', 
+                                                        'HY': 'HYDR', 
+                                                        'I2': 'INR',
+                                                        'IM': 'IMOEX',
+                                                        'IP': 'IPO',
+                                                        'IR': 'IRAO', 
+                                                        'IS': 'ISKJ',  
+                                                        'JP': 'UJPY', 
+                                                        'KM': 'KMAZ', 
+                                                        'KZ': 'KZT',
+                                                        'LE': 'LEAS', 
+                                                        'LK': 'LKOH',
+                                                        'MA': 'MMI',  
+                                                        'MC': 'MTLR', 
+                                                        'ME': 'MOEX', 
+                                                        'MF': '1MFR',
+                                                        'MG': 'MAGN', 
+                                                        'MM': 'MXI', 
+                                                        'MN': 'MGNT', 
+                                                        'MT': 'MTSI', 
+                                                        'MV': 'MVID', 
+                                                        'MX': 'MIX',
+                                                        'MY': 'MOEXCNY',  
+                                                        'N2': 'NIKK',
+                                                        'NA': 'NASD',
+                                                        'NB': 'BELUGA',
+                                                        'NC': 'NICKEL', 
+                                                        'NG': 'NG', 
+                                                        'NK': 'NOTK',  
+                                                        'NM': 'NLMK', 
+                                                        'NR': 'NGM',
+                                                        'OG': 'OGI',
+                                                        'PD': 'PLD',
+                                                        'PH': 'PHOR', 
+                                                        'PI': 'PIKK', 
+                                                        'PS': 'POSI', 
+                                                        'PT': 'PLT', 
+                                                        'PZ': 'PLZL',
+                                                        'R2': 'R2000',
+                                                        'RA': 'RASP', 
+                                                        'RB': 'RGBI', 
+                                                        'RI': 'RTS', 
+                                                        'RL': 'RUAL', 
+                                                        'RM': 'RTSM', 
+                                                        'RN': 'ROSN',  
+                                                        'RR': 'RUON',
+                                                        'RT': 'RTKM',
+                                                        'RU': 'RNFT',
+                                                        'S0': 'SOFL',
+                                                        'SA': 'SUGR',
+                                                        'SB': 'SBERF',
+                                                        'SC': 'SVCB',  
+                                                        'SE': 'SPBE', 
+                                                        'SF': 'SPYF', 
+                                                        'SG': 'SNGP',
+                                                        'SH': 'SFIN',
+                                                        'Si': 'Si',
+                                                        'SN': 'SNGR', 
+                                                        'SO': 'SIBN', 
+                                                        'SP': 'SBPR', 
+                                                        'SR': 'SBRF', 
+                                                        'SS': 'SMLT',
+                                                        'Su': 'SUGAR', 
+                                                        'SV': 'SILV', 
+                                                        'SX': 'STOX', 
+                                                        'SZ': 'SGZH', 
+                                                        'TB': 'T',  
+                                                        'TI': 'TCSI',
+                                                        'TN': 'TRNF',
+                                                        'TP': 'TATP',                                    
+                                                        'TR': 'UTRY',
+                                                        'TT': 'TATN', 
+                                                        'TY': 'TRY', 
+                                                        'UC': 'UCNY',
+                                                        'US': 'USDRUBTOM',
+                                                        'UT': 'UKZT', 
+                                                        'VB': 'VTBR',
+                                                        'VI': 'RVI',
+                                                        'VK': 'VKCO', 
+                                                        'W4': 'WHEAT', 
+                                                        'WU': 'WUSH',
+                                                        'X5': 'X5',  
+                                                        'YD': 'YDEX', 
+                                                        'ZC': 'ZINC',}
+            #'VI': 'RVI',
             # Инициализируем список дат, начиная от текущей и идя к заданной конечной дате
             date_list = []
             while current_date >= end_date:
@@ -92,7 +200,7 @@ class Command(BaseCommand):
                         if len(sectype)==2:
                             
                             # Проверяем, что контракт присутствует в словаре
-                            if sectype and sectype in contracts_to_instruments:
+                            if sectype in contracts_to_instruments:
                                 instrument = contracts_to_instruments[sectype]
                                 if pd.notna(item.TRADEDATE) and pd.notna(item.OPEN) and pd.notna(item.LOW) and pd.notna(item.HIGH) and pd.notna(item.CLOSE) and pd.notna(item.VOLUME):
                                     existing_quotes = Quote.objects.filter(
@@ -200,6 +308,7 @@ class Command(BaseCommand):
                     start += 100
 
                     time.sleep(1)
+            
             last_trading_dates = LastDownloadDate.objects.annotate(
                 max_trading_date=Max('last_download_date')
             ).values('id', 'contract', 'max_trading_date')
@@ -256,7 +365,7 @@ class Command(BaseCommand):
                     print(f"{instrument}")
                     print(df)
                     # Создание каталога, если его нет
-                    directory = f'downloadData/'
+                    directory = f'downloadData_20230918/'
                     os.makedirs(directory, exist_ok=True)
                     contract_name = contract[:-2]
 
@@ -281,7 +390,8 @@ class Command(BaseCommand):
                 ),
             )
             BASEDIR = os.getcwd()
-            datapath = BASEDIR + "/downloadData"
+           
+            datapath = BASEDIR + "/downloadData_20230918"
             csv_multiple_data_path = f"{BASEDIR}\\data\\futures\\multiple_prices_csv"
             csv_roll_data_path = f"{BASEDIR}\\data\\futures\\roll_calendars_csv"
             
@@ -295,8 +405,168 @@ class Command(BaseCommand):
                 ADD_TO_ARCTIC=True, ADD_TO_CSV=True, csv_adj_data_path=f"{BASEDIR}\\data\\futures\\adjusted_prices_csv"
             )
 
+            # Загрузка курсов валют
+            base_url = "https://cbr.ru/scripts/XML_daily_eng.asp"
+            fx_name = {
+                                    'AUD' : 'AUDRUB',
+                                    'AZN' : 'AZNRUB',
+                                    'GBP' : 'GBPRUB',
+                                    'AMD' : 'AMDRUB',
+                                    'BYN' : 'BYNRUB',
+                                    'BGN' : 'BGNRUB',
+                                    'BRL' : 'BRLRUB',
+                                    'HUF' : 'HUFRUB',
+                                    'VND' : 'VNDRUB',
+                                    'HKD' : 'HKDRUB',
+                                    'GEL' : 'GELRUB',
+                                    'DKK' : 'DKKRUB',
+                                    'AED' : 'AEDRUB',
+                                    'USD' : 'USDRUB',
+                                    'EUR' : 'EURRUB',
+                                    'EGP' : 'EGPRUB',
+                                    'INR' : 'INRRUB',
+                                    'IDR' : 'IDRRUB',
+                                    'KZT' : 'KZTRUB',
+                                    'CAD' : 'CADRUB',
+                                    'QAR' : 'QARRUB',
+                                    'KGS' : 'KGSRUB',
+                                    'CNY' : 'CNYRUB',
+                                    'MDL' : 'MDLRUB',
+                                    'NZD' : 'NZDRUB',
+                                    'NOK' : 'NOKRUB',
+                                    'PLN' : 'PLNRUB',
+                                    'RON' : 'RONRUB',
+                                    'XDR' : 'XDRRUB',
+                                    'SGD' : 'SGDRUB',
+                                    'TJS' : 'TJSRUB',
+                                    'THB' : 'THBRUB',
+                                    'TRY' : 'TRYRUB',
+                                    'TMT' : 'TMTRUB',
+                                    'UZS' : 'UZSRUB',
+                                    'UAH' : 'UAHRUB',
+                                    'CZK' : 'CZKRUB',
+                                    'SEK' : 'SEKRUB',
+                                    'CHF' : 'CHFRUB',
+                                    'RSD' : 'RSDRUB',
+                                    'ZAR' : 'ZARRUB',
+                                    'KRW' : 'KRWRUB',
+                                    'JPY' : 'JPYRUB'}
+            # Получаем текущую дату
+            current_date = datetime.now().date() #datetime.strptime("2024-01-01", "%Y-%m-%d").date()  #datetime.now().date()
+
+            # Задаем конечную дату (например, "2024-01-01")
+            #end_date = datetime.strptime("2023-09-18", "%Y-%m-%d").date()
+            end_date = FxPriceData.objects.all().order_by('timestamp').last().timestamp.date()
+            # Инициализируем список дат, начиная от текущей и идя к заданной конечной дате
+            date_list = []
+            while current_date >= end_date:
+                date_list.append(current_date)
+                current_date -= timedelta(days=1)
+
+
+
+            for query_date in date_list:
+                formatted_date = query_date.strftime("%d/%m/%Y")
+                formatted_date2 = query_date.strftime("%Y-%m-%d")
+                full_url = f"{base_url}?date_req={formatted_date}"
+                # Выполняем HTTP-запрос
+                response = requests.get(full_url)                   
+            
+            
+                # Декодируем содержимое из windows-1251 в строку
+                xml_content = response.content.decode("windows-1251")
+
+                # Парсим XML
+                root = ET.fromstring(xml_content)
+
+                # Выводим корневой тег
+                data = []
+                for valute in root.findall("Valute"):
+                    code = valute.find("CharCode").text
+                    name = valute.find("Name").text
+                    value = valute.find("Value").text
+                    nominal = valute.find("Nominal").text
+                    
+                    data.append({"Code": code, "Name": name, "Nominal": nominal, "Value": value})
+
+                df = pd.DataFrame(data)
+                quotes_to_create = []
+                for item in df.itertuples(index=False):
+                    # Ваш код обработки данных
+                    sec_id = item.Code
+                    if sec_id and sec_id in fx_name:
+                        currency = fx_name[sec_id]
+                        # Проверка наличия данных
+                        
+                        existing_quotes = FxPriceData.objects.filter(
+                            instrument=sec_id,
+                            timestamp=formatted_date2
+                        )
+
+                        # Если данные уже существуют, пропускаем текущую итерацию цикла
+                        if existing_quotes.exists():
+                            continue
+                        price = float(item.Value.replace(',', '.'))
+                           
+                        quote_data = {
+                            'timestamp': formatted_date2,
+                            'exchange': 'CBR',
+                            'instrument': sec_id,
+                            'currency': currency,
+                            'section': item.Nominal,
+                            'price': price
+                        }
+                        quotes_to_create.append(FxPriceData(**quote_data))
+                        #print(f'Data loaded successfully   {instrument}  {contract}  {item.TRADEDATE}')
+                        
+
+                if quotes_to_create:
+                    FxPriceData.objects.bulk_create(quotes_to_create)
+                    print(len(quotes_to_create))
+                    #print(df.head())
+                    directory = f'data/test/Fxpricedata/'
+                    os.makedirs(directory, exist_ok=True)
+                    df.to_csv(f"{directory}{formatted_date2}.csv", index=False, encoding="utf-8")
+            
+            BASEDIR = os.getcwd()
+            instruments = FxPriceData.objects.all().values_list('currency', flat=True)
+            instruments = list(set(instruments))
+            for instrument in instruments:
+                fx_quotes = FxPriceData.objects.filter(currency=instrument).order_by('timestamp')
+                #timestamp_dates = quotes_contract.values_list('timestamp__date', flat=True)
+                
+
+                # Преобразуете значения в формат datetime
+                #timestamp_dates = [datetime.strptime(str(date), '%Y-%m-%d %H:%M:%S') for date in timestamp_dates]
+                df = pd.DataFrame({
+                    'DATETIME': fx_quotes.values_list('timestamp__date', flat=True),
+                    'PRICE': fx_quotes.values_list('price', flat=True),
+                })#.set_index('<DATE>')
+                df['DATETIME'] = pd.to_datetime(df['DATETIME']) + pd.Timedelta('23:00:00')
+                #df.index = pd.to_datetime(df['<DATE>'], format='%Y-%m-%d %H:%M:%S').values
+                #del df['<DATE>']
+                df = df.set_index('DATETIME')
+                print(f"{instrument}")
+                print(df)
+                # Создание каталога, если его нет
+                if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+                    directory = f"{BASEDIR}/data/futures/fx_prices_csv"
+                elif os.name == 'nt':   # для Windows
+                    directory = f"{BASEDIR}\\data\\futures\\fx_prices_csv"
+                os.makedirs(directory, exist_ok=True)
+                
+                
+                # Сохранение в CSV-файл только если есть данные
+                if not df.empty:
+                    df.to_csv(f'{directory}/{instrument}.csv')
+            if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+                    directory = f"{BASEDIR}/data/futures/fx_prices_csv"
+            elif os.name == 'nt':   # для Windows
+                    directory = f"{BASEDIR}\\data\\futures\\fx_prices_csv"
+            spotfx_from_csv_and_investing_dot_com(directory)
             return json.dumps({'command': 'load_to_database', 'status': 'success'}) 
 
         except Exception as e:
             logger.error(f"Error running backtest: {e}")
+            
             raise CommandError(f"Error running backtest: {e}")

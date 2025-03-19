@@ -22,7 +22,7 @@ def correlation_over_time_for_returns(
         frequency
     ).last()
     returns_for_correlation = index_prices_for_correlation.diff()
-
+    #print(returns_for_correlation)
     correlation_list = correlation_over_time(returns_for_correlation, **kwargs)
 
     return correlation_list
@@ -64,5 +64,5 @@ def correlation_over_time(
     correlation_list = CorrelationList(
         corr_list=corr_list, column_names=column_names, fit_dates=fit_dates
     )
-
+    #print(correlation_list.corr_list[-1])
     return correlation_list

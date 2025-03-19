@@ -165,6 +165,7 @@ def get_instrument_risk_table(
     p = progressBar(len(instrument_list))
     risk_data_list = []
     for instrument_code in instrument_list:
+        print(instrument_code)
         risk_this_instrument = get_risk_data_for_instrument(data, instrument_code)
         risk_data_list.append(risk_this_instrument)
         p.iterate()

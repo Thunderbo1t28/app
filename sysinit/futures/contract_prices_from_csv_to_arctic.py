@@ -15,8 +15,9 @@ def init_arctic_with_csv_futures_contract_prices(
         "WARNING THIS WILL ERASE ANY EXISTING ARCTIC PRICES WITH DATA FROM %s ARE YOU SURE?! (CTRL-C TO STOP)"
         % csv_prices.datapath
     )'''
-
+    
     instrument_codes = csv_prices.get_list_of_instrument_codes_with_merged_price_data()
+    
     instrument_codes.sort()
     for instrument_code in instrument_codes:
         init_arctic_with_csv_futures_contract_prices_for_code(

@@ -11,7 +11,12 @@ from systems.system_cache import input, dont_cache, diagnostic, output
 
 from syscore.genutils import str2Bool
 from syscore.objects import resolve_function
-
+import os
+BASEDIR = os.getcwd()
+if os.name == 'posix':  # для Unix-подобных систем (например, macOS, Linux)
+    directory = f"{BASEDIR}/private/system_log/forecast_scale_cap"
+elif os.name == 'nt':   # для Windows
+    directory = f"{BASEDIR}\\private\\system_log\\forecast_scale_cap"
 
 class ForecastScaleCap(SystemStage):
     """
@@ -69,6 +74,9 @@ class ForecastScaleCap(SystemStage):
         capped_scaled_forecast = scaled_forecast.clip(
             upper=upper_cap, lower=lower_floor
         )
+
+        os.makedirs(directory, exist_ok=True)
+        capped_scaled_forecast.to_csv(f'{directory}/get_capped_forecast_{rule_variation_name}_{instrument_code}.csv')
 
         return capped_scaled_forecast
 

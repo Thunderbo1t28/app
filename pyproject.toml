@@ -1,0 +1,74 @@
+[tool.poetry]
+name = "systematic-trading"
+version = "0.1.0"
+description = "Платформа для систематической торговли"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "."}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "4.2"
+numpy = "1.26.3"
+pandas = "2.2.0"
+scipy = "1.12.0"
+statsmodels = "0.14.1"
+PyYAML = "6.0.1"
+requests = "2.31.0"
+python-dateutil = "2.8.2"
+ib-insync = "0.9.86"
+deap = "1.4.1"
+django-redis = "5.4.0"
+django-cors-headers = "4.3.1"
+djangorestframework = "3.14.0"
+celery = "5.3.6"
+python-dotenv = "1.0.0"
+gunicorn = "21.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "7.4.3"
+pytest-django = "4.7.0"
+pytest-cov = "4.1.0"
+factory-boy = "3.3.0"
+black = "23.12.1"
+flake8 = "7.0.0"
+mypy = "1.8.0"
+isort = "5.13.2"
+sphinx = "7.2.6"
+drf-yasg = "1.21.7"
+django-debug-toolbar = "4.2.0"
+ipython = "8.20.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+disallow_untyped_defs = true
+ignore_missing_imports = true
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+strict_optional = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-v --tb=short"
+testpaths = ["tests"] 

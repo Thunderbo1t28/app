@@ -1,3 +1,4 @@
+import os
 from django.core.management.base import BaseCommand
 from quotes.models import Instrument, Quote
 import requests
@@ -77,3 +78,9 @@ class Command(BaseCommand):
                 per_trade=0.0
             )
             print('Data loaded successfully')
+        #BASEDIR = os.getcwd()
+        directory = f'data/test'
+        os.makedirs(directory, exist_ok=True)
+        if not combined_df.empty:
+            combined_df.to_csv(f'{directory}/instruments.csv')
+            

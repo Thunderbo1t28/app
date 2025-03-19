@@ -1,0 +1,31 @@
+Configuring sim logging
+2025-03-19 18:33:28 DEBUG asyncio Using proactor: IocpProactor
+2025-03-19 18:33:28 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:29 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-05 HTTP/1.1" 200 None
+2025-03-19 18:33:29 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:29 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-05&start=0&total=100 HTTP/1.1" 200 None
+c:\code\Systematic Trading\cursor\.venv\Lib\site-packages\django\db\models\fields\__init__.py:1595: RuntimeWarning: DateTimeField Quote.timestamp received a naive datetime (2025-03-05 00:00:00) while time zone support is active.
+  warnings.warn(
+2025-03-19 18:33:31 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:31 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-05&start=100&total=100 HTTP/1.1" 200 None
+2025-03-19 18:33:33 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:33 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-05&start=200&total=100 HTTP/1.1" 200 None
+2025-03-19 18:33:35 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:35 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-05&start=300&total=100 HTTP/1.1" 200 None
+2025-03-19 18:33:37 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:37 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-05&start=400&total=100 HTTP/1.1" 200 None
+2025-03-19 18:33:39 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:39 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-05&start=500&total=100 HTTP/1.1" 200 None
+2025-03-19 18:33:41 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:41 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-05&start=600&total=8 HTTP/1.1" 200 None
+2025-03-19 18:33:42 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:43 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-06 HTTP/1.1" 200 None
+2025-03-19 18:33:43 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:43 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-06&start=0&total=100 HTTP/1.1" 200 None
+c:\code\Systematic Trading\cursor\.venv\Lib\site-packages\django\db\models\fields\__init__.py:1595: RuntimeWarning: DateTimeField Quote.timestamp received a naive datetime (2025-03-06 00:00:00) while time zone support is active.
+  warnings.warn(
+51
+2025-03-19 18:33:45 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443
+2025-03-19 18:33:45 DEBUG urllib3.connectionpool https://iss.moex.com:443 "GET /iss/history/engines/futures/markets/forts/securities.json?date=2025-03-06&start=100&total=100 HTTP/1.1" 200 None
+49
+2025-03-19 18:33:47 DEBUG urllib3.connectionpool Starting new HTTPS connection (1): iss.moex.com:443

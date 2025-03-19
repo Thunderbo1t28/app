@@ -414,7 +414,7 @@ class Portfolios(SystemStage):
         corr_func = resolve_function(corr_params.pop("func"))
 
         pandl = self.pandl_across_subsystems().to_frame()
-
+        #print(pandl)
         return corr_func(pandl, **corr_params)
 
     ## INSTRUMENT WEIGHTS

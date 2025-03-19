@@ -1,0 +1,21 @@
+-r base.txt
+
+# Тестирование
+pytest==7.4.3
+pytest-django==4.7.0
+pytest-cov==4.1.0
+factory-boy==3.3.0
+
+# Линтинг и форматирование
+black==23.12.1
+flake8==7.0.0
+mypy==1.8.0
+isort==5.13.2
+
+# Документация
+sphinx==7.2.6
+drf-yasg==1.21.7
+
+# Отладка
+django-debug-toolbar==4.2.0
+ipython==8.20.0 

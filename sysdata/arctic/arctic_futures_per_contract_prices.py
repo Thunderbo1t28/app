@@ -117,10 +117,10 @@ class arcticFuturesContractPriceData(futuresContractPriceData):
         print(f"Wrote {len(futures_price_data)} lines of prices for {str(futures_contract_object.key)} at {str(frequency)} to {str(self)}")
     def get_contracts_with_merged_price_data(self) -> listOfFuturesContracts:
         """
-
+        
         :return: list of contracts
         """
-
+        
         list_of_contracts = self.get_contracts_with_price_data_for_frequency(
             frequency=MIXED_FREQ
         )
@@ -130,10 +130,11 @@ class arcticFuturesContractPriceData(futuresContractPriceData):
     def get_contracts_with_price_data_for_frequency(
         self, frequency: Frequency
     ) -> listOfFuturesContracts:
-
+        
         list_of_contract_and_freq_tuples = (
             self._get_contract_and_frequencies_with_price_data()
         )
+        
         list_of_contracts = [
             freq_and_contract_tuple[1]
             for freq_and_contract_tuple in list_of_contract_and_freq_tuples

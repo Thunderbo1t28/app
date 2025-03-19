@@ -253,10 +253,10 @@ class correlationEstimate(Estimate):
         )
         bottom_row = pd.concat([l2, r2], axis=1)
         #top_row.dropna(axis=1, how='all', inplace=True).ffill(axis=1, inplace=True)
-        top_row.ffill(axis=1)  # Заполнить NaN предыдущими значениями в верхней строке
+        #top_row.ffill(axis=1)  # Заполнить NaN предыдущими значениями в верхней строке
 
         #bottom_row.dropna(axis=1, how='all', inplace=True).ffill(axis=1, inplace=True)
-        bottom_row.ffill(axis=1)  # Заполнить NaN предыдущими значениями в нижней строке
+        #bottom_row.ffill(axis=1)  # Заполнить NaN предыдущими значениями в нижней строке
         
         '''for col in top_row.columns:
             for i in range(1, len(top_row)):
@@ -266,6 +266,7 @@ class correlationEstimate(Estimate):
             for i in range(1, len(bottom_row)):
                 if pd.isna(bottom_row.loc[i, col]):
                     bottom_row.loc[i, col] = bottom_row.loc[i-1, col]'''
+        
 
         both_rows = pd.concat([top_row, bottom_row], axis=0)
         #both_rows = pd.concat([top_row, bottom_row], axis=0)

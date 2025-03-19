@@ -140,3 +140,6 @@ process_configuration_methods:
     first:
       object: sysexecution.strategies.classic_buffered_positions.orderGeneratorForBufferedPositions
       max_executions: 1
+    second:
+      object: sysexecution.strategies.classic_buffered_positions.orderGeneratorForBufferedPositions
+      max_executions: 1

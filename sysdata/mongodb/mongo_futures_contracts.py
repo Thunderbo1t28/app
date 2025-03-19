@@ -107,7 +107,7 @@ class mongoFuturesContractData(futuresContractData):
     def _get_contract_data_from_key_without_checking(self, key: str) -> futuresContract:
 
         result_dict = self.mongo_data.get_result_dict_for_key_without_key_value(key)
-        #print(result_dict)
+        print(result_dict)
         contract_object = futuresContract.create_from_dict(result_dict)
 
         return contract_object

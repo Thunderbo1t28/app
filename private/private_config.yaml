@@ -34,19 +34,19 @@ strategy_list:
 strategy_capital_allocation:
   function: sysproduction.strategy_code.strategy_allocation.weighted_strategy_allocation
   strategy_weights:
-    first: 50.0
-    second: 50.0
+    first: 25.0
+    second: 75.0
 #
 ## Where do we save backtests
-backtest_store_directory: '/Users/kairsabiev/code/proj1/app/data/backtests'
+#backtest_store_directory: '/Users/kairsabiev/code/proj1/app/data/backtests'
 #
 # And backups
-csv_backup_directory: '/Users/kairsabiev/code/proj1/app/data/backups_csv'
-mongo_dump_directory: '/Users/kairsabiev/code/proj1/app/data/mongo_dump'
-echo_directory: '/Users/kairsabiev/code/proj1/app/private/echos'
-log_directory: '/Users/kairsabiev/code/proj1/app/data/log'
-offsystem_backup_directory: '/Users/kairsabiev/code/proj1/app/data/offsystem'
-reporting_directory: '/Users/kairsabiev/code/proj1/app/data/reports'
+#csv_backup_directory: '/Users/kairsabiev/code/proj1/app/data/backups_csv'
+#mongo_dump_directory: '/Users/kairsabiev/code/proj1/app/data/mongo_dump'
+#echo_directory: '/Users/kairsabiev/code/proj1/app/private/echos'
+#log_directory: '/Users/kairsabiev/code/proj1/app/data/log'
+#offsystem_backup_directory: '/Users/kairsabiev/code/proj1/app/data/offsystem'
+#reporting_directory: '/Users/kairsabiev/code/proj1/app/data/reports'
 #
 # Interactive brokers
 #ib_ipaddress: 127.0.0.1
@@ -80,7 +80,7 @@ GMT_offset_hours: 0
 intraday_frequency: H
 #
 percentage_vol_target: 25.0
-notional_trading_capital: 4000000
+notional_trading_capital: 15000000
 base_currency: "RUB"
 # Capital calculation
 production_capital_method: 'full'

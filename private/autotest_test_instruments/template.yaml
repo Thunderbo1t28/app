@@ -1,6 +1,18 @@
 #YAML
+instrument_correlation_estimate:
+   func: sysquant.estimators.correlation_over_time.correlation_over_time_for_returns
+   frequency: "D"
+   date_method: "expanding"
+   using_exponent: True
+   ew_lookback: 25
+   min_periods: 20
+   cleaning: True
+   rollyears: 20
+   floor_at_zero: True
+   forward_fill_price_index: True
+#
 #start_date: 2020-01-01
-#start_date: 2022-06-19
+start_date: 2023-09-18
 use_forecast_weight_estimates: False
 use_forecast_div_mult_estimates: False
 use_instrument_weight_estimates: False
@@ -264,7 +276,7 @@ forecast_scalars:
 # Capital correction
 #
 percentage_vol_target: 25.0
-notional_trading_capital: 2000000
+notional_trading_capital: 4000000
 base_currency: "RUB"
 #
 # Portfolio creation

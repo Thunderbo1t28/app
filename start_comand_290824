@@ -1,2 +1,14 @@
 python manage.py load_to_database
-python manage.py testcode  
+python manage.py testcode
+python manage.py runserver
+ 
+celery -A config worker --loglevel=info
+celery -A app worker --loglevel=info
+
+cd frontend
+npm start
+
+python -c "import sys; print(sys.executable)"
+
+git restore :/
+git reset --hard
