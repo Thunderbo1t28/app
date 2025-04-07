@@ -144,7 +144,7 @@ class Command(BaseCommand):
         #interactive_update_roll_status()
         #interactive_manual_check_fx_prices()
         #interactive_manual_check_historical_prices()
-        #update_sampled_contracts()
+        update_sampled_contracts()
         
         
         #run_stack_handler()
@@ -162,7 +162,7 @@ class Command(BaseCommand):
         
         #run_backups()
         #run_cleaners()
-        run_reports()
+        #run_reports()
 
         # Выведите результаты в консоль или сделайте что-то еще
         self.stdout.write(self.style.SUCCESS('Successfully'))

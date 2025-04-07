@@ -80,7 +80,7 @@ GMT_offset_hours: 0
 intraday_frequency: H
 #
 percentage_vol_target: 25.0
-notional_trading_capital: 15000000
+notional_trading_capital: 13500000
 base_currency: "RUB"
 # Capital calculation
 production_capital_method: 'full'

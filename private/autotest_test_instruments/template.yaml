@@ -276,12 +276,12 @@ forecast_scalars:
 # Capital correction
 #
 percentage_vol_target: 25.0
-notional_trading_capital: 4000000
+notional_trading_capital: 4500000
 base_currency: "RUB"
 #
 # Portfolio creation
 #
-#instrument_div_multiplier: 2.75
+instrument_div_multiplier: 2.5
 risk_overlay:
   max_risk_fraction_normal_risk: 1.75
   max_risk_fraction_stdev_risk: 4.0

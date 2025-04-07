@@ -65,7 +65,7 @@ class Command(BaseCommand):
                                                         'EC': 'ECAD',
                                                         'ED': 'ED',   
                                                         'EG': 'EGBP',
-                                                        'EJ': 'EJPY',
+                                                        
                                                         'EM': 'EM',
                                                         'Eu': 'Eu',
                                                         'EU': 'EURRUBTOM',
@@ -93,7 +93,7 @@ class Command(BaseCommand):
                                                         'KZ': 'KZT',
                                                         'LE': 'LEAS', 
                                                         'LK': 'LKOH',
-                                                        'MA': 'MMI',  
+
                                                         'MC': 'MTLR', 
                                                         'ME': 'MOEX', 
                                                         'MF': '1MFR',
@@ -148,8 +148,8 @@ class Command(BaseCommand):
                                                         'SX': 'STOX', 
                                                         'SZ': 'SGZH', 
                                                         'TB': 'T',  
-                                                        'TI': 'TCSI',
-                                                        'TN': 'TRNF',
+                                                        
+                                                        
                                                         'TP': 'TATP',                                    
                                                         'TR': 'UTRY',
                                                         'TT': 'TATN', 
@@ -165,7 +165,7 @@ class Command(BaseCommand):
                                                         'X5': 'X5',  
                                                         'YD': 'YDEX', 
                                                         'ZC': 'ZINC',}
-            #'VI': 'RVI',
+            #'VI': 'RVI', 'MA': 'MMI', 'TI': 'TCSI','TN': 'TRNF','EJ': 'EJPY',
             # Инициализируем список дат, начиная от текущей и идя к заданной конечной дате
             date_list = []
             while current_date >= end_date:
@@ -448,10 +448,10 @@ class Command(BaseCommand):
                                     'SEK' : 'SEKRUB',
                                     'CHF' : 'CHFRUB',
                                     'RSD' : 'RSDRUB',
-                                    'ZAR' : 'ZARRUB',
+                                    
                                     'KRW' : 'KRWRUB',
                                     'JPY' : 'JPYRUB'}
-            # Получаем текущую дату
+            # Получаем текущую дату 'ZAR' : 'ZARRUB',
             current_date = datetime.now().date() #datetime.strptime("2024-01-01", "%Y-%m-%d").date()  #datetime.now().date()
 
             # Задаем конечную дату (например, "2024-01-01")
